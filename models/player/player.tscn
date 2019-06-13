@@ -21,6 +21,7 @@ material_override = ExtResource( 3 )
 material_override = SubResource( 1 )
 
 [node name="overlay" parent="Armature/Skeleton" index="3" instance=ExtResource( 4 )]
+visible = false
 
 [node name="AnimationPlayer" parent="." index="1"]
 autoplay = "idle"
