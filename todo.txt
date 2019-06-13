@@ -1,0 +1,17 @@
+player stats
+npc stats
+interface (joystick etc)
+armory / inventory / backpack
+item drop from enemy / battle
+quests / mission / comandment
+shop
+weapon attachment
+player level
+player skills
+
+----
+
+weapon enhancement
+player skill training
+player rank (elite)
+coop / friendly npc
