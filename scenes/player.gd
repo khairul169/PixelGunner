@@ -153,7 +153,8 @@ func _physics_process(delta: float) -> void:
 	# move player
 	velocity = move_and_slide(velocity, Vector3.UP, true);
 	
-	if (velocity.length() > 0.5):
+	var hvel = Vector3(velocity.x, 0, velocity.z);
+	if (hvel.length() > 0.5):
 		animation = anims[anim_offset + PlayerAnims.RUN];
 		anim_speed = clamp(move_speed / 3.0, 0.1, 2.0);
 		next_idle = 0.0;
