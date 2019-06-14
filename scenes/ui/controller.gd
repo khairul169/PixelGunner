@@ -25,6 +25,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if (event.pressed):
 			if (get_global_rect().has_point(pos)):
 				handle_input(pos, true);
+				get_tree().set_input_as_handled();
 		else:
 			handle_input(pos, false);
 	
@@ -36,9 +37,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		if (event.pressed):
 			if (get_global_rect().has_point(pos) && touch_id < 0):
 				handle_input(pos, true);
+				touch_id = event.index;
+				get_tree().set_input_as_handled();
 		else:
-			if (touch_id >= 0 && touch_id == event.index):
+			if (touch_id == event.index):
 				handle_input(pos, false);
+				touch_id = -1;
 	
 	if (event is InputEventScreenDrag && event.index == touch_id):
 		motion_update(event.position);

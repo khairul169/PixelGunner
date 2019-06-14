@@ -1,11 +1,16 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/npc/npc.gd" type="Script" id=1]
 [ext_resource path="res://models/player/player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://models/player/icy-boi.png" type="Texture" id=3]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.4
 height = 0.6
+
+[sub_resource type="SpatialMaterial" id=3]
+albedo_color = Color( 0.643137, 0.643137, 0.643137, 1 )
+albedo_texture = ExtResource( 3 )
 
 [sub_resource type="SphereShape" id=2]
 radius = 8.0
@@ -29,7 +34,12 @@ shape = SubResource( 1 )
 [node name="player" parent="body" instance=ExtResource( 2 )]
 transform = Transform( -0.65, 0, -5.68248e-008, 0, 0.65, 0, 5.68248e-008, 0, -0.65, 0, 0, 0 )
 
+[node name="player" parent="body/player/Armature/Skeleton" index="1"]
+material_override = SubResource( 3 )
+
 [node name="detection" type="Area" parent="."]
 
 [node name="shape" type="CollisionShape" parent="detection"]
 shape = SubResource( 2 )
+
+[editable path="body/player"]

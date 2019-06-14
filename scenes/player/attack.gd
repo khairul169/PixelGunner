@@ -33,7 +33,7 @@ var state = State.IDLE;
 
 var damage = 20.0;
 var delay = 0.6;
-var attack_range = 6.0;
+var attack_range = 5.0;
 var accuracy = 15.0;
 var attack_type = AttackType.NEAR;
 var slowness_prob = 0.6;
@@ -42,10 +42,18 @@ var knock_prob = 0.4;
 var knock_size = 10.0;
 
 func _ready() -> void:
-	# createa area targeting node
-	call_deferred('create_targeting');
-	
+	# set player animation offset
 	player.anim_offset = player.PlayerAnims.RIFLE_IDLE;
+	
+	# initialize attack system
+	call_deferred("init");
+
+func init() -> void:
+	# targeting
+	create_targeting();
+	
+	# attack button
+	player.ui.button_attack.connect("pressed", self, "start_attack");
 
 func _input(event: InputEvent) -> void:
 	if (Input.is_key_pressed(KEY_SPACE)):

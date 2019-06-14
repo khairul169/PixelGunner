@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scenes/ui.gd" type="Script" id=1]
 [ext_resource path="res://scenes/ui/controller.gd" type="Script" id=2]
 [ext_resource path="res://icon.png" type="Texture" id=3]
+[ext_resource path="res://scenes/ui/action_button.gd" type="Script" id=4]
 
 [node name="ui" type="Control"]
 anchor_right = 1.0
@@ -30,7 +31,13 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -407.0
 margin_top = -265.0
+mouse_filter = 2
 
-[node name="button" type="Control" parent="action_button"]
-margin_right = 40.0
-margin_bottom = 40.0
+[node name="attack" type="TextureRect" parent="action_button"]
+margin_left = 263.713
+margin_top = 123.066
+margin_right = 359.713
+margin_bottom = 219.066
+texture = ExtResource( 3 )
+expand = true
+script = ExtResource( 4 )
