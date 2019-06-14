@@ -1,9 +1,15 @@
 extends Node
 
+# defs
 const TARGETING_RADIUS = 8.0;
 
+# scenes
+onready var DamageIndicator = load('res://scenes/ui/indicator_damage.tscn');
+
+# reference
 onready var player: Player = get_parent();
 
+# state
 enum State {
 	IDLE = 0,
 	MOVING,
@@ -11,6 +17,7 @@ enum State {
 	ATTACKING
 };
 
+# attack type
 enum AttackType {
 	NEAR = 0,
 	FAR,
@@ -33,8 +40,6 @@ var slowness_prob = 0.6;
 var slowness_time = 1.0;
 var knock_prob = 0.4;
 var knock_size = 10.0;
-
-onready var DamageIndicator = load('res://scenes/ui/indicator_damage.tscn');
 
 func _ready() -> void:
 	# createa area targeting node

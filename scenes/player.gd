@@ -7,6 +7,7 @@ class_name Player
 onready var m_attack = $attack;
 onready var camera = get_parent().get_node('camera');
 onready var animplayer: AnimationPlayer = $body/player/AnimationPlayer;
+onready var ui: UserInterface = get_node("../../ui");
 
 # signals
 signal health_changed();
@@ -126,6 +127,11 @@ func _physics_process(delta: float) -> void:
 		dir -= aim.x;
 	if (Input.is_key_pressed(KEY_D)):
 		dir += aim.x;
+	
+	if (ui.controller):
+		var input_dir: Vector3 = ui.controller.dir;
+		if (input_dir.length() > 0.1):
+			dir = aim.xform(input_dir);
 	
 	# normalize dir
 	dir.y = 0.0;

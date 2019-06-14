@@ -122,7 +122,6 @@ shape = SubResource( 6 )
 
 [node name="light" type="DirectionalLight" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.545081, 0.838383, 0, -0.838383, 0.545081, 0, 0.750294, 0 )
-shadow_enabled = true
 
 [node name="player" parent="." instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.61257, 0 )
