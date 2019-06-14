@@ -1,5 +1,5 @@
-player stats
-npc stats
+.player stats
+.npc stats
 interface (joystick etc)
 armory / inventory / backpack
 item drop from enemy / battle

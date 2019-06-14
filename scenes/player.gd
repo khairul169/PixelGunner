@@ -3,11 +3,9 @@ extends KinematicBody
 # player class
 class_name Player
 
-# camera
-onready var camera = get_parent().get_node('camera');
-
-# subnodes
+# reference
 onready var m_attack = $attack;
+onready var camera = get_parent().get_node('camera');
 onready var animplayer: AnimationPlayer = $body/player/AnimationPlayer;
 
 # signals
@@ -47,22 +45,28 @@ var anims = [
 # vars
 var velocity := Vector3.ZERO;
 var body_dir := Vector3.FORWARD;
-var speed := 3.0;
 var navigate_to;
 
 var next_think = 0.0;
 var is_moving = false;
 var animation = 'idle';
+var anim_speed = 1.0;
 var next_idle = 0.0;
 var anim_offset = 0;
 
 var health_max = 100.0;
 var health = 0.0;
+var armor = 0.0;
+var move_speed = 3.0;
 
 func _ready() -> void:
 	add_to_group('damageable');
 	
-	$floating_bar.init('Lv1 Eclaire', health_max);
+	# init floating bar
+	$player_bar.always_visible = true;
+	$player_bar.init("Eclaire", health_max);
+	
+	# set initial health
 	set_health(health_max);
 
 func set_health(new_health: float) -> void:
@@ -73,6 +77,9 @@ func give_damage(damage: float, source = null) -> void:
 	if (health <= 0.0):
 		return;
 	
+	# armor penetration
+	damage = max(1.0, damage - armor);
+	
 	# reduce health
 	set_health(health - damage);
 	
@@ -82,8 +89,8 @@ func give_damage(damage: float, source = null) -> void:
 	if (health <= 0.0 && has_method('_died')):
 		self.call('_died');
 
-func _damaged(damage, source) -> void:
-	print('damaged ', damage, ' by ', source.name);
+func _damaged(damage, attacker) -> void:
+	$attack.create_indicator(self, str(int(damage)), Color(1, 0.2, 0.2));
 
 func _died() -> void:
 	set_animation(PlayerAnims.DYING, 0.1);
@@ -101,7 +108,7 @@ func _physics_process(delta: float) -> void:
 		var pos = global_transform.origin;
 		var d = pos.distance_to(navigate_to);
 		
-		if (d <= delta * speed):
+		if (d <= delta * move_speed):
 			navigate_to = null;
 		else:
 			navigation_dir = navigate_to - pos;
@@ -139,8 +146,8 @@ func _physics_process(delta: float) -> void:
 	# set velocity
 	if (next_think > 0.0):
 		dir = Vector3();
-		
-	velocity = velocity.linear_interpolate(dir * speed, 10 * delta);
+	
+	velocity = velocity.linear_interpolate(dir * move_speed, 10 * delta);
 	velocity.y = gv;
 	
 	# move player
@@ -148,9 +155,11 @@ func _physics_process(delta: float) -> void:
 	
 	if (velocity.length() > 0.5):
 		animation = anims[anim_offset + PlayerAnims.RUN];
+		anim_speed = clamp(move_speed / 3.0, 0.1, 2.0);
 		next_idle = 0.0;
 	else:
 		animation = anims[anim_offset + PlayerAnims.IDLE];
+		anim_speed = 1.0;
 	
 	if (dir.length() > 0.1):
 		body_dir = dir;
@@ -173,7 +182,7 @@ func _process(delta: float) -> void:
 	
 	if (animplayer.current_animation != animation && next_idle <= 0.0):
 		animplayer.get_animation(animation).loop = true;
-		animplayer.play(animation, 0.1);
+		animplayer.play(animation, 0.1, anim_speed);
 		next_idle = 0.1;
 
 func move_to(position, delay = 0.0) -> void:

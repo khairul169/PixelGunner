@@ -1,5 +1,8 @@
 extends KinematicBody
 
+# scenes
+onready var FloatingBar = load('res://scenes/ui/floating_bar.tscn');
+
 # reference
 onready var body = $body;
 
@@ -15,15 +18,16 @@ var slow_time = 0.0;
 var stun_time = 0.0;
 var impulse := Vector3.ZERO;
 
-var health_max = 100.0;
+export(float) var health_max = 100.0;
 var health = 0.0;
 
-var move_speed = 1.6;
-var attack_damage = 10.0;
-var attack_delay = 1.8;
-var attack_range = 1.0;
-var armor = 0;
-var agile = 5.0;
+export(String) var npc_name = "NPC";
+export(float) var move_speed = 1.6;
+export(float) var attack_damage = 10.0;
+export(float) var attack_delay = 1.8;
+export(float) var attack_range = 1.0;
+export(float) var armor = 0.0;
+export(float) var agile = 5.0;
 
 func _ready() -> void:
 	add_to_group('damageable');
@@ -31,7 +35,14 @@ func _ready() -> void:
 	$detection.connect("body_entered", self, "_obj_enter");
 	$detection.connect("body_exited", self, "_obj_exit");
 	
-	$floating_bar.init('Lv1 Crog', health_max);
+	# create floating bar
+	var uibar = FloatingBar.instance();
+	add_child(uibar);
+	uibar.healthbar_color = Color('#d63d3d');
+	uibar.healthbar_height = 4.0;
+	uibar.init(npc_name, health_max);
+	
+	# set initial health
 	set_health(health_max);
 
 func set_health(new_health: float) -> void:
@@ -150,12 +161,25 @@ func _think() -> void:
 		attack(enemy);
 
 func attack(object) -> void:
+	if (!object || !object is Spatial):
+		return;
+	
+	# set looking at enemy
+	set_look_at(object);
+	
+	# calculate damage
 	var damage = attack_damage + (rand_range(-0.15, 0.15) * attack_damage);
 	
 	if (object.has_method('give_damage')):
 		object.give_damage(damage, self);
 	
+	# delay attack
 	next_think = attack_delay;
+
+func set_look_at(object: Spatial) -> void:
+	body_dir = object.global_transform.origin - global_transform.origin;
+	body_dir.y = 0.0;
+	body_dir = body_dir.normalized();
 
 func _damaged(damage, source) -> void:
 	pass

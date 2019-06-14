@@ -1,12 +1,15 @@
 extends Control
 
+# editor config
 export(Vector2) var offset = Vector2(0, -20.0);
 export(float) var healthbar_height = 5;
 export(Color) var healthbar_color = Color('#d63d3d');
 export(bool) var always_visible = false;
 
-onready var health_bar = $health/bar;
+# reference
+onready var health_bar = get_node("health/bar");
 
+# vars
 var parent: Spatial;
 var camera: Camera;
 var health = 0.0;
@@ -30,7 +33,7 @@ func _health_changed(new_health: float) -> void:
 		return;
 	
 	if (health_max > 0.0):
-		health = new_health / health_max;
+		health = clamp(new_health / health_max, 0.0, 1.0);
 	else:
 		health = 0.0;
 	

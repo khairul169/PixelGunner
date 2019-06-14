@@ -11,6 +11,13 @@ enum State {
 	ATTACKING
 };
 
+enum AttackType {
+	NEAR = 0,
+	FAR,
+	BOSS,
+	RANDOM
+};
+
 # vars
 var nearest_enemy := [];
 var target;
@@ -18,10 +25,11 @@ var next_think = 0.0;
 var state = State.IDLE;
 
 var damage = 20.0;
-var delay = 0.4;
-var attack_range = 5.0;
-var accuracy = 10.0;
-var slowness_prob = 0.4;
+var delay = 0.6;
+var attack_range = 6.0;
+var accuracy = 15.0;
+var attack_type = AttackType.NEAR;
+var slowness_prob = 0.6;
 var slowness_time = 1.0;
 var knock_prob = 0.4;
 var knock_size = 10.0;
@@ -95,6 +103,11 @@ func _physics_process(delta: float) -> void:
 			attack(target);
 			state = State.ATTACKING;
 			next_think = delay;
+			
+			# reset target if randomized attack
+			if (attack_type == AttackType.RANDOM):
+				target = null;
+				start_attack();
 		else:
 			state = State.IDLE;
 			next_think = 0.5;
@@ -103,10 +116,13 @@ func _physics_process(delta: float) -> void:
 	if (target):
 		if (target.health <= 0.0):
 			target = null;
+			
+			if (attack_type == AttackType.RANDOM):
+				start_attack();
 			return;
 		
 		var distance = player.global_transform.origin.distance_to(target.global_transform.origin);
-		if (distance > attack_range):
+		if (distance > attack_range && attack_type != AttackType.RANDOM):
 			player.move_to(target.global_transform.origin);
 			next_think = 0.2;
 			state = State.MOVING;
@@ -114,7 +130,7 @@ func _physics_process(delta: float) -> void:
 			if (state != State.ATTACKING):
 				player.move_to(null, 0.5);
 				next_think = 0.4;
-				look_at(target);
+				set_look_at(target);
 			else:
 				player.move_to(null, 0.1);
 				next_think = 0.0;
@@ -122,40 +138,64 @@ func _physics_process(delta: float) -> void:
 			state = State.AIMING;
 
 func start_attack() -> void:
-	if (player.health <= 0.0):
+	if (player.health <= 0.0 || !nearest_enemy.size()):
 		return;
 	
-	var enemy;
-	var last_distance = -1;
-	for i in nearest_enemy:
-		var distance = player.global_transform.origin.distance_to(i.global_transform.origin);
-		if (last_distance >= 0.0 && distance >= last_distance):
-			continue;
-		
-		if (i.health <= 0.0):
-			continue;
-		
-		enemy = i;
-		last_distance = distance;
+	if (attack_type == AttackType.RANDOM):
+		target = nearest_enemy[randi() % nearest_enemy.size()];
+		return;
 	
-	if (enemy && enemy is Spatial):
+	var res = {};
+	for i in nearest_enemy:
+		if (check_enemy(i, res)):
+			continue;
+	
+	if (res.has('enemy')):
 		# set target
-		target = enemy;
+		target = res.enemy;
 	else:
 		target = null;
 
-func look_at(object: Spatial) -> void:
-	var target_pos = object.global_transform.origin;
-	var look_dir = object.global_transform.origin - player.global_transform.origin;
-	look_dir.y = 0.0;
-	look_dir = look_dir.normalized();
-	player.body_dir = look_dir;
+func check_enemy(enemy: Spatial, res: Dictionary) -> bool:
+	if (!enemy.is_in_group('damageable')):
+		return true;
+	
+	# health check
+	if (enemy.health <= 0.0):
+		return true;
+	
+	var last_distance = -1.0;
+	if (res.has('distance')):
+		last_distance = res.distance;
+	
+	var enemy_pos = enemy.global_transform.origin;
+	var distance = player.global_transform.origin.distance_to(enemy_pos);
+	
+	# distance check
+	if (attack_type == AttackType.NEAR):
+		if (last_distance >= 0.0 && !(distance <= last_distance)):
+			return true;
+	
+	if (attack_type == AttackType.FAR):
+		if (last_distance >= 0.0 && !(distance > last_distance)):
+			return true;
+	
+	# set result
+	res.enemy = enemy;
+	res.distance = distance;
+	return false;
+
+func set_look_at(object: Spatial) -> void:
+	player.body_dir = object.global_transform.origin - player.global_transform.origin;
+	player.body_dir.y = 0.0;
+	player.body_dir = player.body_dir.normalized();
 
 func attack(object: Spatial) -> void:
 	if (player.health <= 0.0 || !object.is_in_group('damageable')):
 		return;
 	
-	look_at(target);
+	# set looking at target
+	set_look_at(target);
 	
 	var agile = object.agile;
 	var miss_chance = agile / (agile + accuracy);
