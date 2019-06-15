@@ -28,11 +28,6 @@ func _process(delta: float) -> void:
 	if (!player_node):
 		return;
 	
-	if (player_node.health <= 0.0):
-		fov = 40.0;
-	else:
-		fov = 60.0;
-	
 	if (abs(camera_node.fov-fov) > 0.1):
 		camera_node.fov = lerp(camera_node.fov, fov, 4.0 * delta);
 	

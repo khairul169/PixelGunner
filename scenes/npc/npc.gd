@@ -8,12 +8,14 @@ onready var body = $body;
 
 # signals
 signal health_changed(health_num);
+signal spawn();
+signal dying();
 
 var velocity := Vector3.ZERO;
 var next_think = 0.0;
 var target = [];
 var move_to;
-var body_dir := Vector3.ZERO;
+var body_dir := Vector3.FORWARD;
 var slow_time = 0.0;
 var stun_time = 0.0;
 var impulse := Vector3.ZERO;
@@ -29,6 +31,8 @@ export(float) var attack_range = 1.0;
 export(float) var armor = 0.0;
 export(float) var agile = 5.0;
 
+var spawn_pos;
+
 func _ready() -> void:
 	add_to_group('damageable');
 	
@@ -42,8 +46,9 @@ func _ready() -> void:
 	uibar.healthbar_height = 4.0;
 	uibar.init(npc_name, health_max);
 	
-	# set initial health
-	set_health(health_max);
+	# spawn npc
+	spawn_pos = global_transform.origin + Vector3.UP;
+	spawn(spawn_pos);
 
 func set_health(new_health: float) -> void:
 	health = clamp(new_health, 0.0, health_max);
@@ -60,12 +65,51 @@ func give_damage(damage: float, source = null) -> float:
 	set_health(health - damage);
 	
 	if (has_method('_damaged')):
-		self.call('_damaged', damage, source);
+		_damaged(damage, source);
 	
-	if (health <= 0.0 && has_method('_died')):
-		self.call('_died');
+	if (health <= 0.0 && has_method('_dying')):
+		_dying();
+		emit_signal("dying");
 	
 	return damage;
+
+func spawn(position: Vector3) -> void:
+	# spawn npc
+	set_health(health_max);
+	global_transform.origin = position;
+	
+	# emit spawn signal
+	_on_spawn();
+	emit_signal("spawn");
+
+func _on_spawn() -> void:
+	# reset vars
+	velocity = Vector3.ZERO;
+	next_think = 0.5;
+	move_to = null;
+	body_dir = Vector3.FORWARD;
+	slow_time = 0.0;
+	stun_time = 0.0;
+	impulse = Vector3.ZERO;
+	
+	# enable collision shape
+	$shape.disabled = false;
+
+func _damaged(damage, source) -> void:
+	pass
+	#$AnimationPlayer.play("damaged");
+	#$AnimationPlayer.seek(0.0);
+
+func _dying() -> void:
+	pass
+	#$AnimationPlayer.play("dying");
+	#queue_free();
+	
+	# disable collision shape
+	$shape.disabled = true;
+	
+	# spawn time
+	next_think = 5.0;
 
 func _obj_enter(obj) -> void:
 	if (obj is Player && !obj in target):
@@ -92,6 +136,8 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	if (health <= 0.0):
+		if (next_think <= 0.0):
+			spawn(spawn_pos);
 		return;
 	
 	if (next_think <= 0.0):
@@ -180,17 +226,6 @@ func set_look_at(object: Spatial) -> void:
 	body_dir = object.global_transform.origin - global_transform.origin;
 	body_dir.y = 0.0;
 	body_dir = body_dir.normalized();
-
-func _damaged(damage, source) -> void:
-	pass
-	#$AnimationPlayer.play("damaged");
-	#$AnimationPlayer.seek(0.0);
-
-func _died() -> void:
-	pass
-	#$AnimationPlayer.play("dying");
-	#queue_free();
-	$shape.disabled = true;
 
 func set_stun(time = 0.0) -> void:
 	stun_time = time;

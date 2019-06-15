@@ -11,6 +11,8 @@ onready var ui: UserInterface = get_node("../../ui");
 
 # signals
 signal health_changed();
+signal spawn();
+signal dying();
 
 # animation list
 enum PlayerAnims {
@@ -50,7 +52,7 @@ var navigate_to;
 
 var next_think = 0.0;
 var is_moving = false;
-var animation = 'idle';
+var animation = anims[PlayerAnims.IDLE];
 var anim_speed = 1.0;
 var next_idle = 0.0;
 var anim_offset = 0;
@@ -67,8 +69,8 @@ func _ready() -> void:
 	$player_bar.always_visible = true;
 	$player_bar.init("Eclaire", health_max);
 	
-	# set initial health
-	set_health(health_max);
+	# spawn player
+	spawn(Vector3.ZERO + Vector3(0, 1, 0));
 
 func set_health(new_health: float) -> void:
 	health = clamp(new_health, 0.0, health_max);
@@ -85,19 +87,48 @@ func give_damage(damage: float, source = null) -> void:
 	set_health(health - damage);
 	
 	if (has_method('_damaged')):
-		self.call('_damaged', damage, source);
+		call('_damaged', damage, source);
 	
-	if (health <= 0.0 && has_method('_died')):
-		self.call('_died');
+	if (health <= 0.0 && has_method('_dying')):
+		call('_dying');
+		emit_signal("dying");
+
+func spawn(position: Vector3) -> void:
+	# set player health
+	set_health(health_max);
+	
+	# set position
+	global_transform.origin = position;
+	
+	# emit spawn signal
+	_on_spawn();
+	emit_signal("spawn");
+
+func _on_spawn() -> void:
+	# reset vars
+	camera.fov = 60.0;
+	body_dir = Vector3.FORWARD;
+	navigate_to = null;
+	
+	next_think = 0.5;
+	is_moving = false;
+	animation = anims[PlayerAnims.IDLE];
+	anim_speed = 1.0;
+	next_idle = 0.0;
+	anim_offset = 0;
 
 func _damaged(damage, attacker) -> void:
-	$attack.create_indicator(self, str(int(damage)), Color(1, 0.2, 0.2));
+	m_attack.create_indicator(self, str(int(damage)), Color(1, 0.2, 0.2));
 
-func _died() -> void:
+func _dying() -> void:
 	set_animation(PlayerAnims.DYING, 0.1);
+	camera.fov = 40.0;
+	next_think = 3.0;
 
 func _physics_process(delta: float) -> void:
 	if (health <= 0.0):
+		if (next_think <= 0.0):
+			spawn(Vector3(0, 1, 0));
 		return;
 	
 	var aim := Basis();
@@ -172,11 +203,11 @@ func _physics_process(delta: float) -> void:
 		body_dir = dir;
 
 func _process(delta: float) -> void:
-	if (health <= 0.0):
-		return;
-	
 	if (next_think > 0.0):
 		next_think -= delta;
+	
+	if (health <= 0.0):
+		return;
 	
 	if (next_idle > 0.0):
 		next_idle -= delta;

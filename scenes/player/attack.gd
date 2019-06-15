@@ -26,10 +26,10 @@ enum AttackType {
 };
 
 # vars
-var nearest_enemy := [];
-var target;
 var next_think = 0.0;
 var state = State.IDLE;
+var nearest_enemy := [];
+var target;
 
 var damage = 20.0;
 var delay = 0.6;
@@ -42,11 +42,15 @@ var knock_prob = 0.4;
 var knock_size = 10.0;
 
 func _ready() -> void:
-	# set player animation offset
-	player.anim_offset = player.PlayerAnims.RIFLE_IDLE;
+	# init module
+	player.connect("spawn", self, "_player_spawn");
 	
 	# initialize attack system
 	call_deferred("init");
+
+func _input(event: InputEvent) -> void:
+	if (Input.is_key_pressed(KEY_SPACE)):
+		start_attack();
 
 func init() -> void:
 	# targeting
@@ -55,9 +59,12 @@ func init() -> void:
 	# attack button
 	player.ui.button_attack.connect("pressed", self, "start_attack");
 
-func _input(event: InputEvent) -> void:
-	if (Input.is_key_pressed(KEY_SPACE)):
-		start_attack();
+func _player_spawn() -> void:
+	# reset vars
+	next_think = 0.0;
+	state = State.IDLE;
+	target = null;
+	player.anim_offset = player.PlayerAnims.RIFLE_IDLE;
 
 func create_targeting() -> void:
 	# shape reference
