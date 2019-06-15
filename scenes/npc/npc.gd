@@ -24,12 +24,12 @@ export(float) var health_max = 100.0;
 var health = 0.0;
 
 export(String) var npc_name = "NPC";
-export(float) var move_speed = 1.6;
-export(float) var attack_damage = 10.0;
-export(float) var attack_delay = 1.8;
+export(float) var move_speed = 1.0;
+export(float) var attack_damage = 1.0;
+export(float) var attack_delay = 1.0;
 export(float) var attack_range = 1.0;
 export(float) var armor = 0.0;
-export(float) var agile = 5.0;
+export(float) var agile = 0.0;
 
 var spawn_pos;
 
