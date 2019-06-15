@@ -140,9 +140,6 @@ func _process(delta: float) -> void:
 			anims.get_animation(animation_name).loop = true;
 			anims.play(animation_name, 0.1);
 		
-		if (target.size()):
-			print('ss ', animation_name, ' h ', health);
-		
 		next_idle = 0.1;
 	
 	if (body_dir && body_dir.length() > 0.1):
@@ -276,5 +273,3 @@ func set_animation(animation_name: String) -> void:
 	if (anims && anims.has_animation(animation_name)):
 		anims.play(animation_name);
 		anims.seek(0.0);
-		if (target.size()):
-			print('play ', animation_name);
