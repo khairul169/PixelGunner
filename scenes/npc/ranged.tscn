@@ -35,8 +35,14 @@ shape = SubResource( 1 )
 [node name="player" parent="body" instance=ExtResource( 2 )]
 transform = Transform( -0.65, 0, -5.68248e-008, 0, 0.65, 0, 5.68248e-008, 0, -0.65, 0, 0, 0 )
 
+[node name="pistol" parent="body/player/Armature/Skeleton" index="0"]
+visible = true
+
 [node name="player" parent="body/player/Armature/Skeleton" index="1"]
 material_override = SubResource( 2 )
+
+[node name="rifle" parent="body/player/Armature/Skeleton" index="2"]
+visible = false
 
 [node name="detection" type="Area" parent="."]
 

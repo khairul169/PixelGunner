@@ -5,6 +5,7 @@ onready var FloatingBar = load('res://scenes/ui/floating_bar.tscn');
 
 # reference
 onready var body = $body;
+onready var anims = find_node('AnimationPlayer');
 
 # signals
 signal health_changed(health_num);
@@ -19,6 +20,7 @@ var body_dir := Vector3.FORWARD;
 var slow_time = 0.0;
 var stun_time = 0.0;
 var impulse := Vector3.ZERO;
+var next_idle = 0.0;
 
 export(float) var health_max = 100.0;
 var health = 0.0;
@@ -104,9 +106,8 @@ func _damaged(damage, source) -> void:
 	#$AnimationPlayer.seek(0.0);
 
 func _dying() -> void:
-	pass
-	#$AnimationPlayer.play("dying");
-	#queue_free();
+	set_animation('dying');
+	next_idle = 0.5;
 	
 	# disable collision shape
 	$shape.disabled = true;
@@ -125,6 +126,24 @@ func _obj_exit(obj) -> void:
 func _process(delta: float) -> void:
 	if (next_think > 0.0):
 		next_think -= delta;
+	
+	if (next_idle > 0.0):
+		next_idle -= delta;
+	
+	if (health > 0.0 && next_idle <= 0.0 && anims is AnimationPlayer):
+		var animation_name = 'idle';
+		var hvel = Vector3(velocity.x, 0, velocity.z);
+		if (hvel.length() > 0.5):
+			animation_name = 'run';
+		
+		if (anims.current_animation != animation_name && anims.has_animation(animation_name)):
+			anims.get_animation(animation_name).loop = true;
+			anims.play(animation_name, 0.1);
+		
+		if (target.size()):
+			print('ss ', animation_name, ' h ', health);
+		
+		next_idle = 0.1;
 	
 	if (body_dir && body_dir.length() > 0.1):
 		var q1 = Quat(body.transform.basis);
@@ -180,6 +199,7 @@ func _physics_process(delta: float) -> void:
 	var hvel = Vector3(dir.x, 0, dir.z);
 	if (hvel.length() > 0.1):
 		body_dir = hvel;
+		next_idle = 0.0;
 
 func _think() -> void:
 	if (!target.size()):
@@ -216,6 +236,10 @@ func attack(object) -> void:
 	# set looking at enemy
 	set_look_at(object);
 	
+	# attack animation
+	set_animation('shoot');
+	next_idle = 0.5;
+	
 	# attack damage
 	var damage = 0.0;
 	
@@ -247,3 +271,10 @@ func set_slow(time = 0.0) -> void:
 
 func set_impulse(amount: Vector3) -> void:
 	impulse = amount;
+
+func set_animation(animation_name: String) -> void:
+	if (anims && anims.has_animation(animation_name)):
+		anims.play(animation_name);
+		anims.seek(0.0);
+		if (target.size()):
+			print('play ', animation_name);
