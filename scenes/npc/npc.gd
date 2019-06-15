@@ -28,9 +28,11 @@ export(float) var move_speed = 1.0;
 export(float) var attack_damage = 1.0;
 export(float) var attack_delay = 1.0;
 export(float) var attack_range = 1.0;
+export(float) var accuracy = 0.0;
 export(float) var armor = 0.0;
 export(float) var agile = 0.0;
 
+var level = 0;
 var spawn_pos;
 
 func _ready() -> void:
@@ -44,13 +46,14 @@ func _ready() -> void:
 	add_child(uibar);
 	uibar.healthbar_color = Color('#d63d3d');
 	uibar.healthbar_height = 4.0;
-	uibar.init(npc_name, health_max);
+	uibar.init(str('Lv', level, ' ', npc_name), health_max);
 	
 	# spawn npc
 	spawn_pos = global_transform.origin + Vector3.UP;
 	spawn(spawn_pos);
 
 func set_health(new_health: float) -> void:
+	# set npc health
 	health = clamp(new_health, 0.0, health_max);
 	emit_signal("health_changed", health);
 
@@ -136,8 +139,8 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	if (health <= 0.0):
-		if (next_think <= 0.0):
-			spawn(spawn_pos);
+		#if (next_think <= 0.0):
+		#	spawn(spawn_pos);
 		return;
 	
 	if (next_think <= 0.0):
@@ -213,8 +216,16 @@ func attack(object) -> void:
 	# set looking at enemy
 	set_look_at(object);
 	
-	# calculate damage
-	var damage = attack_damage + (rand_range(-0.15, 0.15) * attack_damage);
+	# attack damage
+	var damage = 0.0;
+	
+	# attack accuracy
+	var agile = object.agile;
+	var miss_chance = agile / (agile + accuracy);
+	
+	# hit successful
+	if (accuracy <= 0.0 || randf() >= miss_chance):
+		damage = attack_damage + (rand_range(-0.15, 0.15) * attack_damage);
 	
 	if (object.has_method('give_damage')):
 		object.give_damage(damage, self);

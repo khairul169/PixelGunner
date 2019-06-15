@@ -1,4 +1,5 @@
 extends Spatial
+class_name PlayerCamera
 
 const OFFSET = Vector3(2, 8, 3);
 const INTERPOLATION = 4.0;

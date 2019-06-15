@@ -32,9 +32,9 @@ var nearest_enemy := [];
 var target;
 
 var damage = 20.0;
-var delay = 0.6;
+var delay = 0.4;
 var attack_range = 5.0;
-var accuracy = 15.0;
+var accuracy = 10.0;
 var attack_type = AttackType.NEAR;
 var slowness_prob = 0.6;
 var slowness_time = 1.0;

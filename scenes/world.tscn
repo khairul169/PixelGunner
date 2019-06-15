@@ -1,10 +1,9 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://textures/tile.png" type="Texture" id=1]
 [ext_resource path="res://scenes/player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/camera.tscn" type="PackedScene" id=3]
-[ext_resource path="res://scenes/npc/crog.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/npc/ranged.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/npc/spawner.gd" type="Script" id=4]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 0.482353, 0.482353, 0.482353, 1 )
@@ -124,15 +123,18 @@ shape = SubResource( 6 )
 transform = Transform( 1, 0, 0, 0, 0.545081, 0.838383, 0, -0.838383, 0.545081, 0, 0.750294, 0 )
 
 [node name="player" parent="." instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.61257, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.613, 0 )
 
 [node name="camera" parent="." instance=ExtResource( 3 )]
 
-[node name="crog" parent="." instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1111, 0, -5.83736 )
+[node name="spawner" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -7.87517 )
+script = ExtResource( 4 )
+npc_count = 4
 
-[node name="crog2" parent="." instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.08272, 0, -4.39075 )
-
-[node name="ranged" parent="." instance=ExtResource( 5 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.58673, 0, -5.63541 )
+[node name="spawner2" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -7.87517 )
+script = ExtResource( 4 )
+npc_name = 1
+radius = 12.0
+npc_count = 2

@@ -5,7 +5,7 @@ class_name Player
 
 # reference
 onready var m_attack = $attack;
-onready var camera = get_parent().get_node('camera');
+onready var camera: PlayerCamera = get_parent().get_node('camera');
 onready var animplayer: AnimationPlayer = $body/player/AnimationPlayer;
 onready var ui: UserInterface = get_node("../../ui");
 
@@ -57,10 +57,11 @@ var anim_speed = 1.0;
 var next_idle = 0.0;
 var anim_offset = 0;
 
+var move_speed = 3.0;
 var health_max = 100.0;
 var health = 0.0;
 var armor = 0.0;
-var move_speed = 3.0;
+var agile = 10.0;
 
 func _ready() -> void:
 	add_to_group('damageable');
@@ -73,11 +74,17 @@ func _ready() -> void:
 	spawn(Vector3.ZERO + Vector3(0, 1, 0));
 
 func set_health(new_health: float) -> void:
+	# set player health
 	health = clamp(new_health, 0.0, health_max);
 	emit_signal("health_changed", health);
 
 func give_damage(damage: float, source = null) -> void:
 	if (health <= 0.0):
+		return;
+	
+	if (damage <= 0.0):
+		# missed shoot
+		m_attack.create_indicator(self, "Miss", Color(1, 1, 1));
 		return;
 	
 	# armor penetration
@@ -87,10 +94,10 @@ func give_damage(damage: float, source = null) -> void:
 	set_health(health - damage);
 	
 	if (has_method('_damaged')):
-		call('_damaged', damage, source);
+		_damaged(damage, source);
 	
 	if (health <= 0.0 && has_method('_dying')):
-		call('_dying');
+		_dying();
 		emit_signal("dying");
 
 func spawn(position: Vector3) -> void:
@@ -118,6 +125,10 @@ func _on_spawn() -> void:
 	anim_offset = 0;
 
 func _damaged(damage, attacker) -> void:
+	if (damage <= 0.0):
+		return;
+	
+	# damage indicator
 	m_attack.create_indicator(self, str(int(damage)), Color(1, 0.2, 0.2));
 
 func _dying() -> void:

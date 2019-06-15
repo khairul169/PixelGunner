@@ -13,10 +13,11 @@ radius = 5.0
 script = ExtResource( 1 )
 health_max = 60.0
 npc_name = "Crog"
-move_speed = 2.0
+move_speed = 1.5
 attack_damage = 8.0
 attack_delay = 1.2
 attack_range = 1.5
+agile = 2.0
 
 [node name="shape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0 )
