@@ -136,6 +136,7 @@ func _physics_process(delta: float) -> void:
 	if (target):
 		if (target.health <= 0.0):
 			target = null;
+			state = State.IDLE;
 			
 			if (attack_type == AttackType.RANDOM):
 				start_attack();
