@@ -7,7 +7,7 @@ class_name Player
 onready var m_attack = $attack;
 onready var camera: PlayerCamera = get_parent().get_node('camera');
 onready var animplayer: AnimationPlayer = $body/player/AnimationPlayer;
-onready var ui: UserInterface = get_node("../../ui");
+onready var ui = get_tree().get_root().get_node("main/ui");
 
 # signals
 signal health_changed();

@@ -28,18 +28,12 @@ _global_script_classes=[ {
 "class": "PlayerCamera",
 "language": "GDScript",
 "path": "res://scenes/camera.gd"
-}, {
-"base": "Control",
-"class": "UserInterface",
-"language": "GDScript",
-"path": "res://scenes/ui.gd"
 } ]
 _global_script_class_icons={
 "Monster": "",
 "NPC": "",
 "Player": "",
-"PlayerCamera": "",
-"UserInterface": ""
+"PlayerCamera": ""
 }
 
 [application]
