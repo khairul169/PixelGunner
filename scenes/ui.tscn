@@ -1,12 +1,14 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scenes/ui.gd" type="Script" id=1]
 [ext_resource path="res://scenes/ui/controller.gd" type="Script" id=2]
-[ext_resource path="res://icon.png" type="Texture" id=3]
-[ext_resource path="res://scenes/ui/action_button.gd" type="Script" id=4]
-[ext_resource path="res://sprites/minimap/bg.png" type="Texture" id=5]
-[ext_resource path="res://sprites/minimap/mask.png" type="Texture" id=6]
-[ext_resource path="res://scenes/ui/hud/minimap_scene.tscn" type="PackedScene" id=7]
+[ext_resource path="res://sprites/controller/base.png" type="Texture" id=3]
+[ext_resource path="res://sprites/controller/button.png" type="Texture" id=4]
+[ext_resource path="res://sprites/test_circle.png" type="Texture" id=5]
+[ext_resource path="res://scenes/ui/action_button.gd" type="Script" id=6]
+[ext_resource path="res://sprites/minimap/bg.png" type="Texture" id=7]
+[ext_resource path="res://sprites/minimap/mask.png" type="Texture" id=8]
+[ext_resource path="res://scenes/ui/hud/minimap_scene.tscn" type="PackedScene" id=9]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -23,7 +25,7 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id=2]
 shader = SubResource( 1 )
-shader_param/mask = ExtResource( 6 )
+shader_param/mask = ExtResource( 8 )
 
 [node name="ui" type="Control"]
 anchor_right = 1.0
@@ -42,7 +44,8 @@ margin_right = 424.0
 mouse_filter = 2
 script = ExtResource( 2 )
 base_button = ExtResource( 3 )
-button = ExtResource( 3 )
+button = ExtResource( 4 )
+max_distance = 64.0
 
 [node name="action_button" type="Control" parent="."]
 anchor_left = 1.0
@@ -54,17 +57,20 @@ margin_top = -265.0
 mouse_filter = 2
 
 [node name="attack" type="TextureRect" parent="action_button"]
+modulate = Color( 0, 0, 0, 0.45098 )
 margin_left = 263.713
 margin_top = 123.066
 margin_right = 359.713
 margin_bottom = 219.066
-texture = ExtResource( 3 )
+texture = ExtResource( 5 )
 expand = true
-script = ExtResource( 4 )
+script = ExtResource( 6 )
 
 [node name="hud" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_top = -1.22772
+margin_bottom = -1.22772
 mouse_filter = 2
 
 [node name="minimap" type="Control" parent="hud"]
@@ -82,7 +88,7 @@ color = Color( 0.0823529, 0.0823529, 0.0823529, 0.572549 )
 modulate = Color( 0.105882, 0.105882, 0.105882, 0.65098 )
 anchor_right = 1.0
 anchor_bottom = 1.0
-texture = ExtResource( 5 )
+texture = ExtResource( 7 )
 expand = true
 
 [node name="display" type="ViewportContainer" parent="hud/minimap"]
@@ -101,4 +107,4 @@ disable_3d = true
 usage = 0
 render_target_update_mode = 3
 
-[node name="map" parent="hud/minimap/display/Viewport" instance=ExtResource( 7 )]
+[node name="map" parent="hud/minimap/display/Viewport" instance=ExtResource( 9 )]
