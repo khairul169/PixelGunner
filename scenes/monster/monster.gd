@@ -119,7 +119,7 @@ func _dying() -> void:
 	# disable collision shape
 	$shape.disabled = true;
 	
-	# spawn time
+	# corpse removal delay
 	next_think = 5.0;
 
 func _obj_enter(obj) -> void:
@@ -167,6 +167,9 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 	if (health <= 0.0):
+		if (next_think <= 0.0):
+			# remove corpse
+			queue_free();
 		return;
 	
 	if (next_think <= 0.0):

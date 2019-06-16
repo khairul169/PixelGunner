@@ -22,6 +22,7 @@ enum PlayerAnims {
 	DYING,
 	
 	# Unarmed
+	UNARMED_IDLE,
 	UNARMED_RUN,
 	
 	# Weapon: Rifle
@@ -37,6 +38,7 @@ var anims = [
 	'dying',
 	
 	# Unarmed
+	'idle_alt',
 	'run_alt',
 	
 	# Weapon: Rifle
