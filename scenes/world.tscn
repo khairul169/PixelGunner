@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://textures/tile.png" type="Texture" id=1]
 [ext_resource path="res://scenes/player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/camera.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/monster/spawner.gd" type="Script" id=4]
+[ext_resource path="res://scenes/npc/trader.tscn" type="PackedScene" id=5]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 0.482353, 0.482353, 0.482353, 1 )
@@ -139,3 +140,6 @@ script = ExtResource( 4 )
 monster_name = 1
 radius = 6.0
 monster_count = 2
+
+[node name="trader" parent="." instance=ExtResource( 5 )]
+transform = Transform( -0.228437, 0, -0.973559, 0, 1, 0, 0.973559, 0, -0.228437, -4.19694, 0, -1.98182 )

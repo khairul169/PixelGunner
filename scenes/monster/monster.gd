@@ -1,4 +1,5 @@
 extends KinematicBody
+class_name Monster
 
 # scenes
 onready var FloatingBar = load('res://scenes/ui/floating_bar.tscn');
