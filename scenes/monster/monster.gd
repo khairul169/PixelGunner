@@ -12,15 +12,25 @@ signal health_changed(health_num);
 signal spawn();
 signal dying();
 
+# defs
+enum DebuffType {
+	NONE = 0,
+	SLOWNESS,
+	STUN,
+	ATTACK_DAMAGE,
+	ATTACK_SPEED,
+	ARMOR
+};
+
+# vars
 var velocity := Vector3.ZERO;
 var next_think = 0.0;
 var target = [];
 var move_to;
 var body_dir := Vector3.FORWARD;
-var slow_time = 0.0;
-var stun_time = 0.0;
 var impulse := Vector3.ZERO;
 var next_idle = 0.0;
+var debuff_list = [];
 
 export(float) var health_max = 100.0;
 var health = 0.0;
@@ -89,19 +99,19 @@ func _on_spawn() -> void:
 	next_think = 0.5;
 	move_to = null;
 	body_dir = Vector3.FORWARD;
-	slow_time = 0.0;
-	stun_time = 0.0;
 	impulse = Vector3.ZERO;
+	debuff_list.clear();
 	
 	# enable collision shape
 	$shape.disabled = false;
 
 func _damaged(damage, source) -> void:
-	pass
-	#$AnimationPlayer.play("damaged");
-	#$AnimationPlayer.seek(0.0);
+	# chase attacker if target is not defined
+	if (target.empty() && source.is_in_group('damageable')):
+		target.append(source);
 
 func _dying() -> void:
+	# play dying animation
 	set_animation('dying');
 	next_idle = 0.5;
 	
@@ -127,6 +137,7 @@ func _process(delta: float) -> void:
 		next_idle -= delta;
 	
 	if (health > 0.0 && next_idle <= 0.0 && anims is AnimationPlayer):
+		# switch animation
 		var animation_name = 'idle';
 		var hvel = Vector3(velocity.x, 0, velocity.z);
 		if (hvel.length() > 0.5):
@@ -138,16 +149,20 @@ func _process(delta: float) -> void:
 		
 		next_idle = 0.1;
 	
+	# body rotation
 	if (body_dir && body_dir.length() > 0.1):
 		var q1 = Quat(body.transform.basis);
 		var q2 = Quat(body.transform.looking_at(body_dir, Vector3.UP).basis);
 		body.transform.basis = Basis(q1.slerp(q2, 10 * delta));
 	
-	if (slow_time > 0.0):
-		slow_time -= delta;
-	
-	if (stun_time > 0.0):
-		stun_time -= delta;
+	# debuff
+	for i in debuff_list:
+		if (i[1] > 0.0):
+			# reduce debuff time
+			i[1] -= delta;
+		else:
+			# remove debuff
+			debuff_list.erase(i);
 
 func _physics_process(delta: float) -> void:
 	if (health <= 0.0):
@@ -165,14 +180,30 @@ func _physics_process(delta: float) -> void:
 	# add gravity
 	var gv = velocity.y - (19.6 * delta);
 	
-	# stun
-	if (stun_time > 0.0):
+	# check for debuff
+	var stun = false;
+	var slowness = 0.0;
+	
+	for i in debuff_list:
+		var type = i[0];
+		
+		if (type == DebuffType.STUN):
+			stun = true;
+			break;
+		
+		if (type == DebuffType.SLOWNESS):
+			if (slowness > 0.0):
+				slowness = clamp(min(slowness, i[2]), 0.1, 1.0);
+			else:
+				slowness = clamp(i[2], 0.1, 1.0);
+	
+	if (stun):
 		dir = Vector3.ZERO;
 		velocity = dir;
 	
 	# slow
-	elif (slow_time > 0.0):
-		velocity = dir * move_speed * 0.4;
+	elif (slowness > 0.0):
+		velocity = dir * move_speed * slowness;
 	
 	else:
 		velocity = dir * move_speed;
@@ -254,11 +285,15 @@ func set_look_at(object: Spatial) -> void:
 	body_dir = body_dir.normalized();
 
 func set_stun(time = 0.0) -> void:
-	stun_time = time;
+	for i in debuff_list:
+		if (i[0] == DebuffType.STUN):
+			debuff_list.erase(i);
+	
+	debuff_list.append([DebuffType.STUN, time]);
 	next_think = time;
 
-func set_slow(time = 0.0) -> void:
-	slow_time = time;
+func set_slow(time = 0.0, amount = 0.5) -> void:
+	debuff_list.append([DebuffType.SLOWNESS, time, amount]);
 
 func set_impulse(amount: Vector3) -> void:
 	impulse = amount;

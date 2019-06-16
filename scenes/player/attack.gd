@@ -33,11 +33,12 @@ var target;
 
 var damage = 20.0;
 var delay = 0.4;
-var attack_range = 5.0;
+var attack_range = 6.0;
 var accuracy = 10.0;
 var attack_type = AttackType.NEAR;
 var slowness_prob = 0.6;
 var slowness_time = 1.0;
+var slowness = 0.5;
 var knock_prob = 0.4;
 var knock_size = 10.0;
 
@@ -232,7 +233,7 @@ func attack(object: Spatial) -> void:
 	
 	if (randf() <= slowness_prob && object.has_method('set_slow')):
 		# give slowness
-		object.set_slow(slowness_time);
+		object.set_slow(slowness_time, slowness);
 	
 	if (randf() <= knock_prob && object.has_method('set_impulse')):
 		# knock back object
