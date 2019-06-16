@@ -1,9 +1,29 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scenes/ui.gd" type="Script" id=1]
 [ext_resource path="res://scenes/ui/controller.gd" type="Script" id=2]
 [ext_resource path="res://icon.png" type="Texture" id=3]
 [ext_resource path="res://scenes/ui/action_button.gd" type="Script" id=4]
+[ext_resource path="res://sprites/minimap/bg.png" type="Texture" id=5]
+[ext_resource path="res://sprites/minimap/mask.png" type="Texture" id=6]
+[ext_resource path="res://scenes/ui/hud/minimap_scene.tscn" type="PackedScene" id=7]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform sampler2D mask: hint_black;
+
+void fragment() {
+	float mask_alpha = texture(mask, UV).r;
+	vec4 col = texture(TEXTURE, UV);
+	COLOR.rgb = col.rgb;
+	COLOR.a = col.a * mask_alpha;
+}
+"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/mask = ExtResource( 6 )
 
 [node name="ui" type="Control"]
 anchor_right = 1.0
@@ -41,3 +61,44 @@ margin_bottom = 219.066
 texture = ExtResource( 3 )
 expand = true
 script = ExtResource( 4 )
+
+[node name="hud" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="minimap" type="Control" parent="hud"]
+editor/display_folded = true
+margin_right = 180.0
+margin_bottom = 180.0
+
+[node name="bg" type="ColorRect" parent="hud/minimap"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.0823529, 0.0823529, 0.0823529, 0.572549 )
+
+[node name="bg2" type="TextureRect" parent="hud/minimap"]
+modulate = Color( 0.105882, 0.105882, 0.105882, 0.65098 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 5 )
+expand = true
+
+[node name="display" type="ViewportContainer" parent="hud/minimap"]
+editor/display_folded = true
+material = SubResource( 2 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+stretch = true
+
+[node name="Viewport" type="Viewport" parent="hud/minimap/display"]
+size = Vector2( 180, 180 )
+own_world = true
+transparent_bg = true
+handle_input_locally = false
+disable_3d = true
+usage = 0
+render_target_update_mode = 3
+
+[node name="map" parent="hud/minimap/display/Viewport" instance=ExtResource( 7 )]

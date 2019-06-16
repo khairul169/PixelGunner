@@ -13,7 +13,7 @@ albedo_color = Color( 0.643137, 0.643137, 0.643137, 1 )
 albedo_texture = ExtResource( 3 )
 
 [sub_resource type="SphereShape" id=3]
-radius = 8.0
+radius = 6.0
 
 [node name="ranged" type="KinematicBody"]
 script = ExtResource( 1 )
@@ -31,6 +31,7 @@ transform = Transform( 1, 0, 0, 0, -4.37114e-008, -1, 0, 1, -4.37114e-008, 0, 0.
 shape = SubResource( 1 )
 
 [node name="body" type="Spatial" parent="."]
+editor/display_folded = true
 
 [node name="player" parent="body" instance=ExtResource( 2 )]
 transform = Transform( -0.65, 0, -5.68248e-008, 0, 0.65, 0, 5.68248e-008, 0, -0.65, 0, 0, 0 )
