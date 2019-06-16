@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://scenes/npc/npc.gd" type="Script" id=1]
+[ext_resource path="res://scenes/monster/monster.gd" type="Script" id=1]
 [ext_resource path="res://models/player/player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://models/player/icy-boi.png" type="Texture" id=3]
 
@@ -18,11 +18,11 @@ radius = 6.0
 [node name="ranged" type="KinematicBody"]
 script = ExtResource( 1 )
 health_max = 40.0
-npc_name = "Ranged"
+monster_name = "Ranged"
 move_speed = 2.0
 attack_damage = 4.0
 attack_delay = 1.8
-attack_range = 5.0
+attack_range = 4.0
 accuracy = 10.0
 agile = 1.0
 

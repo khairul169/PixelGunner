@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://scenes/npc/npc.gd" type="Script" id=1]
+[ext_resource path="res://scenes/monster/monster.gd" type="Script" id=1]
 [ext_resource path="res://models/npc/crog/crog.tscn" type="PackedScene" id=2]
 
 [sub_resource type="SphereShape" id=1]
@@ -12,7 +12,7 @@ radius = 5.0
 [node name="crog" type="KinematicBody"]
 script = ExtResource( 1 )
 health_max = 60.0
-npc_name = "Crog"
+monster_name = "Crog"
 move_speed = 1.5
 attack_damage = 8.0
 attack_delay = 1.2

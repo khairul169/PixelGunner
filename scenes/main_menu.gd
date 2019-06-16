@@ -47,4 +47,4 @@ func switch_panel(panel) -> void:
 	current_panel = panel;
 
 func _play() -> void:
-	get_tree().change_scene("res://scenes/main.tscn");
+	get_tree().change_scene("res://scenes/game.tscn");

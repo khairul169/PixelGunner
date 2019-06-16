@@ -3,7 +3,7 @@
 [ext_resource path="res://textures/tile.png" type="Texture" id=1]
 [ext_resource path="res://scenes/player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/camera.tscn" type="PackedScene" id=3]
-[ext_resource path="res://scenes/npc/spawner.gd" type="Script" id=4]
+[ext_resource path="res://scenes/monster/spawner.gd" type="Script" id=4]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 0.482353, 0.482353, 0.482353, 1 )
@@ -131,11 +131,11 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.613, 0 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10.3791 )
 script = ExtResource( 4 )
 radius = 5.0
-npc_count = 4
+monster_count = 5
 
 [node name="spawner2" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10.3791 )
 script = ExtResource( 4 )
-npc_name = 1
+monster_name = 1
 radius = 6.0
-npc_count = 2
+monster_count = 2

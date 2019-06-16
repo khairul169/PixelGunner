@@ -74,7 +74,6 @@ margin_bottom = -1.22772
 mouse_filter = 2
 
 [node name="minimap" type="Control" parent="hud"]
-editor/display_folded = true
 margin_right = 180.0
 margin_bottom = 180.0
 
@@ -92,7 +91,6 @@ texture = ExtResource( 7 )
 expand = true
 
 [node name="display" type="ViewportContainer" parent="hud/minimap"]
-editor/display_folded = true
 material = SubResource( 2 )
 anchor_right = 1.0
 anchor_bottom = 1.0

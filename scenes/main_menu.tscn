@@ -4,7 +4,7 @@
 [ext_resource path="res://scenes/main_menu/background_scene.tscn" type="PackedScene" id=2]
 [ext_resource path="res://icon.png" type="Texture" id=3]
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=1]
 resource_name = "default"
 tracks/0/type = "value"
 tracks/0/path = NodePath("container:rect_position")
@@ -31,8 +31,7 @@ tracks/1/keys = {
 "values": [ Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=1]
-resource_name = "fade_in"
+[sub_resource type="Animation" id=2]
 length = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath("container:rect_position")
@@ -59,8 +58,7 @@ tracks/1/keys = {
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=2]
-resource_name = "fade_out"
+[sub_resource type="Animation" id=3]
 length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("container:rect_position")
@@ -254,9 +252,9 @@ margin_top = 48.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="panel"]
 autoplay = "fade_in"
-anims/default = SubResource( 3 )
-anims/fade_in = SubResource( 1 )
-anims/fade_out = SubResource( 2 )
+anims/default = SubResource( 1 )
+anims/fade_in = SubResource( 2 )
+anims/fade_out = SubResource( 3 )
 
 [node name="container" type="Control" parent="panel"]
 modulate = Color( 1, 1, 1, 0 )

@@ -2,11 +2,17 @@
 
 [ext_resource path="res://sprites/minimap/object.png" type="Texture" id=1]
 
-[sub_resource type="GDScript" id=3]
+[sub_resource type="GDScript" id=1]
 script/source = "extends Node2D
 
+# defs
 const SCALING = 5.0;
 
+# ref
+onready var objects_node = $objects;
+onready var camera = $camera;
+
+# vars
 var objects = [];
 var player;
 
@@ -14,34 +20,45 @@ func _ready() -> void:
 	call_deferred(\"load_object\");
 
 func load_object() -> void:
-	var object_node = $npc/obj;
-	$npc.remove_child(object_node);
+	# object sprite template
+	var object_scene = $objects/obj;
+	object_scene.get_parent().remove_child(object_scene);
 	
+	# iterate damageable object
 	for i in get_tree().get_nodes_in_group(\"damageable\"):
 		if (i is Player):
+			# node is player
 			player = i;
 			continue;
 		
-		var node = object_node.duplicate();
+		# create sprite
+		var node = object_scene.duplicate();
 		var obj_pos = i.global_transform.origin;
 		node.position = Vector2(obj_pos.x, obj_pos.z) * SCALING;
-		$npc.add_child(node);
+		objects_node.add_child(node);
+		
+		# add to object list
 		objects.append([node, i]);
 
 func _process(delta: float) -> void:
+	# update camera position to match player position
 	if (player):
 		var player_pos = player.global_transform.origin;
-		$camera.position = Vector2(player_pos.x, player_pos.z) * SCALING;
+		camera.position = Vector2(player_pos.x, player_pos.z) * SCALING;
 	
+	# update object position
 	for i in objects:
+		# get data
 		var node = i[0];
 		var obj = i[1];
 		
+		# remove dying object
 		if (obj.health <= 0.0):
 			objects.erase(i);
 			node.queue_free();
 			continue;
 		
+		# set position
 		var obj_pos = obj.global_transform.origin;
 		node.position = Vector2(obj_pos.x, obj_pos.z) * SCALING;
 "
@@ -57,11 +74,11 @@ func _ready() -> void:
 "
 
 [node name="map" type="Node2D"]
-script = SubResource( 3 )
+script = SubResource( 1 )
 
-[node name="npc" type="Node2D" parent="."]
+[node name="objects" type="Node2D" parent="."]
 
-[node name="obj" type="Sprite" parent="npc"]
+[node name="obj" type="Sprite" parent="objects"]
 modulate = Color( 0.94902, 0.172549, 0.172549, 1 )
 position = Vector2( 200, 0 )
 scale = Vector2( 0.3, 0.3 )
