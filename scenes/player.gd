@@ -74,6 +74,8 @@ func _ready() -> void:
 	
 	# spawn player
 	spawn(Vector3.ZERO + Vector3(0, 1, 0));
+	
+	m_attack.set_weapon(PlayerWeapon.WEAPON_PISTOL);
 
 func set_health(new_health: float) -> void:
 	# set player health
