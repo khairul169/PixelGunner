@@ -5,8 +5,10 @@ signal released(dir);
 
 # editor var
 export(Texture) var base_button;
+export(float) var base_size = 128.0;
 export(Texture) var button;
-export(float) var max_distance = 80.0;
+export(float) var button_size = 32.0;
+export(float) var max_distance = 64.0;
 
 # vars
 var pressed := false;
@@ -52,10 +54,16 @@ func _draw() -> void:
 		return;
 	
 	# base button
-	draw_texture(base_button, start_pos - (base_button.get_size() / 2.0) - rect_global_position);
+	var base_rect = Rect2();
+	base_rect.size = Vector2.ONE * base_size;
+	base_rect.position = start_pos - (base_rect.size / 2.0) - rect_global_position;
+	draw_texture_rect(base_button, base_rect, false);
 	
 	# button
-	draw_texture(button, cur_pos - (button.get_size() / 2.0) - rect_global_position);
+	var button_rect = Rect2();
+	button_rect.size = Vector2.ONE * button_size;
+	button_rect.position = cur_pos - (button_rect.size / 2.0) - rect_global_position;
+	draw_texture_rect(button, button_rect, false);
 
 func update_container() -> void:
 	if (!get_parent() is Control):

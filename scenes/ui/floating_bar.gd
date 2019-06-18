@@ -2,10 +2,9 @@ extends Control
 
 # editor config
 export (bool) var always_visible = false;
-export (Vector2) var offset = Vector2(0, -20.0);
+export (Vector2) var offset = Vector2(0, -25);
 export (bool) var center_name = false;
 export (bool) var hide_health = false;
-export (float) var healthbar_height = 5;
 export (Color) var healthbar_color = Color('#d63d3d');
 
 # reference
@@ -21,10 +20,11 @@ func _ready() -> void:
 	parent = get_parent();
 	camera = parent.get_viewport().get_camera();
 	
+	set_status("");
+	
 	if (parent is Player || parent is Monster):
 		parent.connect("health_changed", self, "_health_changed");
 	
-	health_bar.get_parent().rect_size.y = healthbar_height;
 	health_bar.color = healthbar_color;
 
 func init(barname: String, max_health: float = 0.0) -> void:
@@ -58,8 +58,11 @@ func _health_changed(new_health: float) -> void:
 
 func _process(delta: float) -> void:
 	var pos = camera.unproject_position(parent.global_transform.origin + Vector3.UP);
-	pos -= rect_size / 2.0;
+	pos -= rect_size * Vector2(0.5, 1.0);
 	pos += offset;
 	
 	rect_global_position = pos;
 	health_bar.rect_size.x = health_bar.get_parent().rect_size.x * health;
+
+func set_status(text: String) -> void:
+	pass

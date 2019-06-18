@@ -1,9 +1,14 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scenes/ui/indicator.gd" type="Script" id=1]
+[ext_resource path="res://fonts/OpenSans-Bold.ttf" type="DynamicFontData" id=2]
 
-[sub_resource type="Animation" id=1]
-resource_name = "float"
+[sub_resource type="DynamicFont" id=1]
+size = 24
+use_filter = true
+font_data = ExtResource( 2 )
+
+[sub_resource type="Animation" id=2]
 tracks/0/type = "value"
 tracks/0/path = NodePath("label:modulate")
 tracks/0/interp = 1
@@ -30,24 +35,23 @@ tracks/1/keys = {
 }
 
 [node name="indicator" type="Control"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_right = -794.0
-margin_bottom = -460.0
+margin_right = 110.0
+margin_bottom = 40.0
 script = ExtResource( 1 )
 offset = Vector2( 20, -20 )
 time = 1.0
 
 [node name="label" type="Label" parent="."]
-modulate = Color( 1, 1, 1, 0 )
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = -20.0
-margin_bottom = -20.0
-custom_colors/font_color_shadow = Color( 0.12549, 0.12549, 0.12549, 1 )
+margin_top = 4.0
+margin_bottom = 4.0
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 2
+custom_constants/shadow_offset_y = 2
 text = "test"
-valign = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "float"
-anims/float = SubResource( 1 )
+anims/float = SubResource( 2 )

@@ -23,7 +23,7 @@ editor/display_folded = true
 transform = Transform( -0.65, 0, -5.68248e-008, 0, 0.65, 0, 5.68248e-008, 0, -0.65, 0, 0, 0 )
 
 [node name="player_bar" parent="." instance=ExtResource( 3 )]
-healthbar_color = Color( 0.34902, 0.937255, 0.0823529, 1 )
+healthbar_color = Color( 0.666667, 0.945098, 0.262745, 1 )
 
 [node name="attack" type="Node" parent="."]
 script = ExtResource( 4 )

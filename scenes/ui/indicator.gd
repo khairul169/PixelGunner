@@ -1,6 +1,5 @@
 extends Control
 
-export(bool) var centered = false;
 export(Vector2) var offset = Vector2.ZERO;
 export(float) var time = 0.0;
 
@@ -22,9 +21,7 @@ func _process(delta: float) -> void:
 
 func init(camera: Camera, world_pos: Vector3) -> void:
 	var pos = camera.unproject_position(world_pos);
-	
-	if (centered):
-		pos -= (rect_size / 2.0);
+	pos -= (rect_size / 2.0);
 	
 	rect_global_position = pos + offset;
 

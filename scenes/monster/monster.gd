@@ -55,7 +55,6 @@ func _ready() -> void:
 	var uibar = FloatingBar.instance();
 	add_child(uibar);
 	uibar.healthbar_color = Color('#d63d3d');
-	uibar.healthbar_height = 4.0;
 	uibar.init(monster_name, health_max);
 	
 	# spawn npc

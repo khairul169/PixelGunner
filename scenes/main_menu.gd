@@ -1,50 +1,77 @@
 extends Control
 
-var current_panel;
+# refs
+onready var background_scene = $background.find_node('background');
+onready var content_anims = $content/AnimationPlayer;
 
 func _ready() -> void:
-	for i in $header/nav.get_children():
-		if (i is Button):
-			i.connect("pressed", self, "_nav_pressed", [i]);
+	# load navigation
+	setup_navigation();
 	
 	# play panel
-	$panel/container/play/single.connect("pressed", self, "_play");
+	$content/container.hide();
+	$content/container/play/single.connect("pressed", self, "_play");
+	
+	# delay timer
+	yield(get_tree().create_timer(0.5), "timeout");
+	
+	# load default panel
+	switch_panel('play');
 
-func _nav_pressed(btn: Control) -> void:
-	if (btn.name == 'quit'):
-		get_tree().quit();
+func _nav_pressed(btn: String) -> void:
+	if (!$content/container.has_node(btn)):
+		return;
+	
+	if (btn == 'play'):
+		background_scene.camera_transform = background_scene.find_node('camera_home').transform;
 	else:
-		switch_panel(btn.name);
-
-func switch_panel(panel) -> void:
-	# dont switch if current panel is same
-	if (current_panel == panel):
-		return;
+		background_scene.camera_transform = background_scene.find_node('camera_armory').transform;
 	
-	# check if container has panel node
-	var container = $panel/container;
-	if (!container.has_node(panel)):
-		return;
-	
-	# fade out panel
-	$panel/AnimationPlayer.play("fade_out");
-	$panel/AnimationPlayer.seek(0.0);
-	
-	# wait for panel animation
-	yield(get_tree().create_timer(0.2), "timeout");
-	
-	# hide all panel
-	for i in container.get_children():
-		i.hide();
-	
-	# show destination panel
-	container.get_node(panel).show();
-	
-	# fade in panel
-	$panel/AnimationPlayer.play("fade_in");
-	$panel/AnimationPlayer.seek(0.0);
-	
-	current_panel = panel;
+	switch_panel(btn);
 
 func _play() -> void:
 	get_tree().change_scene("res://scenes/game.tscn");
+
+func setup_navigation() -> void:
+	# navigation container
+	var container = $footer/nav;
+	var nav_item = container.get_child(0);
+	container.remove_child(nav_item);
+	
+	var navigation_list = {
+		'play': "Play",
+		'armory': "Armory",
+		'quest': "Quest",
+		'community': "Community"
+	};
+	
+	for key in navigation_list:
+		# navigation button title
+		var value = navigation_list[key];
+		
+		# instance button
+		var instance = nav_item.duplicate();
+		container.add_child(instance);
+		
+		if (key == 'armory'):
+			instance.rect_min_size.x = 180;
+		
+		if (key == 'community'):
+			instance.rect_min_size.x = 220;
+		
+		instance.get_node('label').text = str(value).to_upper();
+		instance.connect("pressed", self, "_nav_pressed", [key]);
+	
+	# free navigation item template
+	nav_item.free();
+
+func switch_panel(panel: String) -> void:
+	var container = $content/container;
+	if (!container.has_node(panel)):
+		return;
+	
+	for i in container.get_children():
+		i.visible = (i.name == panel);
+	
+	$content/AnimationPlayer.play("fade_in");
+	$content/AnimationPlayer.seek(0.0);

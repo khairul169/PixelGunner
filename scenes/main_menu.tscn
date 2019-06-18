@@ -1,11 +1,25 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://scenes/main_menu.gd" type="Script" id=1]
 [ext_resource path="res://scenes/main_menu/background_scene.tscn" type="PackedScene" id=2]
-[ext_resource path="res://icon.png" type="Texture" id=3]
+[ext_resource path="res://sprites/interface/main_menu/header_bg.png" type="Texture" id=3]
+[ext_resource path="res://icon.png" type="Texture" id=4]
+[ext_resource path="res://fonts/OpenSans-Regular.ttf" type="DynamicFontData" id=5]
+[ext_resource path="res://scenes/main_menu/resource_item.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/main_menu/armory.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/main_menu/footer_navbtn.tscn" type="PackedScene" id=8]
 
-[sub_resource type="Animation" id=1]
-resource_name = "default"
+[sub_resource type="DynamicFont" id=1]
+use_filter = true
+font_data = ExtResource( 5 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 32
+use_filter = true
+font_data = ExtResource( 5 )
+
+[sub_resource type="Animation" id=3]
+length = 0.1
 tracks/0/type = "value"
 tracks/0/path = NodePath("container:rect_position")
 tracks/0/interp = 2
@@ -16,7 +30,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 0, 0 ) ]
+"values": [ Vector2( 0, 85 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("container:modulate")
@@ -31,8 +45,8 @@ tracks/1/keys = {
 "values": [ Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=2]
-length = 0.2
+[sub_resource type="Animation" id=4]
+length = 0.4
 tracks/0/type = "value"
 tracks/0/path = NodePath("container:rect_position")
 tracks/0/interp = 2
@@ -40,10 +54,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 80, 0 ), Vector2( 0, 0 ) ]
+"values": [ Vector2( 80, 85 ), Vector2( 20, 85 ), Vector2( 0, 85 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("container:modulate")
@@ -57,32 +71,17 @@ tracks/1/keys = {
 "update": 0,
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
 }
-
-[sub_resource type="Animation" id=3]
-length = 0.1
-tracks/0/type = "value"
-tracks/0/path = NodePath("container:rect_position")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( 80, 0 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("container:modulate")
-tracks/1/interp = 2
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 0.1 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+tracks/2/type = "value"
+tracks/2/path = NodePath("container:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
 }
 
 [node name="main_menu" type="Control"]
@@ -96,10 +95,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="base" type="ColorRect" parent="background"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color( 0.175781, 0.175781, 0.175781, 1 )
+color = Color( 0.176471, 0.176471, 0.176471, 1 )
 
 [node name="menu_scene" type="ViewportContainer" parent="background"]
 anchor_right = 1.0
@@ -107,240 +105,191 @@ anchor_bottom = 1.0
 stretch = true
 
 [node name="Viewport" type="Viewport" parent="background/menu_scene"]
-size = Vector2( 854, 480 )
+size = Vector2( 1280, 720 )
 handle_input_locally = false
 render_target_update_mode = 3
 
 [node name="background" parent="background/menu_scene/Viewport" instance=ExtResource( 2 )]
 
 [node name="header" type="Control" parent="."]
+editor/display_folded = true
 anchor_right = 1.0
-margin_bottom = 48.0
+margin_bottom = 85.0
 
-[node name="bg" type="ColorRect" parent="header"]
+[node name="bg" type="TextureRect" parent="header"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color( 0, 0, 0, 0.572549 )
-
-[node name="logo" type="TextureRect" parent="header"]
-editor/display_folded = true
-margin_left = 9.77408
-margin_top = 8.14507
-margin_right = 41.7741
-margin_bottom = 40.1451
+margin_bottom = 135.0
 texture = ExtResource( 3 )
 expand = true
 
-[node name="Label" type="Label" parent="header/logo"]
-margin_left = 44.2985
-margin_top = 8.5969
-margin_right = 161.298
-margin_bottom = 22.5969
-text = "PixelGunner Brawl"
-
-[node name="nav" type="HBoxContainer" parent="header"]
+[node name="player_info" type="Control" parent="header"]
 editor/display_folded = true
+margin_left = 20.0
+margin_top = 14.0
+margin_right = 410.0
+margin_bottom = 85.0
+
+[node name="icon" type="TextureRect" parent="header/player_info"]
+margin_right = 64.0
+margin_bottom = 64.0
+texture = ExtResource( 4 )
+expand = true
+
+[node name="level" type="Label" parent="header/player_info"]
 anchor_right = 1.0
-margin_left = 5.0
-margin_top = 5.0
-margin_right = -5.0
-margin_bottom = 43.0
-custom_constants/separation = 5
+margin_left = 80.0
+margin_bottom = 23.0
+custom_fonts/font = SubResource( 1 )
+text = "Lvl 1"
+
+[node name="progress" type="ColorRect" parent="header/player_info/level"]
+anchor_right = 1.0
+margin_top = 24.0
+margin_bottom = 29.0
+color = Color( 0.2, 0.2, 0.2, 1 )
+
+[node name="bar" type="ColorRect" parent="header/player_info/level/progress"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -109.0
+color = Color( 0.976471, 0.937255, 0.627451, 1 )
+
+[node name="nickname" type="Label" parent="header/player_info"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 78.0
+margin_top = -45.0
+margin_right = -4.0
+custom_fonts/font = SubResource( 2 )
+text = "Eclaire"
+
+[node name="resources" type="HBoxContainer" parent="header"]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -830.0
+margin_top = 19.0
+margin_right = -90.0
+margin_bottom = -18.0
+custom_constants/separation = 16
 alignment = 2
 
-[node name="play" type="Button" parent="header/nav"]
-margin_left = 324.0
-margin_right = 424.0
-margin_bottom = 38.0
-rect_min_size = Vector2( 100, 38 )
+[node name="gold" parent="header/resources" instance=ExtResource( 6 )]
+margin_left = 228.0
+margin_right = 388.0
 
-[node name="bg" type="ColorRect" parent="header/nav/play"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-color = Color( 0.121569, 0.121569, 0.121569, 1 )
+[node name="parts" parent="header/resources" instance=ExtResource( 6 )]
+margin_left = 404.0
+margin_right = 564.0
 
-[node name="Label" type="Label" parent="header/nav/play"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "PLAY"
-align = 1
-valign = 1
+[node name="gems" parent="header/resources" instance=ExtResource( 6 )]
+margin_left = 580.0
+margin_right = 740.0
 
-[node name="inventory" type="Button" parent="header/nav"]
-margin_left = 429.0
-margin_right = 529.0
-margin_bottom = 38.0
-rect_min_size = Vector2( 100, 38 )
-
-[node name="bg" type="ColorRect" parent="header/nav/inventory"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-color = Color( 0.121569, 0.121569, 0.121569, 1 )
-
-[node name="Label" type="Label" parent="header/nav/inventory"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "INVENTORY"
-align = 1
-valign = 1
-
-[node name="quest" type="Button" parent="header/nav"]
-margin_left = 534.0
-margin_right = 634.0
-margin_bottom = 38.0
-rect_min_size = Vector2( 100, 38 )
-
-[node name="bg" type="ColorRect" parent="header/nav/quest"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-color = Color( 0.121569, 0.121569, 0.121569, 1 )
-
-[node name="Label" type="Label" parent="header/nav/quest"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "QUEST"
-align = 1
-valign = 1
-
-[node name="settings" type="Button" parent="header/nav"]
-margin_left = 639.0
-margin_right = 739.0
-margin_bottom = 38.0
-rect_min_size = Vector2( 100, 38 )
-
-[node name="bg" type="ColorRect" parent="header/nav/settings"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-color = Color( 0.121569, 0.121569, 0.121569, 1 )
-
-[node name="Label" type="Label" parent="header/nav/settings"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "SETTINGS"
-align = 1
-valign = 1
-
-[node name="quit" type="Button" parent="header/nav"]
-margin_left = 744.0
-margin_right = 844.0
-margin_bottom = 38.0
-rect_min_size = Vector2( 100, 38 )
-
-[node name="bg" type="ColorRect" parent="header/nav/quit"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-color = Color( 0.121569, 0.121569, 0.121569, 1 )
-
-[node name="Label" type="Label" parent="header/nav/quit"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "QUIT"
-align = 1
-valign = 1
-
-[node name="panel" type="Control" parent="."]
+[node name="settings_btn" type="Button" parent="header"]
+editor/display_folded = true
 anchor_left = 1.0
 anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -422.0
-margin_top = 48.0
+margin_left = -70.0
+margin_top = 19.0
+margin_right = -22.0
+margin_bottom = 67.0
+flat = true
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="panel"]
-autoplay = "fade_in"
-anims/default = SubResource( 1 )
-anims/fade_in = SubResource( 2 )
-anims/fade_out = SubResource( 3 )
-
-[node name="container" type="Control" parent="panel"]
-modulate = Color( 1, 1, 1, 0 )
-anchor_left = 1.0
+[node name="img" type="TextureRect" parent="header/settings_btn"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -342.0
-margin_right = 80.0
+mouse_filter = 2
+texture = ExtResource( 4 )
+expand = true
 
-[node name="play" type="Control" parent="panel/container"]
-anchor_left = 0.5
+[node name="content" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="content"]
+anims/default = SubResource( 3 )
+anims/fade_in = SubResource( 4 )
+
+[node name="container" type="Control" parent="content"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 85.0
+margin_bottom = -95.0
+
+[node name="play" type="Control" parent="content/container"]
+editor/display_folded = true
+anchor_left = 1.0
 anchor_top = 0.5
-anchor_right = 0.5
+anchor_right = 1.0
 anchor_bottom = 0.5
-margin_left = -211.0
-margin_top = -216.0
-margin_right = 211.0
-margin_bottom = 216.0
+margin_left = -426.0
+margin_top = -210.0
+margin_right = -20.0
+margin_bottom = 210.0
 
-[node name="single" type="Button" parent="panel/container/play"]
+[node name="single" type="Button" parent="content/container/play"]
 editor/display_folded = true
-margin_top = 80.0
-margin_right = 200.0
+anchor_right = 1.0
 margin_bottom = 200.0
 
-[node name="bg" type="ColorRect" parent="panel/container/play/single"]
+[node name="bg" type="ColorRect" parent="content/container/play/single"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 color = Color( 0.156863, 0.156863, 0.156863, 1 )
 
-[node name="Label" type="Label" parent="panel/container/play/single"]
+[node name="Label" type="Label" parent="content/container/play/single"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-text = "SINGLE PLAYER"
+text = "PLAY GAME"
 align = 1
 valign = 1
 
-[node name="coop" type="Button" parent="panel/container/play"]
+[node name="multi" type="Button" parent="content/container/play"]
 editor/display_folded = true
-margin_left = 210.0
-margin_top = 80.0
-margin_right = 410.0
-margin_bottom = 200.0
+anchor_right = 1.0
+margin_top = 220.0
+margin_bottom = 420.0
 
-[node name="bg" type="ColorRect" parent="panel/container/play/coop"]
+[node name="bg" type="ColorRect" parent="content/container/play/multi"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 color = Color( 0.156863, 0.156863, 0.156863, 1 )
 
-[node name="Label" type="Label" parent="panel/container/play/coop"]
+[node name="Label" type="Label" parent="content/container/play/multi"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-text = "COOP"
+text = "MULTIPLAYER"
 align = 1
 valign = 1
 
-[node name="multi" type="Button" parent="panel/container/play"]
-editor/display_folded = true
-margin_top = 210.0
-margin_right = 410.0
-margin_bottom = 330.0
-
-[node name="bg" type="ColorRect" parent="panel/container/play/multi"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-color = Color( 0.156863, 0.156863, 0.156863, 1 )
-
-[node name="Label" type="Label" parent="panel/container/play/multi"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "MULTI PLAYER"
-align = 1
-valign = 1
-
-[node name="inventory" type="Control" parent="panel/container"]
+[node name="armory" parent="content/container" instance=ExtResource( 7 )]
 visible = false
+anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = 12.0
-margin_right = -12.0
-margin_bottom = -10.0
+margin_left = -820.0
+margin_right = -20.0
+margin_bottom = 0.0
 
-[node name="bg" type="ColorRect" parent="panel/container/inventory"]
+[node name="footer" type="Control" parent="."]
+editor/display_folded = true
+anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color( 0.0941176, 0.0941176, 0.0941176, 1 )
+margin_left = 20.0
+margin_top = -70.0
+margin_right = -20.0
+margin_bottom = -20.0
+
+[node name="nav" type="HBoxContainer" parent="footer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 10
+
+[node name="play" parent="footer/nav" instance=ExtResource( 8 )]
+margin_right = 140.0

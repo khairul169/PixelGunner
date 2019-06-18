@@ -47,7 +47,7 @@ var knockback = 10.0;
 
 func _ready() -> void:
 	# init module
-	player.connect("spawn", self, "_player_spawn");
+	player.connect("dying", self, "_player_reset");
 	
 	# initialize attack system
 	call_deferred("init");
@@ -55,6 +55,9 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if (Input.is_key_pressed(KEY_SPACE)):
 		start_attack();
+	
+	if (Input.is_key_pressed(KEY_R)):
+		reload();
 	
 	if (Input.is_key_pressed(KEY_1)):
 		set_weapon(PlayerWeapon.WEAPON_PISTOL);
@@ -66,66 +69,84 @@ func init() -> void:
 	# targeting
 	create_targeting();
 	
-	# attack button
+	# user button
 	player.ui.button_attack.connect("pressed", self, "start_attack");
+	player.ui.button_reload.connect("pressed", self, "reload");
 
 func reset_weapon() -> void:
 	damage = 0.0;
 	delay = 1.0;
-	attack_range = 1.0;
+	attack_range = 0.0;
 	accuracy = 0.0;
 	max_clip = 0;
-	wpn_clip = 0;
+	wpn_clip = -1;
 	reload_time = 0.0;
 	attack_type = AttackType.NEAR;
 	slowness = 0.0;
 	knockback = 0.0;
+	
+	# cancel reload
+	if (state == State.RELOADING):
+		_reload_canceled();
+	
+	# update ui
+	_update_interface();
+	
+	# reset state
+	state = State.IDLE;
+	next_think = 0.1;
+	
+	if (target):
+		# disable targeting
+		player.move_to(null);
+		target = null;
 
 func set_weapon(id: int) -> void:
-	if (id <= 0):
-		reset_weapon();
-		return;
+	# reset weapon data
+	reset_weapon();
 	
-	var weapon_data = PlayerWeapon.get_weapon(id);
-	if (!weapon_data):
+	var data = PlayerWeapon.get_weapon(id);
+	if (!data):
 		return;
-	
-	print('set weapon ', id);
 	
 	# set weapon data
-	damage = weapon_data.damage;
-	delay = 60.0 / weapon_data.rof;
-	attack_range = weapon_data.attack_range;
-	accuracy = weapon_data.accuracy;
-	max_clip = weapon_data.clip;
+	damage = data.damage;
+	delay = clamp(60.0 / data.rof, 0.2, 6.0);
+	accuracy = data.accuracy;
+	max_clip = data.clip;
 	wpn_clip = max_clip;
-	knockback = weapon_data.knockback;
-	slowness = weapon_data.slowness;
+	knockback = data.knockback;
+	slowness = data.slowness;
 	
 	# attack type
-	match (weapon_data.wpn_class):
+	match (data.wpn_class):
 		PlayerWeapon.CLASS_SR:
 			attack_type = AttackType.FAR;
 		_:
 			attack_type = AttackType.NEAR;
 	
 	# player animation
-	match (weapon_data.wpn_class):
+	match (data.wpn_class):
 		PlayerWeapon.CLASS_AR:
 			player.anim_offset = player.PlayerAnims.RIFLE_IDLE;
 		_:
 			player.anim_offset = 0;
 	
-	# reload speed
-	match (weapon_data.wpn_class):
+	# attack range & reload speed
+	match (data.wpn_class):
 		PlayerWeapon.CLASS_HG:
+			attack_range = 6.0;
 			reload_time = 1.0;
+		
 		PlayerWeapon.CLASS_AR:
+			attack_range = 5.0;
 			reload_time = 3.0;
+		
 		_:
+			attack_range = 4.0;
 			reload_time = 1.0;
 	
-	# reload speed
+	# switch weapon mesh
 	match (id):
 		PlayerWeapon.WEAPON_PISTOL:
 			player.find_node('pistol').show();
@@ -134,11 +155,13 @@ func set_weapon(id: int) -> void:
 		PlayerWeapon.WEAPON_RIFLE:
 			player.find_node('pistol').hide();
 			player.find_node('rifle').show();
+	
+	# update ui
+	_update_interface();
 
-func _player_spawn() -> void:
+func _player_reset() -> void:
 	# reset vars
 	next_think = 0.0;
-	state = State.IDLE;
 	target = null;
 	reset_weapon();
 
@@ -182,37 +205,38 @@ func _physics_process(delta: float) -> void:
 	if (player.health <= 0.0):
 		return;
 	
-	# player moving
-	if (target && player.is_moving):
-		# reset state
-		if (state != State.RELOADING):
-			state = State.IDLE;
+	if (player.is_moving):
+		if (target):
+			# disable targeting
+			player.move_to(null);
+			target = null;
 		
-		# enable movement & reset target
-		player.move_to(null);
-		target = null;
+		# set state
+		if (state != State.RELOADING):
+			state = State.MOVING;
+	else:
+		if (state == State.MOVING):
+			state = State.IDLE;
 	
 	if (next_think > 0.0):
 		return;
 	
-	if (wpn_clip <= 0 && state != State.RELOADING):
-		# start reload
-		reload();
-		return;
-	
 	if (state == State.RELOADING):
-		wpn_clip = max_clip;
-		next_think = 0.5;
+		_reload_finished();
 		state = State.IDLE;
 		return;
 	
 	if (state == State.AIMING):
 		if (target):
-			# shoot target
+			# set player shooting animation
 			player.set_animation(player.PlayerAnims.SHOOT);
+			player.move_to(null, 0.15);
 			player.next_idle = 0.5;
+			
 			state = State.ATTACKING;
 			next_think = delay;
+			
+			# attack target
 			attack(target);
 			
 			# reset target if randomized attack
@@ -236,12 +260,12 @@ func _physics_process(delta: float) -> void:
 		var distance = player.global_transform.origin.distance_to(target.global_transform.origin);
 		if (distance > attack_range && attack_type != AttackType.RANDOM):
 			player.move_to(target.global_transform.origin);
-			next_think = 0.2;
+			next_think = 0.5;
 			state = State.MOVING;
 		else:
 			if (state != State.ATTACKING):
-				player.move_to(null, 0.5);
-				next_think = 0.4;
+				player.move_to(null, 0.4);
+				next_think = 0.3;
 				set_look_at(target);
 			else:
 				player.move_to(null, 0.1);
@@ -250,7 +274,16 @@ func _physics_process(delta: float) -> void:
 			state = State.AIMING;
 
 func start_attack() -> void:
-	if (player.health <= 0.0 || !nearest_enemy.size()):
+	if (next_think > 0.0 || player.health <= 0.0):
+		return;
+	
+	if (wpn_clip <= 0):
+		# start reload
+		if (state != State.RELOADING):
+			reload();
+		return;
+	
+	if (!nearest_enemy.size()):
 		return;
 	
 	if (attack_type == AttackType.RANDOM):
@@ -263,8 +296,16 @@ func start_attack() -> void:
 			continue;
 	
 	if (res.has('enemy')):
+		if (!target):
+			# disable movement for a while
+			player.move_to(null, 0.2);
+		
 		# set target
 		target = res.enemy;
+		state = State.IDLE;
+		
+		# look at target
+		set_look_at(target);
 	else:
 		target = null;
 
@@ -303,14 +344,23 @@ func set_look_at(object: Spatial) -> void:
 	player.body_dir = player.body_dir.normalized();
 
 func attack(object: Spatial) -> void:
-	if (player.health <= 0.0 || !object.is_in_group('damageable') || wpn_clip <= 0):
+	if (player.health <= 0.0 || !object.is_in_group('damageable')):
 		return;
 	
-	# set looking at target
+	if (wpn_clip <= 0):
+		# start reload
+		if (state != State.RELOADING):
+			reload();
+		return;
+	
+	# look at target
 	set_look_at(target);
 	
 	# reduce clip
 	wpn_clip -= 1;
+	
+	# update ui
+	_update_interface();
 	
 	# check weapon shoot
 	var agile = object.agile;
@@ -343,6 +393,26 @@ func reload() -> void:
 	# start reload
 	state = State.RELOADING;
 	next_think = reload_time;
+	
+	player.set_bar_status("RELOADING");
+
+func _reload_canceled() -> void:
+	player.set_bar_status("");
+
+func _reload_finished() -> void:
+	if (state != State.RELOADING):
+		return;
+	
+	# replenish weapon clip
+	wpn_clip = max_clip;
+	next_think = 0.1;
+	
+	# update ui
+	player.set_bar_status("");
+	_update_interface();
+
+func _update_interface() -> void:
+	player.ui.set_reloadbutton_clip(wpn_clip);
 
 func create_indicator(object, text, color = Color(1, 1, 1)) -> Node:
 	var indicator = DamageIndicator.instance();

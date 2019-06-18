@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="512mm"
+   height="512mm"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
+   sodipodi:docname="user_interface.svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.5740213"
+     inkscape:cx="1322.0482"
+     inkscape:cy="1816.1587"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     units="mm"
+     inkscape:window-width="1366"
+     inkscape:window-height="705"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:snap-nodes="false"
+     inkscape:lockguides="true" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,215)">
+    <rect
+       style="fill:#3a3a3a;fill-opacity:1;stroke:none;stroke-width:0.30999997;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.26519368"
+       id="rect815"
+       width="307.8945"
+       height="229.85179"
+       x="3.2072344"
+       y="-211.90219" />
+    <circle
+       style="fill:none;fill-opacity:1;stroke:#fffdfd;stroke-width:1.41;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.78431374"
+       id="path817"
+       cx="37.417732"
+       cy="-180.34335"
+       r="23.786989"
+       inkscape:export-filename="D:\Projects\GodotProjects\PixelGunner\sprites\controller\base.png"
+       inkscape:export-xdpi="132.74541"
+       inkscape:export-ydpi="132.74541" />
+    <circle
+       r="6.6817393"
+       cy="-180.34334"
+       cx="37.417732"
+       id="circle819"
+       style="fill:#fffbfb;fill-opacity:0.78431374;stroke:none;stroke-width:1.40999997;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       inkscape:export-filename="D:\Projects\GodotProjects\PixelGunner\sprites\controller\button.png"
+       inkscape:export-xdpi="243.28969"
+       inkscape:export-ydpi="243.28969" />
+    <rect
+       style="fill:none;fill-opacity:0.78431373;stroke:#fffdfd;stroke-width:0.71;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.78431374;stroke-linejoin:bevel;stroke-linecap:butt"
+       id="rect818"
+       width="72.964577"
+       height="72.964577"
+       x="75.370003"
+       y="-202.79401"
+       inkscape:export-filename="D:\Projects\GodotProjects\PixelGunner\sprites\minimap\overlay.png"
+       inkscape:export-xdpi="176.51672"
+       inkscape:export-ydpi="176.51672" />
+    <g
+       id="g954"
+       inkscape:export-filename="D:\Projects\GodotProjects\PixelGunner\sprites\controller\shoot_button.png"
+       inkscape:export-xdpi="68.430717"
+       inkscape:export-ydpi="68.430717"
+       transform="matrix(0.97962088,0,0,0.97941499,3.3108666,-3.2130849)"
+       style="stroke-width:1.02091038">
+      <g
+         id="g945"
+         style="stroke-width:1.02091038">
+        <circle
+           style="fill:#2f2f2f;fill-opacity:0.39215686;stroke:none;stroke-width:1.43948364;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.78431373"
+           id="circle873"
+           cx="186.71832"
+           cy="-180.34335"
+           r="24.254711"
+           inkscape:export-filename="D:\Projects\GodotProjects\PixelGunner\sprites\controller\base.png"
+           inkscape:export-xdpi="132.74541"
+           inkscape:export-ydpi="132.74541" />
+        <circle
+           inkscape:export-ydpi="132.74541"
+           inkscape:export-xdpi="132.74541"
+           inkscape:export-filename="D:\Projects\GodotProjects\PixelGunner\sprites\controller\base.png"
+           r="23.786989"
+           cy="-180.34335"
+           cx="186.71832"
+           id="circle820"
+           style="fill:none;fill-opacity:1;stroke:#fffdfd;stroke-width:0.72484635;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.78431373" />
+      </g>
+      <g
+         style="stroke-width:0.79845351"
+         transform="matrix(0.88227346,-0.92543836,0.92543836,0.88227346,192.97591,153.10492)"
+         id="g845">
+        <path
+           style="fill:#fffbfb;fill-opacity:0.78431373;stroke:none;stroke-width:1.12581944;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.78431373"
+           d="m 184.97881,-192.79394 c 0.24143,-0.31491 0.65849,-0.31491 0.89993,0 0.82174,1.07182 0.90526,5.17589 0.90526,5.17589 h -2.71045 c 0,0 0.0835,-4.10407 0.90526,-5.17589 z"
+           id="rect830"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ssccs" />
+        <path
+           style="fill:#fffbfb;fill-opacity:0.78431373;stroke:none;stroke-width:1.12581933;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.78431373"
+           d="m 183.56885,-186.81464 -0.54976,1.20458 v 7.4414 h 4.81927 v -7.4414 l -0.54975,-1.20458 z m 0.38562,1.22628 h 1.13604 v 6.51433 h -1.13604 z"
+           id="rect833"
+           inkscape:connector-curvature="0" />
+        <path
+           style="fill:#fffbfb;fill-opacity:0.78431373;stroke:none;stroke-width:1.12581944;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.78431373"
+           d="m 183.59807,-177.5141 h 3.66131 l 0.66024,1.29046 h -4.98178 z"
+           id="rect839"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ccccc" />
+      </g>
+    </g>
+    <g
+       id="g1151"
+       inkscape:export-filename="D:\Projects\GodotProjects\PixelGunner\sprites\controller\reload_button.png"
+       inkscape:export-xdpi="52.102615"
+       inkscape:export-ydpi="52.102615">
+      <g
+         id="g1138">
+        <g
+           style="stroke-width:1.55521381"
+           id="g929"
+           transform="matrix(0.64299926,0,0,0.64299744,83.704138,-72.03347)">
+          <circle
+             style="fill:#2f2f2f;fill-opacity:0.39215686;stroke:none;stroke-width:2.19285154;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.78431373"
+             id="circle899"
+             cx="241.90285"
+             cy="-180.34335"
+             r="24.254711"
+             inkscape:export-filename="D:\Projects\GodotProjects\PixelGunner\sprites\controller\base.png"
+             inkscape:export-xdpi="132.74541"
+             inkscape:export-ydpi="132.74541" />
+          <circle
+             inkscape:export-ydpi="132.74541"
+             inkscape:export-xdpi="132.74541"
+             inkscape:export-filename="D:\Projects\GodotProjects\PixelGunner\sprites\controller\base.png"
+             r="23.786989"
+             cy="-180.34335"
+             cx="241.90285"
+             id="circle901"
+             style="fill:none;fill-opacity:1;stroke:#fffdfd;stroke-width:0.94868051;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.78431373" />
+        </g>
+        <g
+           id="g1078"
+           transform="matrix(0.84093254,-0.16694063,0.16694063,0.84093254,69.342522,9.9859626)"
+           style="opacity:0.8">
+          <path
+             id="path1067"
+             transform="matrix(0.26458333,0,0,0.26458333,0,-215)"
+             d="m 904.24414,43.576172 c -22.33519,0 -41.7713,12.576279 -51.62305,31.017578 l 6.10547,3.380859 c 8.63365,-16.299876 25.75514,-27.386718 45.51758,-27.386718 28.47549,0 51.48242,23.006932 51.48242,51.482419 0,28.47549 -23.00693,51.48828 -51.48242,51.48828 -14.91461,0 -28.32301,-6.321 -37.71875,-16.42578 l -5.28516,4.54297 c 10.69504,11.60402 26.00963,18.88867 43.00391,18.88867 32.26288,0 58.48633,-26.23126 58.48633,-58.49414 0,-32.262876 -26.22345,-58.494138 -58.48633,-58.494138 z"
+             style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:7.00793934;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+             inkscape:connector-curvature="0" />
+          <path
+             inkscape:transform-center-y="0.07783436"
+             transform="matrix(-1.0307244,0.0632928,-0.0632928,-1.0307244,5.2930687,20.209241)"
+             inkscape:transform-center-x="-0.56657565"
+             d="m -224.75599,196.21706 -1.84533,-1.0654 -1.84532,-1.0654 1.84532,-1.0654 1.84533,-1.0654 0,2.1308 z"
+             inkscape:randomized="0"
+             inkscape:rounded="0"
+             inkscape:flatsided="false"
+             sodipodi:arg2="2.0943951"
+             sodipodi:arg1="1.0471976"
+             sodipodi:r2="1.2302186"
+             sodipodi:r1="2.4604373"
+             sodipodi:cy="194.08626"
+             sodipodi:cx="-225.98621"
+             sodipodi:sides="3"
+             id="path1074"
+             style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.68299997;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+             sodipodi:type="star" />
+        </g>
+      </g>
+      <g
+         transform="matrix(-0.8721614,-0.23689802,-0.23691911,0.87205807,395.78053,-0.5200123)"
+         style="opacity:0.53200001;stroke:#ffffff;stroke-width:0.98208487;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="g1037">
+        <path
+           style="fill:none;stroke:#ffffff;stroke-width:0.98208487;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 215.74848,-162.23246 h 6.8078 c 0.90885,4.45812 3.2474,8.78153 5.5471,11.93467 l -5.63114,3.46693 c -3.77919,-4.47848 -6.10155,-10.05903 -6.72376,-15.4016 z"
+           id="path1027"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ccccc" />
+        <path
+           style="fill:none;stroke:#ffffff;stroke-width:0.98208487;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 216.29479,-160.08926 h 4.74865 c 0.74532,3.437 2.60023,7.14025 5.35799,10.80003"
+           id="path1029"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="ccc" />
+        <path
+           style="fill:none;stroke:#ffffff;stroke-width:0.98208487;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           d="m 218.51291,-158.26077 c 0.99233,3.31664 2.69739,6.15471 4.57433,8.87737"
+           id="path1031"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cc" />
+      </g>
+    </g>
+    <path
+       style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.71691191;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 313.35991,-211.77956 h 39.47116 l 2.86218,3.20923 v 8.69702 h -42.33334 z"
+       id="rect836"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccc"
+       inkscape:export-filename="D:\Projects\GodotProjects\PixelGunner\sprites\interface\floatbar_bg.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+  </g>
+</svg>

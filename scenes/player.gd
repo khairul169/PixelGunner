@@ -62,7 +62,7 @@ var anim_offset = 0;
 var move_speed = 3.0;
 var health_max = 100.0;
 var health = 0.0;
-var armor = 0.0;
+var armor = 5.0;
 var agile = 10.0;
 
 func _ready() -> void:
@@ -74,8 +74,6 @@ func _ready() -> void:
 	
 	# spawn player
 	spawn(Vector3.ZERO + Vector3(0, 1, 0));
-	
-	m_attack.set_weapon(PlayerWeapon.WEAPON_PISTOL);
 
 func set_health(new_health: float) -> void:
 	# set player health
@@ -127,6 +125,8 @@ func _on_spawn() -> void:
 	anim_speed = 1.0;
 	next_idle = 0.0;
 	anim_offset = 0;
+	
+	m_attack.set_weapon(PlayerWeapon.WEAPON_PISTOL);
 
 func _damaged(damage, attacker) -> void:
 	if (damage <= 0.0):
@@ -252,3 +252,6 @@ func set_animation(id: int, blend_time: float = 0.0) -> void:
 	
 	animplayer.play(animation_name, blend_time);
 	animplayer.seek(0.0);
+
+func set_bar_status(text: String) -> void:
+	$player_bar.set_status(text);

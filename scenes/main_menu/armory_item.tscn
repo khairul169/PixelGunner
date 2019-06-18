@@ -1,0 +1,35 @@
+[gd_scene format=2]
+
+[node name="item1" type="Button"]
+margin_right = 240.0
+margin_bottom = 150.0
+rect_min_size = Vector2( 240, 150 )
+mouse_filter = 1
+flat = true
+
+[node name="bg" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color( 0.2, 0.2, 0.2, 1 )
+
+[node name="item" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 10.0
+margin_right = -10.0
+margin_bottom = -40.0
+mouse_filter = 2
+color = Color( 0.2, 0.317647, 0.454902, 1 )
+
+[node name="title" type="Label" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = -40.0
+margin_right = -10.0
+text = "M4A1"
+align = 1
+valign = 1

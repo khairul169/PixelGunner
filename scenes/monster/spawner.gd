@@ -46,7 +46,7 @@ func set_monster_stats(npc) -> void:
 	# set monster stats
 	npc.health_max += npc.health_max * modifier;
 	npc.attack_damage += npc.attack_damage * modifier;
-	npc.attack_delay -= npc.attack_delay * min(modifier, 0.2);
+	npc.attack_delay -= min(npc.attack_delay * modifier, 0.2);
 	npc.accuracy += npc.accuracy * modifier;
 	npc.armor += npc.armor * modifier;
 	npc.agile += npc.agile * modifier;

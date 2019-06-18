@@ -5,13 +5,19 @@ const OFFSET = Vector3(2, 8, 3);
 const INTERPOLATION = 4.0;
 
 onready var camera_node = $cam;
-onready var player_node = get_parent().get_node('player');
+var player_node;
 
 var camera_dir := Basis();
 var origin := Vector3.ZERO;
 var fov = 60.0;
 
 func _ready() -> void:
+	call_deferred("init");
+
+func init() -> void:
+	# get player node
+	player_node = get_parent().get_node('player');
+	
 	origin = global_transform.origin;
 	
 	# set camera offset

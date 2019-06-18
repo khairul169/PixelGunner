@@ -12,7 +12,7 @@ background_sky = SubResource( 1 )
 background_color = Color( 0.0941176, 0.0941176, 0.0941176, 1 )
 
 [sub_resource type="SpatialMaterial" id=3]
-albedo_color = Color( 0.482353, 0.482353, 0.482353, 1 )
+albedo_color = Color( 0.172549, 0.172549, 0.172549, 1 )
 albedo_texture = ExtResource( 2 )
 uv1_scale = Vector3( 40, 40, 1 )
 
@@ -130,17 +130,25 @@ material/0 = null
 shape = SubResource( 8 )
 
 [node name="light" type="DirectionalLight" parent="."]
-transform = Transform( 0.00898667, 0.838349, -0.545059, 0, 0.545081, 0.838383, 0.99996, -0.00753427, 0.00489846, 0, 0.750294, 0 )
-light_color = Color( 0.521569, 0.6, 0.705882, 1 )
+transform = Transform( 0.515394, 0.718455, -0.467109, 0, 0.545081, 0.838383, 0.856953, -0.432098, 0.280932, 0, 0.750294, 0 )
 light_energy = 1.4
 shadow_enabled = true
+directional_shadow_normal_bias = 0.1
+directional_shadow_max_distance = 50.0
 
 [node name="camera" type="Camera" parent="."]
-transform = Transform( -0.848044, -0.00369758, -0.529912, 0, 0.999976, -0.00697755, 0.529925, -0.00591728, -0.848024, 1.62735, 1.23889, -1.58754 )
+transform = Transform( 0.122933, 0.17915, -0.976111, 0, 0.983572, 0.180519, 0.992415, -0.0221918, 0.120914, 0.851157, 1.67546, 1.26995 )
+fov = 60.0
+
+[node name="camera_home" type="Spatial" parent="."]
+transform = Transform( 0.122933, 0.17915, -0.976111, -1.83204e-009, 0.983571, 0.180519, 0.992415, -0.0221918, 0.120913, 0.851157, 1.67546, 1.26995 )
+
+[node name="camera_armory" type="Spatial" parent="."]
+transform = Transform( -6.60857e-005, 0.0126466, -0.99992, 0, 0.999921, 0.0126466, 1, 8.35759e-007, -6.60804e-005, 1.85032, 1.1511, 0.931246 )
 
 [node name="player" parent="." instance=ExtResource( 3 )]
 editor/display_folded = true
-transform = Transform( 0.151188, 0, -0.988505, 0, 1, 0, 0.988505, 0, 0.151188, 4.18303, 0, -0.536823 )
+transform = Transform( 0.875158, 0, -0.483838, 0, 1, 0, 0.483838, 0, 0.875158, 4.18303, 0, -0.603147 )
 
 [node name="AnimationPlayer" parent="player" index="1"]
 autoplay = "idle_rifle"
