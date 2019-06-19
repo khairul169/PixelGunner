@@ -126,7 +126,7 @@ func _on_spawn() -> void:
 	next_idle = 0.0;
 	anim_offset = 0;
 	
-	m_attack.set_weapon(PlayerWeapon.WEAPON_PISTOL);
+	m_attack.set_weapon(PlayerWeapon.WEAPON_RIFLE);
 
 func _damaged(damage, attacker) -> void:
 	if (damage <= 0.0):
