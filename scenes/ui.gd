@@ -45,3 +45,9 @@ func load_quests() -> void:
 		
 		instance.set_quest_name(quest.name);
 		instance.set_quest_task(task_list);
+	
+	# delay for a frame
+	yield(get_tree(), "idle_frame");
+	
+	# reset container height
+	container.rect_size.y = 0.0;

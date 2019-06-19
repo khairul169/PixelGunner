@@ -1,16 +1,16 @@
-extends Control
+extends Node
 
 # refs
-onready var background_scene = $background.find_node('background');
-onready var content_anims = $content/AnimationPlayer;
+onready var background_scene = $background;
+onready var content_anims = $layout/content/AnimationPlayer;
 
 func _ready() -> void:
 	# load navigation
 	setup_navigation();
 	
 	# play panel
-	$content/container.hide();
-	$content/container/play/single.connect("pressed", self, "_play");
+	$layout/content/container.hide();
+	$layout/content/container/play/single.connect("pressed", self, "_play");
 	
 	# delay timer
 	yield(get_tree().create_timer(0.5), "timeout");
@@ -19,7 +19,7 @@ func _ready() -> void:
 	switch_panel('play');
 
 func _nav_pressed(btn: String) -> void:
-	if (!$content/container.has_node(btn)):
+	if (!$layout/content/container.has_node(btn)):
 		return;
 	
 	if (btn == 'play'):
@@ -35,7 +35,7 @@ func _play() -> void:
 
 func setup_navigation() -> void:
 	# navigation container
-	var container = $footer/nav;
+	var container = $layout/footer/nav;
 	var nav_item = container.get_child(0);
 	container.remove_child(nav_item);
 	
@@ -67,12 +67,12 @@ func setup_navigation() -> void:
 	nav_item.free();
 
 func switch_panel(panel: String) -> void:
-	var container = $content/container;
+	var container = $layout/content/container;
 	if (!container.has_node(panel)):
 		return;
 	
 	for i in container.get_children():
 		i.visible = (i.name == panel);
 	
-	$content/AnimationPlayer.play("fade_in");
-	$content/AnimationPlayer.seek(0.0);
+	$layout/content/AnimationPlayer.play("fade_in");
+	$layout/content/AnimationPlayer.seek(0.0);
