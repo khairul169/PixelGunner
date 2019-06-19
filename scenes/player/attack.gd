@@ -157,7 +157,7 @@ func set_weapon(id: int) -> void:
 			player.find_node('rifle').show();
 	
 	# update ui
-	_update_interface();
+	call_deferred('_update_interface');
 
 func _player_reset() -> void:
 	# reset vars

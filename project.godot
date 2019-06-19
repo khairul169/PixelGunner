@@ -48,6 +48,10 @@ config/name="Pixel Gunner"
 run/main_scene="res://scenes/main_menu.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+state_mgr="*res://scenes/singleton/state_mgr.gd"
+
 [debug]
 
 gdscript/warnings/enable=false

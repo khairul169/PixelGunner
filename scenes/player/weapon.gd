@@ -21,6 +21,7 @@ const weapon_data = {
 	# pistol
 	WEAPON_PISTOL: {
 		'wpn_class': CLASS_HG,
+		'name': 'Pistol',
 		'damage': 30.0,
 		'rof': 60,
 		'accuracy': 20.0,
@@ -32,6 +33,7 @@ const weapon_data = {
 	# rifle
 	WEAPON_RIFLE: {
 		'wpn_class': CLASS_AR,
+		'name': 'Rifle',
 		'damage': 10.0,
 		'rof': 300,
 		'accuracy': 10.0,

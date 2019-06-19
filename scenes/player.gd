@@ -75,6 +75,10 @@ func _ready() -> void:
 	# spawn player
 	spawn(Vector3.ZERO + Vector3(0, 1, 0));
 
+func _input(event: InputEvent) -> void:
+	if (Input.is_key_pressed(KEY_ESCAPE)):
+		state_mgr.goto_mainmenu();
+
 func set_health(new_health: float) -> void:
 	# set player health
 	health = clamp(new_health, 0.0, health_max);
@@ -126,7 +130,11 @@ func _on_spawn() -> void:
 	next_idle = 0.0;
 	anim_offset = 0;
 	
-	m_attack.set_weapon(PlayerWeapon.WEAPON_RIFLE);
+	var weapon = PlayerWeapon.WEAPON_RIFLE;
+	if (state_mgr.player.weapon):
+		weapon = state_mgr.player.weapon;
+	
+	m_attack.set_weapon(weapon);
 
 func _damaged(damage, attacker) -> void:
 	if (damage <= 0.0):
