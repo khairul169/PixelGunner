@@ -4,7 +4,7 @@ extends Node
 const TARGETING_RADIUS = 8.0;
 
 # scenes
-onready var DamageIndicator = load('res://scenes/ui/indicator_damage.tscn');
+onready var DamageIndicator = load('res://scenes/ui/hud/damage_indicator.tscn');
 
 # reference
 onready var player: Player = get_parent();

@@ -2,7 +2,7 @@ extends KinematicBody
 class_name Monster
 
 # scenes
-onready var FloatingBar = load('res://scenes/ui/floating_bar.tscn');
+onready var FloatingBar = load('res://scenes/ui/hud/floating_bar.tscn');
 
 # reference
 onready var body = $body;

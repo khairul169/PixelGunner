@@ -4,7 +4,8 @@
 [ext_resource path="res://scenes/monster/spawner.gd" type="Script" id=2]
 [ext_resource path="res://scenes/npc/trader.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/player/camera.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/player.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/player/player.tscn" type="PackedScene" id=5]
+
 
 
 [sub_resource type="SpatialMaterial" id=1]
