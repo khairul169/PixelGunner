@@ -25,9 +25,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.78701065"
-     inkscape:cx="649.15015"
-     inkscape:cy="1696.6866"
+     inkscape:zoom="1.1130011"
+     inkscape:cx="789.17437"
+     inkscape:cy="1787.8798"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -236,5 +236,31 @@
        inkscape:export-filename="D:\Projects\GodotProjects\PixelGunner\sprites\interface\floatbar_bg.png"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96" />
+    <g
+       transform="matrix(0.64299926,0,0,0.64299744,124.11665,-72.03347)"
+       id="g844"
+       style="stroke-width:1.55521381"
+       inkscape:export-filename="D:\Projects\GodotProjects\PixelGunner\sprites\controller\skill_button.png"
+       inkscape:export-xdpi="104"
+       inkscape:export-ydpi="104">
+      <circle
+         inkscape:export-ydpi="132.74541"
+         inkscape:export-xdpi="132.74541"
+         inkscape:export-filename="D:\Projects\GodotProjects\PixelGunner\sprites\controller\base.png"
+         r="24.254711"
+         cy="-180.34335"
+         cx="241.90285"
+         id="circle840"
+         style="fill:#2f2f2f;fill-opacity:0.39215686;stroke:none;stroke-width:2.19285154;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.78431373" />
+      <circle
+         style="fill:none;fill-opacity:1;stroke:#fffdfd;stroke-width:0.94868052;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.78431373"
+         id="circle842"
+         cx="241.90285"
+         cy="-180.34335"
+         r="23.786989"
+         inkscape:export-filename="D:\Projects\GodotProjects\PixelGunner\sprites\controller\base.png"
+         inkscape:export-xdpi="132.74541"
+         inkscape:export-ydpi="132.74541" />
+    </g>
   </g>
 </svg>

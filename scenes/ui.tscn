@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://scenes/ui.gd" type="Script" id=1]
 [ext_resource path="res://scenes/ui/hud/controller.gd" type="Script" id=2]
@@ -8,10 +8,22 @@
 [ext_resource path="res://scenes/ui/hud/action_button.gd" type="Script" id=6]
 [ext_resource path="res://sprites/controller/reload_button.png" type="Texture" id=7]
 [ext_resource path="res://fonts/OpenSans-Regular.ttf" type="DynamicFontData" id=8]
-[ext_resource path="res://scenes/ui/hud/minimap.tscn" type="PackedScene" id=9]
+[ext_resource path="res://sprites/controller/skill_button.png" type="Texture" id=9]
+[ext_resource path="res://scenes/ui/hud/minimap.tscn" type="PackedScene" id=10]
+[ext_resource path="res://icon.png" type="Texture" id=11]
 
 [sub_resource type="DynamicFont" id=1]
 size = 28
+use_filter = true
+font_data = ExtResource( 8 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 22
+use_filter = true
+font_data = ExtResource( 8 )
+
+[sub_resource type="DynamicFont" id=5]
+size = 18
 use_filter = true
 font_data = ExtResource( 8 )
 
@@ -27,10 +39,10 @@ __meta__ = {
 [node name="menu_btn" type="Button" parent="."]
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -80.0
+margin_left = -270.0
 margin_top = 20.0
-margin_right = -20.0
-margin_bottom = 80.0
+margin_right = -219.0
+margin_bottom = 70.0
 text = "MENU"
 
 [node name="controller" type="Control" parent="."]
@@ -47,6 +59,7 @@ button_size = 48.0
 max_distance = 96.0
 
 [node name="action_button" type="Control" parent="."]
+editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
@@ -56,8 +69,8 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -212.0
-margin_top = -212.0
+margin_left = -170.0
+margin_top = -170.0
 margin_right = -20.0
 margin_bottom = -20.0
 texture = ExtResource( 5 )
@@ -65,14 +78,15 @@ expand = true
 script = ExtResource( 6 )
 
 [node name="reload" type="TextureRect" parent="action_button"]
+editor/display_folded = true
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -116.0
-margin_top = -350.0
-margin_right = -20.0
-margin_bottom = -254.0
+margin_left = -300.0
+margin_top = -100.0
+margin_right = -220.0
+margin_bottom = -20.0
 texture = ExtResource( 7 )
 expand = true
 script = ExtResource( 6 )
@@ -88,13 +102,176 @@ text = "30"
 align = 1
 valign = 1
 
+[node name="skill1" type="TextureRect" parent="action_button"]
+editor/display_folded = true
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -100.0
+margin_top = -440.0
+margin_right = -20.0
+margin_bottom = -360.0
+texture = ExtResource( 9 )
+expand = true
+script = ExtResource( 6 )
+
+[node name="cd" type="Label" parent="action_button/skill1"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 2
+custom_constants/shadow_offset_y = 2
+text = "30"
+align = 1
+valign = 1
+
+[node name="skill2" type="TextureRect" parent="action_button"]
+editor/display_folded = true
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -100.0
+margin_top = -320.0
+margin_right = -20.0
+margin_bottom = -240.0
+texture = ExtResource( 9 )
+expand = true
+script = ExtResource( 6 )
+
+[node name="cd" type="Label" parent="action_button/skill2"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 2
+custom_constants/shadow_offset_y = 2
+text = "30"
+align = 1
+valign = 1
+
+[node name="leap" type="TextureRect" parent="action_button"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -420.0
+margin_top = -100.0
+margin_right = -340.0
+margin_bottom = -20.0
+texture = ExtResource( 9 )
+expand = true
+script = ExtResource( 6 )
+
 [node name="hud" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 
-[node name="minimap" parent="hud" instance=ExtResource( 9 )]
+[node name="minimap" parent="hud" instance=ExtResource( 10 )]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -200.0
+margin_top = 20.0
+margin_right = -20.0
+margin_bottom = 200.0
+
+[node name="quests" type="VBoxContainer" parent="hud"]
 margin_left = 20.0
 margin_top = 20.0
-margin_right = 200.0
-margin_bottom = 200.0
+margin_right = 340.0
+margin_bottom = 250.0
+custom_constants/separation = 10
+
+[node name="quest" type="Control" parent="hud/quests"]
+margin_right = 320.0
+margin_bottom = 74.0
+rect_min_size = Vector2( 100, 74 )
+
+[node name="bg" type="ColorRect" parent="hud/quests/quest"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.627451 )
+
+[node name="title" type="Label" parent="hud/quests/quest"]
+editor/display_folded = true
+margin_left = 40.0
+margin_top = 5.0
+margin_right = 178.0
+margin_bottom = 39.0
+custom_fonts/font = SubResource( 4 )
+text = "Quest Name"
+
+[node name="icon" type="TextureRect" parent="hud/quests/quest/title"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = -30.0
+margin_top = -12.0
+margin_right = -6.0
+margin_bottom = 12.0
+texture = ExtResource( 11 )
+expand = true
+
+[node name="desc" type="RichTextLabel" parent="hud/quests/quest"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 42.0
+margin_right = -10.0
+margin_bottom = -6.0
+custom_fonts/normal_font = SubResource( 5 )
+bbcode_enabled = true
+bbcode_text = "Find and kill [color=#edef6b]Ranged[/color] ([color=#8edb4e]0/5[/color])"
+text = "Find and kill Ranged (0/5)"
+scroll_active = false
+
+[node name="quest2" type="Control" parent="hud/quests"]
+margin_top = 84.0
+margin_right = 320.0
+margin_bottom = 210.0
+rect_min_size = Vector2( 100, 126 )
+
+[node name="bg" type="ColorRect" parent="hud/quests/quest2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.627451 )
+
+[node name="title" type="Label" parent="hud/quests/quest2"]
+editor/display_folded = true
+margin_left = 40.0
+margin_top = 5.0
+margin_right = 178.0
+margin_bottom = 39.0
+custom_fonts/font = SubResource( 4 )
+text = "Quest Name"
+
+[node name="icon" type="TextureRect" parent="hud/quests/quest2/title"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = -30.0
+margin_top = -12.0
+margin_right = -6.0
+margin_bottom = 12.0
+texture = ExtResource( 11 )
+expand = true
+
+[node name="desc" type="RichTextLabel" parent="hud/quests/quest2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 42.0
+margin_right = -10.0
+margin_bottom = -6.0
+custom_fonts/normal_font = SubResource( 5 )
+bbcode_enabled = true
+bbcode_text = "Talk to [color=#edef6b]Emma[/color]
+[s]Find and kill [color=#edef6b]Crog[/color] ([color=#8edb4e]10/10[/color])[/s]
+Collect [color=#edef6b]Weapon Part[/color] ([color=#8edb4e]0/3[/color])"
+text = "Talk to Emma
+Find and kill Crog (10/10)
+Collect Weapon Part (0/3)"
+scroll_active = false
