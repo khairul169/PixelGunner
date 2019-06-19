@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Reference",
+"class": "Entities",
+"language": "GDScript",
+"path": "res://scenes/singleton/entities.gd"
+}, {
 "base": "KinematicBody",
 "class": "Monster",
 "language": "GDScript",
@@ -33,13 +38,20 @@ _global_script_classes=[ {
 "class": "PlayerWeapon",
 "language": "GDScript",
 "path": "res://scenes/player/weapon.gd"
+}, {
+"base": "Reference",
+"class": "QuestManager",
+"language": "GDScript",
+"path": "res://scenes/singleton/quest_mgr.gd"
 } ]
 _global_script_class_icons={
+"Entities": "",
 "Monster": "",
 "NPC": "",
 "Player": "",
 "PlayerCamera": "",
-"PlayerWeapon": ""
+"PlayerWeapon": "",
+"QuestManager": ""
 }
 
 [application]

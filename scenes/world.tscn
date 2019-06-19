@@ -6,8 +6,6 @@
 [ext_resource path="res://scenes/player/camera.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/player/player.tscn" type="PackedScene" id=5]
 
-
-
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 0.482353, 0.482353, 0.482353, 1 )
 albedo_texture = ExtResource( 1 )
@@ -134,14 +132,15 @@ radius = 5.0
 monster_count = 5
 
 [node name="spawner2" type="Spatial" parent="level"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.75634, 0, -12.44 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 18.7607, 0, -1.17252 )
 script = ExtResource( 2 )
 monster_name = 1
 radius = 6.0
-monster_count = 2
+monster_count = 3
 
 [node name="trader" parent="level" instance=ExtResource( 3 )]
 transform = Transform( -0.228437, 0, -0.973559, 0, 1, 0, 0.973559, 0, -0.228437, -4.19694, 0, -1.98182 )
+npc_name = "Derick"
 
 [node name="camera" parent="." instance=ExtResource( 4 )]
 

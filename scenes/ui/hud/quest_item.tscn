@@ -1,0 +1,58 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scenes/ui/hud/quest_item.gd" type="Script" id=1]
+[ext_resource path="res://fonts/OpenSans-Regular.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://icon.png" type="Texture" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 22
+use_filter = true
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 18
+use_filter = true
+font_data = ExtResource( 2 )
+
+[node name="quest_item" type="Control"]
+margin_right = 320.0
+margin_bottom = 74.0
+rect_min_size = Vector2( 100, 74 )
+script = ExtResource( 1 )
+
+[node name="bg" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.627451 )
+
+[node name="title" type="Label" parent="."]
+editor/display_folded = true
+margin_left = 40.0
+margin_top = 5.0
+margin_right = 178.0
+margin_bottom = 39.0
+custom_fonts/font = SubResource( 1 )
+text = "Quest Name"
+
+[node name="icon" type="TextureRect" parent="title"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = -30.0
+margin_top = -12.0
+margin_right = -6.0
+margin_bottom = 12.0
+texture = ExtResource( 3 )
+expand = true
+
+[node name="tasks" type="RichTextLabel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = 42.0
+margin_right = -10.0
+margin_bottom = -6.0
+custom_fonts/normal_font = SubResource( 2 )
+bbcode_enabled = true
+bbcode_text = "Find and kill [color=#edef6b]Ranged[/color] ([color=#8edb4e]0/5[/color])"
+text = "Find and kill Ranged (0/5)"
+scroll_active = false

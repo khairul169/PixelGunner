@@ -1,26 +1,17 @@
 extends Spatial
 
-enum MonsterList {
-	CROG = 0,
-	RANGED
-};
-
-const MonsterAlias = [
-	'crog',
-	'ranged'
-];
-
-export (MonsterList) var monster_name = MonsterList.CROG;
+export (Entities.Monster) var monster_name;
 export (float) var radius = 10.0;
 export (int) var monster_count = 1;
 export (int) var monster_level = 1;
 
 func _ready() -> void:
-	if (!visible || monster_name < 0 || monster_name >= MonsterAlias.size()):
+	var monster_data = Entities.get_monster_data(monster_name);
+	if (!visible || !monster_data || !monster_data.has('alias')):
 		return;
 	
 	# load monster scene
-	var scene_path = 'res://scenes/monster/' + MonsterAlias[monster_name] + '.tscn';
+	var scene_path = 'res://scenes/monster/' + monster_data.alias + '.tscn';
 	var scene = load(scene_path);
 	
 	# scene isn't exists
@@ -50,6 +41,3 @@ func set_monster_stats(npc) -> void:
 	npc.accuracy += npc.accuracy * modifier;
 	npc.armor += npc.armor * modifier;
 	npc.agile += npc.agile * modifier;
-	
-	# set monster name
-	npc.monster_name = str('Lv', monster_level, ' ', npc.monster_name);

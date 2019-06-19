@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://scenes/ui.gd" type="Script" id=1]
 [ext_resource path="res://scenes/ui/hud/controller.gd" type="Script" id=2]
@@ -10,20 +10,10 @@
 [ext_resource path="res://fonts/OpenSans-Regular.ttf" type="DynamicFontData" id=8]
 [ext_resource path="res://sprites/controller/skill_button.png" type="Texture" id=9]
 [ext_resource path="res://scenes/ui/hud/minimap.tscn" type="PackedScene" id=10]
-[ext_resource path="res://icon.png" type="Texture" id=11]
+[ext_resource path="res://scenes/ui/hud/quest_item.tscn" type="PackedScene" id=11]
 
 [sub_resource type="DynamicFont" id=1]
 size = 28
-use_filter = true
-font_data = ExtResource( 8 )
-
-[sub_resource type="DynamicFont" id=4]
-size = 22
-use_filter = true
-font_data = ExtResource( 8 )
-
-[sub_resource type="DynamicFont" id=5]
-size = 18
 use_filter = true
 font_data = ExtResource( 8 )
 
@@ -187,91 +177,4 @@ margin_right = 340.0
 margin_bottom = 250.0
 custom_constants/separation = 10
 
-[node name="quest" type="Control" parent="hud/quests"]
-margin_right = 320.0
-margin_bottom = 74.0
-rect_min_size = Vector2( 100, 74 )
-
-[node name="bg" type="ColorRect" parent="hud/quests/quest"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-color = Color( 0, 0, 0, 0.627451 )
-
-[node name="title" type="Label" parent="hud/quests/quest"]
-editor/display_folded = true
-margin_left = 40.0
-margin_top = 5.0
-margin_right = 178.0
-margin_bottom = 39.0
-custom_fonts/font = SubResource( 4 )
-text = "Quest Name"
-
-[node name="icon" type="TextureRect" parent="hud/quests/quest/title"]
-anchor_top = 0.5
-anchor_bottom = 0.5
-margin_left = -30.0
-margin_top = -12.0
-margin_right = -6.0
-margin_bottom = 12.0
-texture = ExtResource( 11 )
-expand = true
-
-[node name="desc" type="RichTextLabel" parent="hud/quests/quest"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 10.0
-margin_top = 42.0
-margin_right = -10.0
-margin_bottom = -6.0
-custom_fonts/normal_font = SubResource( 5 )
-bbcode_enabled = true
-bbcode_text = "Find and kill [color=#edef6b]Ranged[/color] ([color=#8edb4e]0/5[/color])"
-text = "Find and kill Ranged (0/5)"
-scroll_active = false
-
-[node name="quest2" type="Control" parent="hud/quests"]
-margin_top = 84.0
-margin_right = 320.0
-margin_bottom = 210.0
-rect_min_size = Vector2( 100, 126 )
-
-[node name="bg" type="ColorRect" parent="hud/quests/quest2"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-color = Color( 0, 0, 0, 0.627451 )
-
-[node name="title" type="Label" parent="hud/quests/quest2"]
-editor/display_folded = true
-margin_left = 40.0
-margin_top = 5.0
-margin_right = 178.0
-margin_bottom = 39.0
-custom_fonts/font = SubResource( 4 )
-text = "Quest Name"
-
-[node name="icon" type="TextureRect" parent="hud/quests/quest2/title"]
-anchor_top = 0.5
-anchor_bottom = 0.5
-margin_left = -30.0
-margin_top = -12.0
-margin_right = -6.0
-margin_bottom = 12.0
-texture = ExtResource( 11 )
-expand = true
-
-[node name="desc" type="RichTextLabel" parent="hud/quests/quest2"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 10.0
-margin_top = 42.0
-margin_right = -10.0
-margin_bottom = -6.0
-custom_fonts/normal_font = SubResource( 5 )
-bbcode_enabled = true
-bbcode_text = "Talk to [color=#edef6b]Emma[/color]
-[s]Find and kill [color=#edef6b]Crog[/color] ([color=#8edb4e]10/10[/color])[/s]
-Collect [color=#edef6b]Weapon Part[/color] ([color=#8edb4e]0/3[/color])"
-text = "Talk to Emma
-Find and kill Crog (10/10)
-Collect Weapon Part (0/3)"
-scroll_active = false
+[node name="quest_item" parent="hud/quests" instance=ExtResource( 11 )]

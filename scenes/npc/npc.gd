@@ -1,25 +1,9 @@
 extends KinematicBody
 class_name NPC
 
-# defs
-enum NPCType {
-	NONE = 0,
-	TELEPORTER,
-	TRADER,
-	ENHANCHER,
-	CRAFTER
-}
-
-const NPCName = [
-	'',
-	'Teleporter',
-	'Trader',
-	'Enhancher',
-	'Crafter'
-];
-
 # editor var
-export (NPCType) var npc_type = NPCType.NONE;
+export (Entities.NPC) var npc_type;
+export (String) var npc_name;
 
 # refs
 onready var anims: AnimationPlayer = $body.find_node('AnimationPlayer');
@@ -28,17 +12,16 @@ onready var anims: AnimationPlayer = $body.find_node('AnimationPlayer');
 var velocity := Vector3.ZERO;
 
 func _ready() -> void:
-	anims.get_animation('idle_alt').loop = true;
-	anims.play('idle_alt');
-	
-	var npc_name;
-	if (npc_type >= 0 && npc_type < NPCName.size()):
-		npc_name = NPCName[npc_type];
+	# register npc
+	add_to_group("npc");
 	
 	if (npc_name):
-		$floating_bar.init(npc_name);
+		$floating_bar.init(str(npc_name).capitalize());
 	else:
 		$floating_bar.queue_free();
+	
+	anims.get_animation('idle_alt').loop = true;
+	anims.play('idle_alt');
 
 func _physics_process(delta: float) -> void:
 	var gv = velocity.y - (19.6 * delta);

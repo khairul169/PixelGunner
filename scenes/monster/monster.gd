@@ -23,7 +23,19 @@ enum DebuffType {
 	ARMOR
 };
 
+# editor vars
+export (Entities.Monster) var monster_id;
+export (float) var health_max = 100.0;
+export (float) var move_speed = 1.0;
+export (float) var attack_damage = 1.0;
+export (float) var attack_delay = 1.0;
+export (float) var attack_range = 1.0;
+export (float) var accuracy = 0.0;
+export (float) var armor = 0.0;
+export (float) var agile = 0.0;
+
 # vars
+var health = 0.0;
 var velocity := Vector3.ZERO;
 var next_think = 0.0;
 var target = [];
@@ -33,23 +45,17 @@ var impulse := Vector3.ZERO;
 var next_idle = 0.0;
 var debuff_list = [];
 
-export(float) var health_max = 100.0;
-var health = 0.0;
-
-export(String) var monster_name = "Monster";
-export(float) var move_speed = 1.0;
-export(float) var attack_damage = 1.0;
-export(float) var attack_delay = 1.0;
-export(float) var attack_range = 1.0;
-export(float) var accuracy = 0.0;
-export(float) var armor = 0.0;
-export(float) var agile = 0.0;
-
 func _ready() -> void:
 	add_to_group('damageable');
 	
 	$detection.connect("body_entered", self, "_obj_enter");
 	$detection.connect("body_exited", self, "_obj_exit");
+	
+	var monster_name;
+	var monster_data = Entities.get_monster_data(monster_id);
+	
+	if (monster_data && monster_data.has('name')):
+		monster_name = monster_data.name;
 	
 	# create floating bar
 	var uibar = FloatingBar.instance();
@@ -120,6 +126,9 @@ func _dying() -> void:
 	
 	# corpse removal delay
 	next_think = 5.0;
+	
+	# task
+	state_mgr.quest.task_achieved(state_mgr.quest.TASK_KILL_MONSTER, monster_id);
 
 func _obj_enter(obj) -> void:
 	if (obj is Player && !obj in target):
