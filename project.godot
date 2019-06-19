@@ -27,7 +27,7 @@ _global_script_classes=[ {
 "base": "Spatial",
 "class": "PlayerCamera",
 "language": "GDScript",
-"path": "res://scenes/camera.gd"
+"path": "res://scenes/player/camera.gd"
 }, {
 "base": "Reference",
 "class": "PlayerWeapon",

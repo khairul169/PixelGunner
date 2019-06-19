@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scenes/ui.gd" type="Script" id=1]
 [ext_resource path="res://scenes/ui/controller.gd" type="Script" id=2]
@@ -9,7 +9,6 @@
 [ext_resource path="res://sprites/controller/reload_button.png" type="Texture" id=7]
 [ext_resource path="res://fonts/OpenSans-Regular.ttf" type="DynamicFontData" id=8]
 [ext_resource path="res://scenes/ui/hud/minimap_scene.tscn" type="PackedScene" id=9]
-[ext_resource path="res://sprites/minimap/overlay.png" type="Texture" id=10]
 
 [sub_resource type="DynamicFont" id=1]
 size = 28
@@ -112,10 +111,3 @@ usage = 0
 render_target_update_mode = 3
 
 [node name="map" parent="hud/minimap/display/Viewport" instance=ExtResource( 9 )]
-
-[node name="overlay" type="TextureRect" parent="hud/minimap"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-texture = ExtResource( 10 )
-expand = true

@@ -2,17 +2,18 @@
 
 [ext_resource path="res://textures/tile.png" type="Texture" id=1]
 [ext_resource path="res://scenes/monster/spawner.gd" type="Script" id=2]
-[ext_resource path="res://scenes/player.tscn" type="PackedScene" id=3]
-[ext_resource path="res://scenes/camera.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scenes/npc/trader.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/npc/trader.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/player/camera.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/player.tscn" type="PackedScene" id=5]
+
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 0.482353, 0.482353, 0.482353, 1 )
 albedo_texture = ExtResource( 1 )
-uv1_scale = Vector3( 40, 40, 1 )
+uv1_scale = Vector3( 80, 80, 1 )
 
 [sub_resource type="PlaneMesh" id=2]
-size = Vector2( 50, 50 )
+size = Vector2( 100, 100 )
 
 [sub_resource type="ConcavePolygonShape" id=3]
 data = PoolVector3Array( 25, 0, 25, -25, 0, 25, 25, 0, -25, -25, 0, 25, -25, 0, -25, 25, 0, -25 )
@@ -28,118 +29,120 @@ data = PoolVector3Array( -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, -1
 
 [node name="world" type="Spatial"]
 
-[node name="floor" type="MeshInstance" parent="."]
+[node name="level" type="Spatial" parent="."]
+
+[node name="floor" type="MeshInstance" parent="level"]
 editor/display_folded = true
 material_override = SubResource( 1 )
 mesh = SubResource( 2 )
 material/0 = null
 
-[node name="StaticBody" type="StaticBody" parent="floor"]
+[node name="StaticBody" type="StaticBody" parent="level/floor"]
 
-[node name="CollisionShape" type="CollisionShape" parent="floor/StaticBody"]
+[node name="CollisionShape" type="CollisionShape" parent="level/floor/StaticBody"]
 shape = SubResource( 3 )
 
-[node name="props" type="Spatial" parent="."]
+[node name="props" type="Spatial" parent="level"]
 editor/display_folded = true
 transform = Transform( 0.0349021, -6.13832e-005, 0.57546, 6.09484e-005, 0.576518, 5.77995e-005, -0.57546, 5.73375e-005, 0.0349021, 0, 0, 0 )
 
-[node name="barrel" type="MeshInstance" parent="props"]
+[node name="barrel" type="MeshInstance" parent="level/props"]
 editor/display_folded = true
 transform = Transform( 0.694553, -7.27596e-012, 7.45058e-009, 1.45519e-011, 0.694553, 9.09495e-013, -7.45058e-009, 1.68257e-011, 0.694553, -3.19253, 0.674125, 9.29157 )
 mesh = SubResource( 5 )
 material/0 = null
 
-[node name="StaticBody" type="StaticBody" parent="props/barrel"]
+[node name="StaticBody" type="StaticBody" parent="level/props/barrel"]
 
-[node name="CollisionShape" type="CollisionShape" parent="props/barrel/StaticBody"]
+[node name="CollisionShape" type="CollisionShape" parent="level/props/barrel/StaticBody"]
 shape = SubResource( 6 )
 
-[node name="barrel2" type="MeshInstance" parent="props"]
+[node name="barrel2" type="MeshInstance" parent="level/props"]
 editor/display_folded = true
 transform = Transform( 0.581201, -7.27596e-012, -0.380276, 1.45519e-011, 0.694553, -7.27596e-012, 0.380276, 1.68257e-011, 0.581201, -4.17995, 0.674125, 7.65884 )
 mesh = SubResource( 5 )
 material/0 = null
 
-[node name="StaticBody" type="StaticBody" parent="props/barrel2"]
+[node name="StaticBody" type="StaticBody" parent="level/props/barrel2"]
 
-[node name="CollisionShape" type="CollisionShape" parent="props/barrel2/StaticBody"]
+[node name="CollisionShape" type="CollisionShape" parent="level/props/barrel2/StaticBody"]
 shape = SubResource( 6 )
 
-[node name="barrel3" type="MeshInstance" parent="props"]
+[node name="barrel3" type="MeshInstance" parent="level/props"]
 editor/display_folded = true
 transform = Transform( 0.282934, 0, 0.634313, 3.27418e-011, 0.694554, 7.27596e-012, -0.634313, 3.91083e-011, 0.282934, 8.93242, 0.673321, 9.75094 )
 mesh = SubResource( 5 )
 material/0 = null
 
-[node name="StaticBody" type="StaticBody" parent="props/barrel3"]
+[node name="StaticBody" type="StaticBody" parent="level/props/barrel3"]
 
-[node name="CollisionShape" type="CollisionShape" parent="props/barrel3/StaticBody"]
+[node name="CollisionShape" type="CollisionShape" parent="level/props/barrel3/StaticBody"]
 shape = SubResource( 6 )
 
-[node name="barrel4" type="MeshInstance" parent="props"]
+[node name="barrel4" type="MeshInstance" parent="level/props"]
 editor/display_folded = true
 transform = Transform( 0.282934, 0, 0.634313, 3.27418e-011, 0.694554, 7.27596e-012, -0.634313, 3.91083e-011, 0.282934, 8.93242, 0.673321, 11.3 )
 mesh = SubResource( 5 )
 material/0 = null
 
-[node name="StaticBody" type="StaticBody" parent="props/barrel4"]
+[node name="StaticBody" type="StaticBody" parent="level/props/barrel4"]
 
-[node name="CollisionShape" type="CollisionShape" parent="props/barrel4/StaticBody"]
+[node name="CollisionShape" type="CollisionShape" parent="level/props/barrel4/StaticBody"]
 shape = SubResource( 6 )
 
-[node name="barrel5" type="MeshInstance" parent="props"]
+[node name="barrel5" type="MeshInstance" parent="level/props"]
 editor/display_folded = true
 transform = Transform( 0.650284, -1.45519e-011, 0.244, 1.45519e-011, 0.694553, 7.27596e-012, -0.244, 2.27374e-012, 0.650284, 3.14127, 0.739905, 5.43583 )
 mesh = SubResource( 5 )
 material/0 = null
 
-[node name="StaticBody" type="StaticBody" parent="props/barrel5"]
+[node name="StaticBody" type="StaticBody" parent="level/props/barrel5"]
 
-[node name="CollisionShape" type="CollisionShape" parent="props/barrel5/StaticBody"]
+[node name="CollisionShape" type="CollisionShape" parent="level/props/barrel5/StaticBody"]
 shape = SubResource( 6 )
 
-[node name="barrel6" type="MeshInstance" parent="props"]
+[node name="barrel6" type="MeshInstance" parent="level/props"]
 editor/display_folded = true
 transform = Transform( 0.650284, 7.27596e-012, 0.244, 6.54836e-011, 0.694554, 1.81899e-012, -0.244, 4.00178e-011, 0.650283, 2.52933, 0.613538, -10.2426 )
 mesh = SubResource( 5 )
 material/0 = null
 
-[node name="StaticBody" type="StaticBody" parent="props/barrel6"]
+[node name="StaticBody" type="StaticBody" parent="level/props/barrel6"]
 
-[node name="CollisionShape" type="CollisionShape" parent="props/barrel6/StaticBody"]
+[node name="CollisionShape" type="CollisionShape" parent="level/props/barrel6/StaticBody"]
 shape = SubResource( 6 )
 
-[node name="barrel7" type="MeshInstance" parent="props"]
+[node name="barrel7" type="MeshInstance" parent="level/props"]
 editor/display_folded = true
 transform = Transform( 0.689709, 7.27596e-012, 0.0818892, 7.27596e-012, 0.694554, 1.81899e-012, -0.0818892, 4.00178e-011, 0.689709, 4.42363, 0.613538, -10.2426 )
 mesh = SubResource( 5 )
 material/0 = null
 
-[node name="StaticBody" type="StaticBody" parent="props/barrel7"]
+[node name="StaticBody" type="StaticBody" parent="level/props/barrel7"]
 
-[node name="CollisionShape" type="CollisionShape" parent="props/barrel7/StaticBody"]
+[node name="CollisionShape" type="CollisionShape" parent="level/props/barrel7/StaticBody"]
 shape = SubResource( 6 )
 
-[node name="light" type="DirectionalLight" parent="."]
+[node name="light" type="DirectionalLight" parent="level"]
 transform = Transform( 1, 0, 0, 0, 0.545081, 0.838383, 0, -0.838383, 0.545081, 0, 0.750294, 0 )
 
-[node name="spawner" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10.3791 )
+[node name="spawner" type="Spatial" parent="level"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.75634, 0, -12.44 )
 script = ExtResource( 2 )
 radius = 5.0
 monster_count = 5
 
-[node name="spawner2" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10.3791 )
+[node name="spawner2" type="Spatial" parent="level"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.75634, 0, -12.44 )
 script = ExtResource( 2 )
 monster_name = 1
 radius = 6.0
 monster_count = 2
 
-[node name="player" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.613, 0 )
+[node name="trader" parent="level" instance=ExtResource( 3 )]
+transform = Transform( -0.228437, 0, -0.973559, 0, 1, 0, 0.973559, 0, -0.228437, -4.19694, 0, -1.98182 )
 
 [node name="camera" parent="." instance=ExtResource( 4 )]
 
-[node name="trader" parent="." instance=ExtResource( 5 )]
-transform = Transform( -0.228437, 0, -0.973559, 0, 1, 0, 0.973559, 0, -0.228437, -4.19694, 0, -1.98182 )
+[node name="player" parent="." instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.613, 0 )
