@@ -268,7 +268,6 @@ align = 1
 valign = 1
 
 [node name="armory" parent="content/container" instance=ExtResource( 7 )]
-visible = false
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0

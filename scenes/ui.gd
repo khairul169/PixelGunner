@@ -6,7 +6,10 @@ onready var button_attack = $action_button/attack;
 onready var button_reload = $action_button/reload;
 
 func _ready() -> void:
-	pass
+	$menu_btn.connect("pressed", self, "_open_menu");
+
+func _open_menu() -> void:
+	state_mgr.goto_mainmenu();
 
 func set_reloadbutton_clip(clip: int) -> void:
 	if (!button_reload):

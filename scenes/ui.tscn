@@ -24,6 +24,15 @@ __meta__ = {
 "_edit_lock_": true
 }
 
+[node name="menu_btn" type="Button" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -80.0
+margin_top = 20.0
+margin_right = -20.0
+margin_bottom = 80.0
+text = "MENU"
+
 [node name="controller" type="Control" parent="."]
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -32,7 +41,10 @@ margin_right = 424.0
 mouse_filter = 2
 script = ExtResource( 2 )
 base_button = ExtResource( 3 )
+base_size = 192.0
 button = ExtResource( 4 )
+button_size = 48.0
+max_distance = 96.0
 
 [node name="action_button" type="Control" parent="."]
 anchor_right = 1.0
