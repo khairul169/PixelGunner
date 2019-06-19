@@ -160,7 +160,7 @@ script = ExtResource( 3 )
 
 [node name="items" type="GridContainer" parent="panel/container"]
 margin_right = 175.0
-margin_bottom = 175.0
+margin_bottom = 170.0
 custom_constants/vseparation = 20
 custom_constants/hseparation = 20
 columns = 4
