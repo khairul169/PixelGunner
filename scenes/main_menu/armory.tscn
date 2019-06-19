@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scenes/main_menu/armory.gd" type="Script" id=1]
 [ext_resource path="res://fonts/OpenSans-Regular.ttf" type="DynamicFontData" id=2]
-[ext_resource path="res://scenes/ui/swipe_scrollcontainer.gd" type="Script" id=3]
-[ext_resource path="res://scenes/main_menu/armory_item.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/ui/hidden_scrollbar.tres" type="Theme" id=3]
+[ext_resource path="res://scenes/ui/swipe_scrollcontainer.gd" type="Script" id=4]
+[ext_resource path="res://scenes/main_menu/armory_item.tscn" type="PackedScene" id=5]
 
 [sub_resource type="DynamicFont" id=1]
 size = 20
@@ -155,8 +156,9 @@ margin_bottom = -20.0
 [node name="container" type="ScrollContainer" parent="panel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+theme = ExtResource( 3 )
 scroll_horizontal_enabled = false
-script = ExtResource( 3 )
+script = ExtResource( 4 )
 
 [node name="items" type="GridContainer" parent="panel/container"]
 margin_right = 175.0
@@ -165,4 +167,4 @@ custom_constants/vseparation = 20
 custom_constants/hseparation = 20
 columns = 4
 
-[node name="item1" parent="panel/container/items" instance=ExtResource( 4 )]
+[node name="item1" parent="panel/container/items" instance=ExtResource( 5 )]
