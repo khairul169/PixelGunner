@@ -47,3 +47,24 @@ static func get_weapon(id: int):
 	if (id <= 0 || id >= WEAPON_ALL || !weapon_data.has(id)):
 		return null;
 	return weapon_data[id];
+
+static func check_weapon() -> void:
+	var needed_vars = [
+		'wpn_class',
+		'name',
+		'damage',
+		'rof',
+		'accuracy',
+		'clip',
+		'knockback',
+		'slowness'
+	];
+	
+	for i in range(1, WEAPON_ALL):
+		if (!weapon_data.has(i)):
+			print("Weapon data for ID ", i, " doesn't exist.");
+			continue;
+		
+		for j in needed_vars:
+			if (!weapon_data[i].has(j)):
+				print("Weapon ID ", i, " var ", j, " doesn't exist.");

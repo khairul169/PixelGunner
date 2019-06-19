@@ -5,7 +5,7 @@ var player = {
 };
 
 func _ready() -> void:
-	pass
+	PlayerWeapon.check_weapon();
 
 func goto_mainmenu() -> void:
 	get_tree().change_scene("res://scenes/main_menu.tscn");
