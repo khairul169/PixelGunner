@@ -36,6 +36,7 @@ func init(barname: String, max_health: float = 0.0) -> void:
 	
 	if (hide_health):
 		$health.hide();
+		$name.rect_size.y += 10;
 	
 	visible = true;
 	set_process(true);
