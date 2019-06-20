@@ -1,14 +1,23 @@
 extends Node
 
+# signals
+signal item_updated();
+
 # reference
 onready var player: Player = get_parent();
 
+# vars
 var items = [];
 
 func _ready() -> void:
 	pass
 
-func _process(delta: float) -> void:
+func _item_updated() -> void:
+	emit_signal("item_updated");
+	
+	# task
+	state_mgr.quest.task_achieved(state_mgr.quest.TASK_COLLECT_ITEM, self);
+	
 	var text = "";
 	for item in items:
 		var item_name = Items.get_item(item.id).label;
@@ -17,7 +26,7 @@ func _process(delta: float) -> void:
 	$Label.text = text;
 
 func add_item(item_id: int, amount: int) -> void:
-	if (!Items.items.has(item_id)):
+	if (!Items.items.has(item_id) || amount <= 0):
 		return;
 	
 	var max_stacks = Items.get_item(item_id).stack;
@@ -28,6 +37,7 @@ func add_item(item_id: int, amount: int) -> void:
 		var filled = int(min(cur_amount + amount, max_stacks));
 		items[has_stacks].amount = filled;
 		amount -= (filled - cur_amount);
+		_item_updated();
 	
 	if (amount <= 0):
 		return;
@@ -41,6 +51,9 @@ func add_item(item_id: int, amount: int) -> void:
 		var f = amount % max_stacks;
 		if (f > 0):
 			items.append({'id': item_id, 'amount': f});
+	
+	# call signal
+	_item_updated();
 
 func _find_fillable_slot(item_id: int) -> int:
 	var max_stacks = Items.get_item(item_id).stack;
@@ -53,6 +66,13 @@ func get_item_by_id(id: int):
 	for i in items:
 		if (i.id == id):
 			return i;
+
+func set_item_amount(item, amount: int) -> void:
+	if (typeof(item) == TYPE_INT && item >= 0 && item < items.size()):
+		items[item].amount = amount;
+	elif (item is Dictionary && item.has('amount')):
+		item.amount = amount;
+	_item_updated();
 
 func get_item_amount(item_id: int) -> int:
 	var amount = 0;
@@ -75,11 +95,15 @@ func remove_item(item_id: int, amount: int) -> int:
 		
 		if (needed <= 0):
 			break;
+	
+	# call signal
+	_item_updated();
 	return (amount - needed);
 
 func remove_item_stack(slot: int) -> void:
 	if (slot >= 0 && slot < items.size()):
 		items.remove(slot);
+		_item_updated();
 
 func resupply_ammo() -> void:
 	var weapon = PlayerWeapon.get_weapon(player.weapon);
@@ -97,6 +121,6 @@ func resupply_ammo() -> void:
 	
 	var item = get_item_by_id(Items.ITEM_AMMUNITION);
 	if (item):
-		item.amount = ammo;
+		set_item_amount(item, ammo);
 	else:
 		add_item(Items.ITEM_AMMUNITION, ammo);

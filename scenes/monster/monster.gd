@@ -85,7 +85,7 @@ func give_damage(damage: float, source = null) -> float:
 		_damaged(damage, source);
 	
 	if (health <= 0.0 && has_method('_dying')):
-		_dying();
+		_dying(source);
 		emit_signal("dying");
 	
 	return damage;
@@ -116,7 +116,7 @@ func _damaged(damage, source) -> void:
 	if (target.empty() && source.is_in_group('damageable')):
 		target.append(source);
 
-func _dying() -> void:
+func _dying(killer) -> void:
 	# play dying animation
 	set_animation('dying');
 	next_idle = 0.5;
@@ -126,6 +126,10 @@ func _dying() -> void:
 	
 	# corpse removal delay
 	next_think = 5.0;
+	
+	# item drop
+	if (killer is Player):
+		killer.m_backpack.add_item(Items.ITEM_BOLT, int(rand_range(0, 3)));
 	
 	# task
 	state_mgr.quest.task_achieved(state_mgr.quest.TASK_KILL_MONSTER, monster_id);

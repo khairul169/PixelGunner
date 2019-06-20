@@ -102,7 +102,16 @@ func _check_task(quest: Quest, task: Dictionary, type: int, args) -> void:
 				quest.set_task_completed(task.id);
 			
 			# update data
-			data['_num'] = num;
+			data['_num'] = int(clamp(num, 0, data.count));
+			quest.set_task_data(task.id, data);
+		
+		TASK_COLLECT_ITEM:
+			var num = args.get_item_amount(data.item);
+			if (num >= data.count):
+				quest.set_task_completed(task.id);
+			
+			# update data
+			data['_num'] = int(clamp(num, 0, data.count));
 			quest.set_task_data(task.id, data);
 		
 		TASK_INTERACT_NPC:
@@ -121,6 +130,9 @@ func get_task_name(task: Dictionary):
 	match (task.type):
 		TASK_KILL_MONSTER:
 			name = _task_kill_monster(task, task.data);
+		
+		TASK_COLLECT_ITEM:
+			name = _task_collect_object(task, task.data);
 		
 		TASK_INTERACT_NPC:
 			name = _task_interact_npc(task, task.data);
@@ -143,9 +155,16 @@ func _task_kill_monster(task, data):
 		return null;
 	
 	var monster_data = Entities.get_monster_data(data.monster);
-	var monster_name = monster_data.name if monster_data.has('name') else "Monster";
 	var task_counter = data['_num'] if data.has('_num') else 0;
-	return str("Find and kill", _bb_object(monster_name), _bb_counter(task_counter, data.count));
+	return str("Find and kill", _bb_object(monster_data.name), _bb_counter(task_counter, data.count));
+
+func _task_collect_object(task, data):
+	if (!data.has('item') || !data.has('count')):
+		return null;
+	
+	var item_data = Items.get_item(data.item);
+	var task_counter = data['_num'] if data.has('_num') else 0;
+	return str("Collect", _bb_object(item_data.label), _bb_counter(task_counter, data.count));
 
 func _task_interact_npc(task, data):
 	if (data.has('npc') && data.has('name')):

@@ -400,6 +400,7 @@ func reload() -> void:
 	# start reload
 	state = State.RELOADING;
 	next_think = reload_time;
+	player.stop();
 	
 	player.set_bar_status("RELOADING");
 
