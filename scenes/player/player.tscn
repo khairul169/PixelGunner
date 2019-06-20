@@ -1,13 +1,20 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scenes/player/player.gd" type="Script" id=1]
 [ext_resource path="res://models/player/player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/ui/hud/floating_bar.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/player/attack.gd" type="Script" id=4]
+[ext_resource path="res://scenes/player/backpack.gd" type="Script" id=5]
+[ext_resource path="res://fonts/OpenSans-Regular.ttf" type="DynamicFontData" id=6]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.4
 height = 0.6
+
+[sub_resource type="DynamicFont" id=2]
+size = 24
+use_filter = true
+font_data = ExtResource( 6 )
 
 [node name="player" type="KinematicBody"]
 script = ExtResource( 1 )
@@ -27,3 +34,14 @@ healthbar_color = Color( 0.666667, 0.945098, 0.262745, 1 )
 
 [node name="attack" type="Node" parent="."]
 script = ExtResource( 4 )
+
+[node name="backpack" type="Node" parent="."]
+script = ExtResource( 5 )
+
+[node name="Label" type="Label" parent="backpack"]
+margin_left = 519.005
+margin_top = 11.4927
+margin_right = 559.005
+margin_bottom = 45.4927
+custom_fonts/font = SubResource( 2 )
+text = "sad"

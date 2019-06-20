@@ -12,7 +12,7 @@ enum {
 	TASK_INTERACT_NPC
 };
 
-class Quest:
+class Quest extends Reference:
 	var quest_mgr: Reference;
 	var name: String;
 	var tasks = [];

@@ -14,14 +14,10 @@ color = Color( 0.0823529, 0.0823529, 0.0823529, 0.392157 )
 [node name="display" type="ViewportContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 5.0
-margin_top = 5.0
-margin_right = -5.0
-margin_bottom = -5.0
 stretch = true
 
 [node name="Viewport" type="Viewport" parent="display"]
-size = Vector2( 170, 170 )
+size = Vector2( 180, 180 )
 own_world = true
 transparent_bg = true
 handle_input_locally = false

@@ -25,20 +25,28 @@ func load_object() -> void:
 	object_scene.get_parent().remove_child(object_scene);
 	
 	# iterate damageable object
-	for i in get_tree().get_nodes_in_group(\"damageable\"):
-		if (i is Player):
-			# node is player
-			player = i;
+	for object in get_tree().get_nodes_in_group(\"damageable\"):
+		if (object is Player):
+			player = object;
 			continue;
 		
-		# create sprite
-		var node = object_scene.duplicate();
-		var obj_pos = i.global_transform.origin;
-		node.position = Vector2(obj_pos.x, obj_pos.z) * SCALING;
-		objects_node.add_child(node);
+		var col = Color(1, 1, 1);
+		if (object is Monster):
+			col = Color('#f22c2c');
 		
-		# add to object list
-		objects.append([node, i]);
+		add_object(object, object_scene, col);
+	
+	for object in get_tree().get_nodes_in_group(\"npc\"):
+		add_object(object, object_scene, Color('#73f22c'));
+
+func add_object(object: Spatial, object_scene: Node, color: Color = Color(1, 1, 1)) -> void:
+	# create sprite
+	var node = object_scene.duplicate();
+	objects_node.add_child(node);
+	node.modulate = color;
+	
+	# add to object list
+	objects.append([node, object]);
 
 func _process(delta: float) -> void:
 	# update camera position to match player position
@@ -53,7 +61,7 @@ func _process(delta: float) -> void:
 		var obj = i[1];
 		
 		# remove dying object
-		if (obj.health <= 0.0):
+		if (obj is Monster && obj.health <= 0.0):
 			objects.erase(i);
 			node.queue_free();
 			continue;

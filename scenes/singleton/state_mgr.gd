@@ -2,18 +2,19 @@ extends Node
 
 var quest: QuestManager;
 
-var player = {
-	'weapon': null
-};
+class PlayerState:
+	var weapon;
+
+var player := PlayerState.new();
 
 func _ready() -> void:
 	PlayerWeapon.check_weapon();
+	player.weapon = PlayerWeapon.WEAPON_RIFLE;
 	reset_game();
 
 func reset_game() -> void:
 	quest = QuestManager.new();
 	quest.connect("quest_completed", self, "_quest_completed");
-	player.weapon = null;
 	
 	var quest1 = QuestManager.create_quest("New Quest");
 	quest1.add_task(QuestManager.TASK_KILL_MONSTER, {

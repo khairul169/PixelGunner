@@ -98,7 +98,7 @@ func reset_weapon() -> void:
 	
 	if (target):
 		# disable targeting
-		player.move_to(null);
+		player.stop();
 		target = null;
 
 func set_weapon(id: int) -> void:
@@ -156,6 +156,10 @@ func set_weapon(id: int) -> void:
 			player.find_node('pistol').hide();
 			player.find_node('rifle').show();
 	
+	# resupply ammunition
+	player.weapon = id;
+	player.m_backpack.resupply_ammo();
+	
 	# update ui
 	call_deferred('_update_interface');
 
@@ -208,7 +212,7 @@ func _physics_process(delta: float) -> void:
 	if (player.is_moving):
 		if (target):
 			# disable targeting
-			player.move_to(null);
+			player.stop();
 			target = null;
 		
 		# set state
@@ -230,7 +234,7 @@ func _physics_process(delta: float) -> void:
 		if (target):
 			# set player shooting animation
 			player.set_animation(player.PlayerAnims.SHOOT);
-			player.move_to(null, 0.15);
+			player.stop(0.15);
 			player.next_idle = 0.5;
 			
 			state = State.ATTACKING;
@@ -264,11 +268,11 @@ func _physics_process(delta: float) -> void:
 			state = State.MOVING;
 		else:
 			if (state != State.ATTACKING):
-				player.move_to(null, 0.4);
+				player.stop(0.4);
 				next_think = 0.3;
 				set_look_at(target);
 			else:
-				player.move_to(null, 0.1);
+				player.stop(0.1);
 				next_think = 0.0;
 			
 			state = State.AIMING;
@@ -298,7 +302,7 @@ func start_attack() -> void:
 	if (res.has('enemy')):
 		if (!target):
 			# disable movement for a while
-			player.move_to(null, 0.2);
+			player.stop(0.2);
 		
 		# set target
 		target = res.enemy;
@@ -390,6 +394,9 @@ func reload() -> void:
 	if (wpn_clip >= max_clip || state == State.RELOADING):
 		return;
 	
+	if (player.m_backpack.get_item_amount(Items.ITEM_AMMUNITION) <= 0):
+		return;
+	
 	# start reload
 	state = State.RELOADING;
 	next_think = reload_time;
@@ -403,9 +410,13 @@ func _reload_finished() -> void:
 	if (state != State.RELOADING):
 		return;
 	
+	if (player.m_backpack.get_item_amount(Items.ITEM_AMMUNITION) <= 0):
+		return;
+	
 	# replenish weapon clip
 	wpn_clip = max_clip;
 	next_think = 0.1;
+	player.m_backpack.remove_item(Items.ITEM_AMMUNITION, 1);
 	
 	# update ui
 	player.set_bar_status("");

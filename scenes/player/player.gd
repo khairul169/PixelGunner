@@ -4,10 +4,12 @@ extends KinematicBody
 class_name Player
 
 # reference
-onready var m_attack = $attack;
 onready var camera: PlayerCamera = get_parent().get_node('camera');
 onready var animplayer: AnimationPlayer = $body/player/AnimationPlayer;
 onready var ui = get_tree().get_root().get_node("main/ui");
+
+onready var m_attack = $attack;
+onready var m_backpack = $backpack;
 
 # signals
 signal health_changed();
@@ -58,6 +60,7 @@ var animation = anims[PlayerAnims.IDLE];
 var anim_speed = 1.0;
 var next_idle = 0.0;
 var anim_offset = 0;
+var weapon;
 
 var move_speed = 3.0;
 var health_max = 100.0;
@@ -129,12 +132,10 @@ func _on_spawn() -> void:
 	anim_speed = 1.0;
 	next_idle = 0.0;
 	anim_offset = 0;
+	weapon = null;
 	
-	var weapon = PlayerWeapon.WEAPON_RIFLE;
-	if (state_mgr.player.weapon):
-		weapon = state_mgr.player.weapon;
-	
-	m_attack.set_weapon(weapon);
+	m_attack.set_weapon(state_mgr.player.weapon);
+	m_backpack.resupply_ammo();
 
 func _damaged(damage, attacker) -> void:
 	if (damage <= 0.0):
@@ -246,9 +247,13 @@ func _process(delta: float) -> void:
 		animplayer.play(animation, 0.1, anim_speed);
 		next_idle = 0.1;
 
-func move_to(position, delay = 0.0) -> void:
+func move_to(position: Vector3) -> void:
 	navigate_to = position;
-	next_think = delay;
+	next_think = 0.0;
+
+func stop(next_move: float = 0.0) -> void:
+	navigate_to = null;
+	next_think = next_move;
 
 func set_animation(id: int, blend_time: float = 0.0) -> void:
 	if (id < 0 || id >= anims.size()):
