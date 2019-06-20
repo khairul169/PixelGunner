@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scenes/main_menu/armory_weapon.gd" type="Script" id=1]
 [ext_resource path="res://fonts/OpenSans-Regular.ttf" type="DynamicFontData" id=2]
@@ -12,6 +12,11 @@ size = 28
 use_filter = true
 font_data = ExtResource( 2 )
 
+[sub_resource type="DynamicFont" id=5]
+size = 18
+use_filter = true
+font_data = ExtResource( 2 )
+
 [sub_resource type="DynamicFont" id=2]
 use_filter = true
 font_data = ExtResource( 2 )
@@ -20,6 +25,22 @@ font_data = ExtResource( 2 )
 size = 18
 use_filter = true
 font_data = ExtResource( 2 )
+
+[sub_resource type="Animation" id=4]
+resource_name = "fade_in"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
 
 [node name="weapon" type="Control"]
 anchor_right = 1.0
@@ -36,29 +57,35 @@ margin_right = -312.0
 [node name="weapon_title" type="Control" parent="content"]
 editor/display_folded = true
 anchor_right = 1.0
-margin_bottom = 40.0
+margin_bottom = 58.0
+
+[node name="class" type="ColorRect" parent="content/weapon_title"]
+margin_top = 10.0
+margin_right = 60.0
+margin_bottom = 50.0
 
 [node name="wpn_name" type="Label" parent="content/weapon_title"]
-anchor_bottom = 1.0
 margin_left = 70.0
 margin_right = 126.0
+margin_bottom = 39.0
 custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 1, 0.533333, 0.156863, 1 )
 text = "Rifle"
-valign = 1
 
-[node name="class" type="ColorRect" parent="content/weapon_title"]
-anchor_top = 0.5
-anchor_bottom = 0.5
-margin_top = -20.0
-margin_right = 60.0
-margin_bottom = 20.0
+[node name="level" type="Label" parent="content/weapon_title"]
+margin_left = 72.0
+margin_top = 32.0
+margin_right = 108.0
+margin_bottom = 58.0
+custom_fonts/font = SubResource( 5 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "Lv 1"
 
 [node name="weapon_prev" type="Control" parent="content"]
 editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = 50.0
+margin_top = 60.0
 margin_bottom = -220.0
 
 [node name="bg" type="ColorRect" parent="content/weapon_prev"]
@@ -68,13 +95,12 @@ anchor_bottom = 1.0
 color = Color( 0, 0, 0, 0.176471 )
 
 [node name="container" type="ViewportContainer" parent="content/weapon_prev"]
-editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 stretch = true
 
 [node name="Viewport" type="Viewport" parent="content/weapon_prev/container"]
-size = Vector2( 470, 210 )
+size = Vector2( 470, 200 )
 own_world = true
 transparent_bg = true
 handle_input_locally = false
@@ -162,6 +188,10 @@ margin_right = 470.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 150, 40 )
 text = "USE"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="content"]
+autoplay = "fade_in"
+anims/fade_in = SubResource( 4 )
 
 [node name="container" type="ScrollContainer" parent="."]
 anchor_left = 1.0

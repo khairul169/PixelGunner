@@ -2,7 +2,7 @@ extends Node
 
 var quest: QuestManager;
 
-class PlayerState:
+class PlayerState extends Reference:
 	var weapon;
 
 var player := PlayerState.new();

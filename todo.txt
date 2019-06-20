@@ -15,3 +15,8 @@ weapon enhancement
 player skill training
 player rank (elite)
 coop / friendly npc
+
+--
+weapon level: use 60% base stats - lvl 100
+weapon enhancement: 5 lvl (float 0-1.0)
+
