@@ -80,11 +80,20 @@ func load_weapon() -> void:
 	
 	var item_scene = load("res://scenes/main_menu/weapon_item.tscn");
 	for i in weapon_list:
+		var wpn = PlayerWeapon.get_weapon(i);
+		if (not wpn):
+			continue
+		
 		var item = item_scene.instance();
 		item_container.add_child(item);
 		
 		item.connect("pressed", self, "_switch_weapon", [i]);
-		item.get_node('title').text = PlayerWeapon.get_weapon(i).name;
+		item.get_node('title').text = wpn.name;
+		item.get_node('used').visible = (state_mgr.player.weapon == i);
+		
+		var item_pict = load("res://sprites/weapon/" + wpn.alias + ".png");
+		if (item_pict):
+			item.get_node('item').texture = item_pict;
 
 func _switch_weapon(id: int) -> void:
 	set_weapon(id);

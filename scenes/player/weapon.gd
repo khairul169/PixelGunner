@@ -24,7 +24,7 @@ const weapon_data = {
 		'alias': 'pistol',
 		'name': 'Pistol',
 		'damage': 30.0,
-		'rof': 60,
+		'rof': 120,
 		'accuracy': 20.0,
 		'clip': 12,
 		'knockback': 10.0,
@@ -37,7 +37,7 @@ const weapon_data = {
 		'alias': 'rifle',
 		'name': 'Rifle',
 		'damage': 20.0,
-		'rof': 120,
+		'rof': 280,
 		'accuracy': 50.0,
 		'clip': 30,
 		'knockback': 12.0,
@@ -77,13 +77,15 @@ static func calculate_stats(id: int, level: int, enhancement: float):
 			enhancement_factor = 0.0;
 	
 	for i in stats:
-		var base_stats = stats[i];
-		
 		# level scaling
-		stats[i] = (base_stats * 0.1) + (base_stats * 0.9 * (level / 100.0));
+		stats[i] = (stats[i] * 0.2) + (stats[i] * 0.8 * (level / 100.0));
 		
 		# enhancement
-		stats[i] += base_stats * enhancement_factor;
+		stats[i] += stats[i] * enhancement_factor * clamp(enhancement, 0.0, 1.0);
+	
+	# clamp value
+	stats['rof'] = clamp(stats['rof'], 0.0, 300.0);
+	stats['slowness'] = clamp(stats['slowness'], 0.0, 1.0);
 	
 	return stats;
 
