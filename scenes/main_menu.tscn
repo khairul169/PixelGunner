@@ -94,6 +94,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="header" type="Control" parent="layout"]
+editor/display_folded = true
 anchor_right = 1.0
 margin_bottom = 85.0
 
@@ -151,9 +152,9 @@ editor/display_folded = true
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -820.0
+margin_left = -760.0
 margin_top = 26.0
-margin_right = -80.0
+margin_right = -20.0
 margin_bottom = -19.0
 custom_constants/separation = 16
 alignment = 2
@@ -169,23 +170,6 @@ margin_right = 574.0
 [node name="gems" parent="layout/header/resources" instance=ExtResource( 6 )]
 margin_left = 590.0
 margin_right = 740.0
-
-[node name="settings_btn" type="Button" parent="layout/header"]
-editor/display_folded = true
-anchor_left = 1.0
-anchor_right = 1.0
-margin_left = -60.0
-margin_top = 26.0
-margin_right = -20.0
-margin_bottom = 66.0
-flat = true
-
-[node name="img" type="TextureRect" parent="layout/header/settings_btn"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-texture = ExtResource( 4 )
-expand = true
 
 [node name="content" type="Control" parent="layout"]
 anchor_right = 1.0

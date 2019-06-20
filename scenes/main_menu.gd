@@ -43,7 +43,8 @@ func setup_navigation() -> void:
 		'play': "Play",
 		'armory': "Armory",
 		'quest': "Quest",
-		'community': "Community"
+		'community': "Community",
+		'settings': "Settings"
 	};
 	
 	for key in navigation_list:
@@ -57,7 +58,7 @@ func setup_navigation() -> void:
 		if (key == 'community'):
 			instance.rect_min_size.x = 180;
 		
-		instance.get_node('label').text = str(value).to_upper();
+		instance.get_node('label').text = str(value).capitalize();
 		instance.connect("pressed", self, "_nav_pressed", [key]);
 	
 	# free navigation item template
