@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/pistol.dae-e09533a8a436eaee831a340d3be2b97f.scn"
+path="res://.import/pistol.dae-aa436af8fed14cd05526a557a147e29e.scn"
 
 [deps]
 
-source_file="res://models/player/weapon/pistol.dae"
-dest_files=[ "res://.import/pistol.dae-e09533a8a436eaee831a340d3be2b97f.scn" ]
+source_file="res://models/weapons/pistol.dae"
+dest_files=[ "res://.import/pistol.dae-aa436af8fed14cd05526a557a147e29e.scn" ]
 
 [params]
 

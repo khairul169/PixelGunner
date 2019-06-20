@@ -54,11 +54,8 @@ func setup_navigation() -> void:
 		var instance = nav_item.duplicate();
 		container.add_child(instance);
 		
-		if (key == 'armory'):
-			instance.rect_min_size.x = 180;
-		
 		if (key == 'community'):
-			instance.rect_min_size.x = 220;
+			instance.rect_min_size.x = 180;
 		
 		instance.get_node('label').text = str(value).to_upper();
 		instance.connect("pressed", self, "_nav_pressed", [key]);

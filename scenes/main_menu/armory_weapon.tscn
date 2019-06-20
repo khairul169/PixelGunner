@@ -1,0 +1,193 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://scenes/main_menu/armory_weapon.gd" type="Script" id=1]
+[ext_resource path="res://fonts/OpenSans-Regular.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://scenes/main_menu/weapon_preview.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/ui/hidden_scrollbar.tres" type="Theme" id=4]
+[ext_resource path="res://scenes/ui/swipe_scrollcontainer.gd" type="Script" id=5]
+[ext_resource path="res://scenes/main_menu/weapon_item.tscn" type="PackedScene" id=6]
+
+[sub_resource type="DynamicFont" id=1]
+size = 28
+use_filter = true
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=2]
+use_filter = true
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 18
+use_filter = true
+font_data = ExtResource( 2 )
+
+[node name="weapon" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -498.0
+margin_bottom = -240.0
+script = ExtResource( 1 )
+
+[node name="content" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -312.0
+
+[node name="weapon_title" type="Control" parent="content"]
+editor/display_folded = true
+anchor_right = 1.0
+margin_bottom = 40.0
+
+[node name="wpn_name" type="Label" parent="content/weapon_title"]
+anchor_bottom = 1.0
+margin_left = 70.0
+margin_right = 126.0
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 1, 0.533333, 0.156863, 1 )
+text = "Rifle"
+valign = 1
+
+[node name="class" type="ColorRect" parent="content/weapon_title"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_top = -20.0
+margin_right = 60.0
+margin_bottom = 20.0
+
+[node name="weapon_prev" type="Control" parent="content"]
+editor/display_folded = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 50.0
+margin_bottom = -220.0
+
+[node name="bg" type="ColorRect" parent="content/weapon_prev"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.176471 )
+
+[node name="container" type="ViewportContainer" parent="content/weapon_prev"]
+editor/display_folded = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+stretch = true
+
+[node name="Viewport" type="Viewport" parent="content/weapon_prev/container"]
+size = Vector2( 470, 210 )
+own_world = true
+transparent_bg = true
+handle_input_locally = false
+render_target_update_mode = 3
+
+[node name="scene" parent="content/weapon_prev/container/Viewport" instance=ExtResource( 3 )]
+
+[node name="weapon_stats" type="Control" parent="content"]
+editor/display_folded = true
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -210.0
+margin_bottom = -50.0
+
+[node name="container" type="GridContainer" parent="content/weapon_stats"]
+editor/display_folded = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -2.0
+custom_constants/vseparation = 7
+custom_constants/hseparation = 14
+columns = 2
+
+[node name="item" type="Control" parent="content/weapon_stats/container"]
+editor/display_folded = true
+margin_right = 230.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 230, 30 )
+
+[node name="icon" type="ColorRect" parent="content/weapon_stats/container/item"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_top = -13.0
+margin_right = 26.0
+margin_bottom = 13.0
+
+[node name="title" type="Label" parent="content/weapon_stats/container/item"]
+anchor_bottom = 1.0
+margin_left = 40.0
+margin_right = 103.0
+custom_fonts/font = SubResource( 2 )
+text = "Damage"
+valign = 1
+
+[node name="value" type="Label" parent="content/weapon_stats/container/item"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 110.0
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 0.796078, 1, 0.470588, 1 )
+text = "40"
+align = 2
+valign = 1
+
+[node name="action" type="Control" parent="content"]
+editor/display_folded = true
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -40.0
+
+[node name="container" type="HBoxContainer" parent="content/action"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 10
+alignment = 1
+
+[node name="skills" type="Button" parent="content/action/container"]
+margin_right = 150.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 150, 40 )
+text = "SKILLS"
+
+[node name="equip" type="Button" parent="content/action/container"]
+margin_left = 160.0
+margin_right = 310.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 150, 40 )
+text = "EQUIPMENT"
+
+[node name="use" type="Button" parent="content/action/container"]
+margin_left = 320.0
+margin_right = 470.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 150, 40 )
+text = "USE"
+
+[node name="container" type="ScrollContainer" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -300.0
+theme = ExtResource( 4 )
+scroll_horizontal_enabled = false
+script = ExtResource( 5 )
+
+[node name="items" type="VBoxContainer" parent="container"]
+editor/display_folded = true
+margin_right = 300.0
+margin_bottom = 642.0
+custom_constants/separation = 14
+
+[node name="item1" parent="container/items" instance=ExtResource( 6 )]
+
+[node name="item2" parent="container/items" instance=ExtResource( 6 )]
+margin_top = 164.0
+margin_bottom = 314.0
+
+[node name="item3" parent="container/items" instance=ExtResource( 6 )]
+margin_top = 328.0
+margin_bottom = 478.0
+
+[node name="item4" parent="container/items" instance=ExtResource( 6 )]
+margin_top = 492.0
+margin_bottom = 642.0

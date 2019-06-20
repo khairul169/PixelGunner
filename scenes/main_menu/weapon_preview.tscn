@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scenes/main_menu/weapon_preview.gd" type="Script" id=1]
+[ext_resource path="res://models/weapons/rifle.tscn" type="PackedScene" id=2]
+
+[sub_resource type="Environment" id=1]
+ambient_light_color = Color( 1, 1, 1, 1 )
+ambient_light_energy = 0.6
+
+[node name="scene" type="Spatial"]
+script = ExtResource( 1 )
+
+[node name="env" type="WorldEnvironment" parent="."]
+environment = SubResource( 1 )
+
+[node name="camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.2 )
+fov = 60.0
+
+[node name="light" type="DirectionalLight" parent="."]
+transform = Transform( 0.969845, -0.148071, 0.193588, 0, 0.794292, 0.607536, -0.243724, -0.589215, 0.77034, 0, 0, 0 )
+
+[node name="obj_rotation" type="Spatial" parent="."]
+
+[node name="object" type="Spatial" parent="."]
+
+[node name="rifle" parent="object" instance=ExtResource( 2 )]

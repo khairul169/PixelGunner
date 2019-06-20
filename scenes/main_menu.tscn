@@ -94,7 +94,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="header" type="Control" parent="layout"]
-editor/display_folded = true
 anchor_right = 1.0
 margin_bottom = 85.0
 
@@ -148,36 +147,37 @@ custom_fonts/font = SubResource( 2 )
 text = "Eclaire"
 
 [node name="resources" type="HBoxContainer" parent="layout/header"]
+editor/display_folded = true
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -830.0
-margin_top = 19.0
-margin_right = -90.0
-margin_bottom = -18.0
+margin_left = -820.0
+margin_top = 26.0
+margin_right = -80.0
+margin_bottom = -19.0
 custom_constants/separation = 16
 alignment = 2
 
 [node name="gold" parent="layout/header/resources" instance=ExtResource( 6 )]
-margin_left = 228.0
-margin_right = 388.0
+margin_left = 258.0
+margin_right = 408.0
 
 [node name="parts" parent="layout/header/resources" instance=ExtResource( 6 )]
-margin_left = 404.0
-margin_right = 564.0
+margin_left = 424.0
+margin_right = 574.0
 
 [node name="gems" parent="layout/header/resources" instance=ExtResource( 6 )]
-margin_left = 580.0
+margin_left = 590.0
 margin_right = 740.0
 
 [node name="settings_btn" type="Button" parent="layout/header"]
 editor/display_folded = true
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -70.0
-margin_top = 19.0
-margin_right = -22.0
-margin_bottom = 67.0
+margin_left = -60.0
+margin_top = 26.0
+margin_right = -20.0
+margin_bottom = 66.0
 flat = true
 
 [node name="img" type="TextureRect" parent="layout/header/settings_btn"]
@@ -188,7 +188,6 @@ texture = ExtResource( 4 )
 expand = true
 
 [node name="content" type="Control" parent="layout"]
-editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 
@@ -200,7 +199,7 @@ anims/fade_in = SubResource( 4 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = 85.0
-margin_bottom = -95.0
+margin_bottom = -80.0
 
 [node name="play" type="Control" parent="layout/content/container"]
 editor/display_folded = true
@@ -265,7 +264,7 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 20.0
-margin_top = -70.0
+margin_top = -60.0
 margin_right = -20.0
 margin_bottom = -20.0
 
@@ -275,4 +274,3 @@ anchor_bottom = 1.0
 custom_constants/separation = 10
 
 [node name="play" parent="layout/footer/nav" instance=ExtResource( 8 )]
-margin_right = 140.0
