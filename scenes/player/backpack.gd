@@ -10,13 +10,19 @@ onready var player: Player = get_parent();
 var items = [];
 
 func _ready() -> void:
-	pass
+	state_mgr.quest.connect("quest_added", self, "_quest_updated");
+
+func _input(event: InputEvent) -> void:
+	if (Input.is_key_pressed(KEY_P)):
+		remove_item(Items.ITEM_BOLT, 1);
+
+func _quest_updated(quest = null) -> void:
+	# task
+	state_mgr.quest.task_achieved(state_mgr.quest.TASK_COLLECT_ITEM, self);
 
 func _item_updated() -> void:
 	emit_signal("item_updated");
-	
-	# task
-	state_mgr.quest.task_achieved(state_mgr.quest.TASK_COLLECT_ITEM, self);
+	_quest_updated();
 	
 	var text = "";
 	for item in items:

@@ -2,6 +2,7 @@ extends Reference
 class_name QuestManager
 
 signal quests_updated();
+signal quest_added(quest);
 signal quest_completed(quest);
 signal task_completed(quest, task_id);
 
@@ -13,6 +14,10 @@ enum {
 };
 
 class Quest extends Reference:
+	# signals
+	signal completed();
+	
+	# vars
 	var quest_mgr: Reference;
 	var name: String;
 	var tasks = [];
@@ -58,17 +63,20 @@ class Quest extends Reference:
 				break;
 		
 		if (quest_completed):
+			quest_mgr.remove_quest(self);
 			quest_mgr.emit_signal("quest_completed", self);
+			emit_signal("completed");
 
 var _active_quest = [];
 
-static func create_quest(name: String) -> Quest:
+static func create_quest(name: String, keep_quest: bool = false) -> Quest:
 	return Quest.new(name);
 
 func add_quest(quest: Quest) -> void:
 	if (!quest in _active_quest):
 		quest.quest_mgr = self;
 		_active_quest.append(quest);
+		emit_signal("quest_added", quest);
 		emit_signal("quests_updated");
 
 func remove_quest(quest: Quest) -> void:
@@ -85,7 +93,7 @@ func task_achieved(type: int, args = null) -> void:
 	
 	for quest in _active_quest:
 		for task in quest.tasks:
-			if (task.completed || task.type != type):
+			if (task.type != type || (task.type != TASK_COLLECT_ITEM && task.completed)):
 				continue;
 			_check_task(quest, task, type, args);
 
@@ -107,8 +115,7 @@ func _check_task(quest: Quest, task: Dictionary, type: int, args) -> void:
 		
 		TASK_COLLECT_ITEM:
 			var num = args.get_item_amount(data.item);
-			if (num >= data.count):
-				quest.set_task_completed(task.id);
+			quest.set_task_completed(task.id, (num >= data.count));
 			
 			# update data
 			data['_num'] = int(clamp(num, 0, data.count));
