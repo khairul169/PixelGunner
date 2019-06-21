@@ -11,11 +11,11 @@ onready var button_reload = $action_button/reload;
 func _ready() -> void:
 	$menu_btn.connect("pressed", self, "_open_menu");
 	
-	state_mgr.quest.connect("quests_updated", self, "load_quests");
+	GameState.quest.connect("quests_updated", self, "load_quests");
 	load_quests();
 
 func _open_menu() -> void:
-	state_mgr.goto_mainmenu();
+	GameState.goto_mainmenu();
 
 func set_reloadbutton_clip(clip: int) -> void:
 	if (!button_reload):
@@ -32,14 +32,14 @@ func load_quests() -> void:
 	for i in container.get_children():
 		i.queue_free();
 	
-	var quests = state_mgr.quest.get_active_quest();
+	var quests = GameState.quest.get_active_quest();
 	for quest in quests:
 		var instance = QuestItem.instance();
 		container.add_child(instance);
 		
 		var task_list = [];
 		for task in quest.tasks:
-			var task_name = state_mgr.quest.get_task_name(task);
+			var task_name = GameState.quest.get_task_name(task);
 			if (task_name):
 				task_list.append(task_name);
 		

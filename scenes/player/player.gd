@@ -4,7 +4,7 @@ extends KinematicBody
 class_name Player
 
 # reference
-onready var camera: PlayerCamera = get_parent().get_node('camera');
+onready var camera = get_parent().get_node('camera');
 onready var animplayer: AnimationPlayer = $body/player/AnimationPlayer;
 onready var ui = get_tree().get_root().get_node("main/ui");
 
@@ -80,7 +80,7 @@ func _ready() -> void:
 
 func _input(event: InputEvent) -> void:
 	if (Input.is_key_pressed(KEY_ESCAPE)):
-		state_mgr.goto_mainmenu();
+		GameState.goto_mainmenu();
 
 func set_health(new_health: float) -> void:
 	# set player health
@@ -135,7 +135,7 @@ func _on_spawn() -> void:
 	anim_offset = 0;
 	weapon = null;
 	
-	m_attack.set_weapon(state_mgr.player.weapon);
+	m_attack.set_weapon(GameState.player.weapon);
 	m_backpack.resupply_ammo();
 
 func _damaged(damage, attacker) -> void:
@@ -255,6 +255,11 @@ func move_to(position: Vector3) -> void:
 func stop(next_move: float = 0.0) -> void:
 	navigate_to = null;
 	next_think = next_move;
+
+func set_looking_at(object: Spatial) -> void:
+	body_dir = object.global_transform.origin - global_transform.origin;
+	body_dir.y = 0.0;
+	body_dir = body_dir.normalized();
 
 func set_animation(id: int, blend_time: float = 0.0) -> void:
 	if (id < 0 || id >= anims.size()):

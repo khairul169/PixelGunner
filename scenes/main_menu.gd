@@ -30,7 +30,7 @@ func _nav_pressed(btn: String) -> void:
 	switch_panel(btn);
 
 func _play() -> void:
-	state_mgr.reset_game();
+	GameState.reset_game();
 	get_tree().change_scene("res://scenes/game.tscn");
 
 func setup_navigation() -> void:

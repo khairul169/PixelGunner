@@ -1,5 +1,4 @@
-extends Reference
-class_name PlayerWeapon
+extends Node
 
 enum {
 	CLASS_HG = 0,
@@ -22,17 +21,6 @@ enum {
 	EQ_SLOT_SIGHT,
 	EQ_SLOT_GRIP,
 	EQ_SLOT_SIDE
-};
-
-enum {
-	EQ_REFLEX_SIGHT = 0,
-	EQ_RED_DOT_SIGHT,
-	EQ_FLASHLIGHT,
-	EQ_AP_BULLET,
-	EQ_EXPLOSIVE_BULLET,
-	EQ_MAGAZINE_HC,
-	EQ_MAGAZINE_QC,
-	EQ_TACTICAL_STOCK
 };
 
 const weapon_data = {

@@ -1,5 +1,6 @@
 extends Spatial
 
+# editor configs
 export (Entities.Monster) var monster_name;
 export (float) var radius = 10.0;
 export (int) var monster_count = 1;
@@ -38,6 +39,6 @@ func set_monster_stats(npc) -> void:
 	npc.health_max = lerp(npc.health_max * 0.1, npc.health_max * 0.9, m); 
 	npc.accuracy = lerp(npc.accuracy * 0.2, npc.accuracy * 0.8, m); 
 	npc.armor = lerp(npc.armor * 0.4, npc.armor * 0.6, m); 
-	npc.agile = lerp(npc.agile * 0.2, npc.agile * 0.8, m);
+	npc.agile = lerp(0.0, npc.agile, m);
 	npc.attack_damage = lerp(npc.attack_damage * 0.1, npc.attack_damage * 0.9, m); 
 	npc.attack_delay = lerp(npc.attack_delay * 0.4, npc.attack_delay * 0.6, 1.0 - m);  

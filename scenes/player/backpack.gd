@@ -10,7 +10,7 @@ onready var player: Player = get_parent();
 var items = [];
 
 func _ready() -> void:
-	state_mgr.quest.connect("quest_added", self, "_quest_updated");
+	GameState.quest.connect("quest_added", self, "_quest_updated");
 
 func _input(event: InputEvent) -> void:
 	if (Input.is_key_pressed(KEY_P)):
@@ -18,7 +18,7 @@ func _input(event: InputEvent) -> void:
 
 func _quest_updated(quest = null) -> void:
 	# task
-	state_mgr.quest.task_achieved(state_mgr.quest.TASK_COLLECT_ITEM, self);
+	GameState.quest.task_achieved(QuestManager.TASK_COLLECT_ITEM, self);
 
 func _item_updated() -> void:
 	emit_signal("item_updated");
@@ -112,17 +112,17 @@ func remove_item_stack(slot: int) -> void:
 		_item_updated();
 
 func resupply_ammo() -> void:
-	var weapon = PlayerWeapon.get_weapon(player.weapon if player.weapon else -1);
+	var weapon = Weapon.get_weapon(player.weapon if player.weapon else -1);
 	if (!weapon):
 		return;
 	
 	var ammo = 0;
 	match (weapon.wpn_class):
-		PlayerWeapon.CLASS_AR:
+		Weapon.CLASS_AR:
 			ammo = 20;
-		PlayerWeapon.CLASS_HG, PlayerWeapon.CLASS_SMG:
+		Weapon.CLASS_HG, Weapon.CLASS_SMG:
 			ammo = 30;
-		PlayerWeapon.CLASS_SG, PlayerWeapon.CLASS_SR:
+		Weapon.CLASS_SG, Weapon.CLASS_SR:
 			ammo = 10;
 	
 	var item = get_item_by_id(Items.ITEM_AMMUNITION);

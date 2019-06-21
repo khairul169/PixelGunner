@@ -4,21 +4,21 @@ extends Spatial
 onready var camera = $camera;
 onready var animsplayer = $player.find_node('AnimationPlayer');
 
+# vars
 var camera_transform = Transform();
 
 func _ready() -> void:
-	game_data.connect("data_updated", self, "_data_updated");
+	GameData.connect("data_updated", self, "_data_updated");
 	
-	animsplayer.get_animation('idle').loop = true;
-	animsplayer.get_animation('idle_rifle').loop = true;
-	
-	var weapon = state_mgr.player.weapon;
+	var weapon = GameState.player.weapon;
 	set_weapon(weapon.id if weapon && weapon.has('id') else -1);
 	
 	camera_transform = camera.transform;
+	animsplayer.get_animation('idle').loop = true;
+	animsplayer.get_animation('idle_rifle').loop = true;
 
 func _data_updated() -> void:
-	var wpn_data = game_data.get_weapon_data(-1);
+	var wpn_data = GameData.get_weapon_data(-1);
 	set_weapon(wpn_data.id);
 
 func set_weapon(id: int) -> void:
@@ -33,11 +33,11 @@ func set_weapon(id: int) -> void:
 		mesh_name = null;
 		animsplayer.play('idle_alt', 0.1);
 	
-	if (id == PlayerWeapon.WEAPON_PISTOL):
+	if (id == Weapon.WEAPON_PISTOL):
 		mesh_name = 'pistol';
 		anims = 'idle';
 	
-	if (id == PlayerWeapon.WEAPON_RIFLE):
+	if (id == Weapon.WEAPON_RIFLE):
 		mesh_name = 'rifle';
 		anims = 'idle_rifle';
 	

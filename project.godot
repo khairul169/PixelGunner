@@ -14,11 +14,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/singleton/entities.gd"
 }, {
-"base": "Reference",
-"class": "Items",
-"language": "GDScript",
-"path": "res://scenes/singleton/items.gd"
-}, {
 "base": "KinematicBody",
 "class": "Monster",
 "language": "GDScript",
@@ -34,16 +29,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scenes/player/player.gd"
 }, {
-"base": "Spatial",
-"class": "PlayerCamera",
-"language": "GDScript",
-"path": "res://scenes/player/camera.gd"
-}, {
-"base": "Reference",
-"class": "PlayerWeapon",
-"language": "GDScript",
-"path": "res://scenes/player/weapon.gd"
-}, {
 "base": "Reference",
 "class": "QuestManager",
 "language": "GDScript",
@@ -51,12 +36,9 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Entities": "",
-"Items": "",
 "Monster": "",
 "NPC": "",
 "Player": "",
-"PlayerCamera": "",
-"PlayerWeapon": "",
 "QuestManager": ""
 }
 
@@ -68,8 +50,10 @@ config/icon="res://icon.png"
 
 [autoload]
 
-state_mgr="*res://scenes/singleton/state_mgr.gd"
-game_data="*res://scenes/singleton/game_data.gd"
+GameState="*res://scenes/singleton/game_state.gd"
+GameData="*res://scenes/singleton/game_data.gd"
+Items="*res://scenes/singleton/items.gd"
+Weapon="*res://scenes/singleton/weapon.gd"
 
 [debug]
 

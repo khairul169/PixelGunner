@@ -133,7 +133,7 @@ func _dying(killer) -> void:
 		killer.m_backpack.add_item(Items.ITEM_BOLT, int(rand_range(0, 3)));
 	
 	# task
-	state_mgr.quest.task_achieved(state_mgr.quest.TASK_KILL_MONSTER, monster_id);
+	GameState.quest.task_achieved(QuestManager.TASK_KILL_MONSTER, monster_id);
 
 func _obj_enter(obj) -> void:
 	if (obj is Player && !obj in target):

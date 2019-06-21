@@ -2,7 +2,6 @@
 
 [ext_resource path="res://scenes/player/camera.gd" type="Script" id=1]
 
-
 [node name="camera" type="Spatial"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 script = ExtResource( 1 )

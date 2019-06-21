@@ -2,53 +2,36 @@ extends Node
 
 signal data_updated();
 
+# classes
 class Armory extends Reference:
 	var weapon_list := [];
 	var current_wpn := -1;
 
+# vars
 var player_armory: Armory;
 
 func _ready() -> void:
+	# initialize data
 	player_armory = Armory.new();
 	
 	# simulate load time
 	# yield(get_tree().create_timer(0.1), "timeout");
 	
 	player_armory.weapon_list.append({
-		'id': PlayerWeapon.WEAPON_PISTOL,
+		'id': Weapon.WEAPON_PISTOL,
 		'level': 1,
 		'enhancement': 0.0,
 		'upgrade': 0
 	});
 	player_armory.weapon_list.append({
-		'id': PlayerWeapon.WEAPON_RIFLE,
+		'id': Weapon.WEAPON_RIFLE,
 		'level': 1,
 		'enhancement': 0.0,
 		'upgrade': 0
 	});
-	player_armory.weapon_list.append({
-		'id': PlayerWeapon.WEAPON_RIFLE,
-		'level': 1,
-		'enhancement': 1.0,
-		'upgrade': 0
-	});
-	player_armory.weapon_list.append({
-		'id': PlayerWeapon.WEAPON_RIFLE,
-		'level': 100,
-		'enhancement': 1.0,
-		'upgrade': 0
-	});
-	player_armory.weapon_list.append({
-		'id': PlayerWeapon.WEAPON_RIFLE,
-		'level': 100,
-		'enhancement': 1.0,
-		'upgrade': 1,
-		'equip': {
-			
-		}
-	});
-	player_armory.current_wpn = 0;
+	player_armory.current_wpn = 1;
 	
+	# data fetched
 	call_deferred("emit_signal", "data_updated");
 
 func get_weapon_list() -> Array:

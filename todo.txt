@@ -20,3 +20,7 @@ coop / friendly npc
 weapon level: use 60% base stats - lvl 100
 weapon enhancement: 5 lvl (float 0-1.0)
 
+
+==
+vs pvp stats drop, increase with item drop from monster & buff from monster
+

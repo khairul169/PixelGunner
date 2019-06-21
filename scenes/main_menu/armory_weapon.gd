@@ -26,10 +26,10 @@ func _ready() -> void:
 	call_deferred("load_weapon");
 	load_stats();
 	
-	var player_wpn = game_data.get_player_weapon();
+	var player_wpn = GameData.get_player_weapon();
 	switch_weapon(player_wpn);
 	
-	game_data.connect("data_updated", self, "_data_updated");
+	GameData.connect("data_updated", self, "_data_updated");
 	btn_use.connect("pressed", self, "_use_wpn");
 
 func _input(event: InputEvent) -> void:
@@ -47,7 +47,7 @@ func _data_updated() -> void:
 	# update weapon list
 	load_weapon();
 	
-	var player_wpn = game_data.get_player_weapon();
+	var player_wpn = GameData.get_player_weapon();
 	if (current_wpn < 0):
 		switch_weapon(player_wpn);
 	else:
@@ -87,14 +87,14 @@ func load_weapon() -> void:
 		i.queue_free();
 	
 	var item_scene = load("res://scenes/main_menu/weapon_item.tscn");
-	var weapon_list = game_data.get_weapon_list();
+	var weapon_list = GameData.get_weapon_list();
 	
 	if (armory):
-		armory.set_slot_value(weapon_list.size(), game_data.get_weapon_slot());
+		armory.set_slot_value(weapon_list.size(), GameData.get_weapon_slot());
 	
 	for i in range(weapon_list.size()):
 		var weapon = weapon_list[i];
-		var wpn_data = PlayerWeapon.get_weapon(weapon.id);
+		var wpn_data = Weapon.get_weapon(weapon.id);
 		if (not wpn_data):
 			continue
 		
@@ -114,7 +114,7 @@ func switch_weapon(id: int) -> void:
 		$content.hide();
 		return;
 	
-	var weapon = game_data.get_weapon_data(id);
+	var weapon = GameData.get_weapon_data(id);
 	if (not weapon):
 		return;
 	
@@ -130,23 +130,23 @@ func switch_weapon(id: int) -> void:
 	set_weapon(weapon);
 	
 	# action button
-	btn_use.disabled = (game_data.get_player_weapon() == id);
+	btn_use.disabled = (GameData.get_player_weapon() == id);
 
 func _use_wpn() -> void:
-	game_data.set_player_weapon(current_wpn);
+	GameData.set_player_weapon(current_wpn);
 
 func _rotate_weapon(rel: float) -> void:
 	scene.rotate_object(rel);
 
 func set_weapon(weapon: Dictionary) -> void:
-	var wpn = PlayerWeapon.get_weapon(weapon.id);
+	var wpn = Weapon.get_weapon(weapon.id);
 	if (not wpn):
 		return;
 	
 	$content/weapon_title/wpn_name.text = wpn.name;
 	$content/weapon_title/level.text = str('Lv ', int(weapon.level));
 	
-	var stats = PlayerWeapon.get_stats(weapon);
+	var stats = Weapon.get_stats(weapon);
 	
 	set_weapon_stats({
 		STATS_DMG: int(stats.damage),

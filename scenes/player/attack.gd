@@ -51,7 +51,7 @@ func _ready() -> void:
 	player.connect("dying", self, "_player_reset");
 	
 	# initialize attack system
-	call_deferred("init");
+	call_deferred("_initialize");
 
 func _input(event: InputEvent) -> void:
 	if (Input.is_key_pressed(KEY_SPACE)):
@@ -60,15 +60,16 @@ func _input(event: InputEvent) -> void:
 	if (Input.is_key_pressed(KEY_R)):
 		reload();
 
-func init() -> void:
+func _initialize() -> void:
 	# targeting
-	create_targeting();
+	_create_targeting();
 	
 	# user button
 	player.ui.button_attack.connect("pressed", self, "start_attack");
 	player.ui.button_reload.connect("pressed", self, "reload");
 
-func reset_weapon() -> void:
+func reset() -> void:
+	# set default variable value
 	damage = 0.0;
 	delay = 1.0;
 	attack_range = 0.0;
@@ -97,78 +98,13 @@ func reset_weapon() -> void:
 	state = State.IDLE;
 	next_think = 0.1;
 
-func set_weapon(weapon: Dictionary) -> void:
-	# reset weapon data
-	reset_weapon();
-	
-	var wpn_id = weapon.id if weapon.has('id') else -1;
-	var data = PlayerWeapon.get_weapon(wpn_id);
-	if (not data):
-		return;
-	
-	# set weapon stats
-	var stats = weapon.stats;
-	damage = stats.damage;
-	delay = clamp(60.0 / stats.rof, 0.2, 6.0);
-	accuracy = stats.accuracy;
-	max_clip = stats.clip;
-	wpn_clip = max_clip;
-	knockback = stats.knockback;
-	slowness = stats.slowness;
-	armor_pen = stats.armorp;
-	
-	# attack type
-	match (data.wpn_class):
-		PlayerWeapon.CLASS_SR:
-			attack_type = AttackType.FAR;
-		_:
-			attack_type = AttackType.NEAR;
-	
-	# player animation
-	match (data.wpn_class):
-		PlayerWeapon.CLASS_AR:
-			player.anim_offset = player.PlayerAnims.RIFLE_IDLE;
-		_:
-			player.anim_offset = 0;
-	
-	# attack range & reload speed
-	match (data.wpn_class):
-		PlayerWeapon.CLASS_HG:
-			attack_range = 6.0;
-			reload_time = 1.0;
-		
-		PlayerWeapon.CLASS_AR:
-			attack_range = 5.0;
-			reload_time = 3.0;
-		
-		_:
-			attack_range = 4.0;
-			reload_time = 1.0;
-	
-	# switch weapon mesh
-	match (wpn_id):
-		PlayerWeapon.WEAPON_PISTOL:
-			player.find_node('pistol').show();
-			player.find_node('rifle').hide();
-		
-		PlayerWeapon.WEAPON_RIFLE:
-			player.find_node('pistol').hide();
-			player.find_node('rifle').show();
-	
-	# resupply ammunition
-	player.weapon = wpn_id;
-	player.m_backpack.resupply_ammo();
-	
-	# update ui
-	call_deferred('_update_interface');
-
 func _player_reset() -> void:
 	# reset vars
 	next_think = 0.0;
 	target = null;
-	reset_weapon();
+	reset();
 
-func create_targeting() -> void:
+func _create_targeting() -> void:
 	# shape reference
 	var shape = SphereShape.new();
 	shape.radius = TARGETING_RADIUS;
@@ -265,16 +201,85 @@ func _physics_process(delta: float) -> void:
 			player.move_to(target.global_transform.origin);
 			next_think = 0.5;
 			state = State.MOVING;
+		
 		else:
 			if (state != State.ATTACKING):
 				player.stop(0.4);
+				player.set_looking_at(target);
 				next_think = 0.3;
-				set_look_at(target);
 			else:
 				player.stop(0.1);
 				next_think = 0.0;
 			
 			state = State.AIMING;
+
+func set_weapon(weapon: Dictionary) -> void:
+	if (player.health <= 0.0):
+		return;
+	
+	var wpn_id = weapon.id if weapon.has('id') else -1;
+	var data = Weapon.get_weapon(wpn_id);
+	if (not data):
+		return;
+	
+	# reset weapon data
+	reset();
+	
+	# set weapon stats
+	var stats = weapon.stats;
+	damage = stats.damage;
+	delay = clamp(60.0 / stats.rof, 0.2, 6.0);
+	accuracy = stats.accuracy;
+	max_clip = stats.clip;
+	wpn_clip = max_clip;
+	knockback = stats.knockback;
+	slowness_prob = stats.slowness;
+	armor_pen = stats.armorp;
+	
+	# attack type
+	match (data.wpn_class):
+		Weapon.CLASS_SR:
+			attack_type = AttackType.FAR;
+		_:
+			attack_type = AttackType.NEAR;
+	
+	# player animation
+	match (data.wpn_class):
+		Weapon.CLASS_AR:
+			player.anim_offset = player.PlayerAnims.RIFLE_IDLE;
+		_:
+			player.anim_offset = 0;
+	
+	# attack range & reload speed
+	match (data.wpn_class):
+		Weapon.CLASS_HG:
+			attack_range = 6.0;
+			reload_time = 1.0;
+		
+		Weapon.CLASS_AR:
+			attack_range = 5.0;
+			reload_time = 3.0;
+		
+		_:
+			attack_range = 4.0;
+			reload_time = 1.0;
+	
+	# switch weapon mesh
+	match (wpn_id):
+		Weapon.WEAPON_PISTOL:
+			player.find_node('pistol').show();
+			player.find_node('rifle').hide();
+		
+		Weapon.WEAPON_RIFLE:
+			player.find_node('pistol').hide();
+			player.find_node('rifle').show();
+	
+	# resupply ammunition
+	player.weapon = wpn_id;
+	player.m_backpack.resupply_ammo();
+	
+	# update ui
+	call_deferred('_update_interface');
 
 func start_attack() -> void:
 	if (next_think > 0.0 || player.health <= 0.0):
@@ -308,7 +313,7 @@ func start_attack() -> void:
 		state = State.IDLE;
 		
 		# look at target
-		set_look_at(target);
+		player.set_looking_at(target);
 	else:
 		target = null;
 
@@ -341,11 +346,6 @@ func check_enemy(enemy: Spatial, res: Dictionary) -> bool:
 	res.distance = distance;
 	return false;
 
-func set_look_at(object: Spatial) -> void:
-	player.body_dir = object.global_transform.origin - player.global_transform.origin;
-	player.body_dir.y = 0.0;
-	player.body_dir = player.body_dir.normalized();
-
 func attack(object: Spatial) -> void:
 	if (player.health <= 0.0 || !object.is_in_group('damageable')):
 		return;
@@ -357,7 +357,7 @@ func attack(object: Spatial) -> void:
 		return;
 	
 	# look at target
-	set_look_at(target);
+	player.set_looking_at(target);
 	
 	# reduce clip
 	wpn_clip -= 1;
@@ -400,11 +400,11 @@ func reload() -> void:
 	state = State.RELOADING;
 	next_think = reload_time;
 	player.stop();
-	
-	player.set_bar_status("RELOADING");
+	_update_interface();
 
 func _reload_canceled() -> void:
-	player.set_bar_status("");
+	# update ui
+	_update_interface();
 
 func _reload_finished() -> void:
 	if (state != State.RELOADING):
@@ -419,10 +419,13 @@ func _reload_finished() -> void:
 	player.m_backpack.remove_item(Items.ITEM_AMMUNITION, 1);
 	
 	# update ui
-	player.set_bar_status("");
 	_update_interface();
 
 func _update_interface() -> void:
+	if (state == State.RELOADING):
+		# show reloading message
+		pass
+	
 	player.ui.set_reloadbutton_clip(wpn_clip);
 
 func create_indicator(object, text, color = Color(1, 1, 1)) -> Node:
