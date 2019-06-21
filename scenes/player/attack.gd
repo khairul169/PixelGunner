@@ -105,15 +105,12 @@ func _player_reset() -> void:
 	reset();
 
 func _create_targeting() -> void:
-	# shape reference
-	var shape = SphereShape.new();
-	shape.radius = TARGETING_RADIUS;
-	
 	# collision shape
 	var col = CollisionShape.new();
-	col.shape = shape;
+	col.shape = SphereShape.new();
+	col.shape.radius = TARGETING_RADIUS;
 	
-	# create area
+	# attach area to player
 	var area = Area.new();
 	area.add_child(col);
 	player.add_child(area);
