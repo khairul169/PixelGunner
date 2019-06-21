@@ -30,7 +30,7 @@ export (float) var move_speed = 1.0;
 export (float) var attack_damage = 1.0;
 export (float) var attack_delay = 1.0;
 export (float) var attack_range = 1.0;
-export (float) var accuracy = 0.0;
+export (float) var accuracy = 5.0;
 export (float) var armor = 0.0;
 export (float) var agile = 0.0;
 
@@ -71,12 +71,13 @@ func set_health(new_health: float) -> void:
 	health = clamp(new_health, 0.0, health_max);
 	emit_signal("health_changed", health);
 
-func give_damage(damage: float, source = null) -> float:
+func give_damage(damage: float, source = null, armor_pen = 0.0) -> float:
 	if (health <= 0.0):
 		return 0.0;
 	
 	# armor penetration
-	damage = max(1.0, damage - armor);
+	if (armor_pen < armor):
+		damage = max(1.0, damage - armor);
 	
 	# reduce health
 	set_health(health - damage);

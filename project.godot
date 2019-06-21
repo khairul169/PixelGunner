@@ -69,6 +69,7 @@ config/icon="res://icon.png"
 [autoload]
 
 state_mgr="*res://scenes/singleton/state_mgr.gd"
+game_data="*res://scenes/singleton/game_data.gd"
 
 [debug]
 

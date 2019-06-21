@@ -16,6 +16,25 @@ enum {
 	WEAPON_ALL
 };
 
+enum {
+	EQ_SLOT_STOCK = 0,
+	EQ_SLOT_MAGAZINE,
+	EQ_SLOT_SIGHT,
+	EQ_SLOT_GRIP,
+	EQ_SLOT_SIDE
+};
+
+enum {
+	EQ_REFLEX_SIGHT = 0,
+	EQ_RED_DOT_SIGHT,
+	EQ_FLASHLIGHT,
+	EQ_AP_BULLET,
+	EQ_EXPLOSIVE_BULLET,
+	EQ_MAGAZINE_HC,
+	EQ_MAGAZINE_QC,
+	EQ_TACTICAL_STOCK
+};
+
 const weapon_data = {
 	
 	# pistol
@@ -23,12 +42,15 @@ const weapon_data = {
 		'wpn_class': CLASS_HG,
 		'alias': 'pistol',
 		'name': 'Pistol',
-		'damage': 30.0,
-		'rof': 120,
-		'accuracy': 20.0,
-		'clip': 12,
-		'knockback': 10.0,
-		'slowness': 0.2
+		'stats': {
+			'damage': 40.0,
+			'rof': 120,
+			'accuracy': 20.0,
+			'clip': 12,
+			'armorp': 0,
+			'knockback': 10.0,
+			'slowness': 0.2
+		}
 	},
 	
 	# rifle
@@ -36,52 +58,53 @@ const weapon_data = {
 		'wpn_class': CLASS_AR,
 		'alias': 'rifle',
 		'name': 'Rifle',
-		'damage': 20.0,
-		'rof': 280,
-		'accuracy': 50.0,
-		'clip': 30,
-		'knockback': 12.0,
-		'slowness': 0.6
+		'stats': {
+			'damage': 60.0,
+			'rof': 280,
+			'accuracy': 50.0,
+			'clip': 30,
+			'armorp': 95,
+			'knockback': 12.0,
+			'slowness': 0.6
+		}
 	}
 };
 
 static func get_weapon(id: int):
-	if (id <= 0 || id >= WEAPON_ALL || !weapon_data.has(id)):
-		return null;
-	return weapon_data[id];
+	if (id > 0 && weapon_data.has(id)):
+		return weapon_data[id];
 
-static func calculate_stats(id: int, level: int, enhancement: float):
-	var wpn = get_weapon(id);
+static func get_stats(data: Dictionary):
+	# format dict: id, enhancement, level, upgrade, equip
+	var wpn = get_weapon(data.id if data.has('id') else -1);
 	if (not wpn):
 		return null;
 	
-	# base stats
-	var stats = {
-		'damage': wpn.damage,
-		'rof': wpn.rof,
-		'accuracy': wpn.accuracy,
-		'knockback': wpn.knockback,
-		'slowness': wpn.slowness
-	};
+	# weapon stats
+	var stats = {};
+	var ignored_stats = ['clip', 'armorp'];
 	
-	var enhancement_factor = 0.0;
-	
-	match (wpn.wpn_class):
-		CLASS_AR, CLASS_SR:
-			enhancement_factor = 0.15;
-		CLASS_HG, CLASS_SMG:
-			enhancement_factor = 0.25;
-		CLASS_SG:
-			enhancement_factor = 0.4;
-		_:
-			enhancement_factor = 0.0;
-	
-	for i in stats:
+	for i in wpn.stats:
+		var base_stats = wpn.stats[i];
+		
+		if (i == 'clip'):
+			stats[i] = base_stats;
+			continue;
+		
 		# level scaling
-		stats[i] = (stats[i] * 0.2) + (stats[i] * 0.8 * (level / 100.0));
+		stats[i] = (base_stats * 0.2) + (base_stats * 0.6 * (data.level / 100.0));
 		
 		# enhancement
-		stats[i] += stats[i] * enhancement_factor * clamp(enhancement, 0.0, 1.0);
+		stats[i] += base_stats * 0.2 * clamp(data.enhancement, 0.0, 1.0);
+		
+		# weapon upgrade
+		stats[i] += stats[i] * 0.1 * clamp(data.upgrade / 1.0, 0.0, 2.0);
+	
+	# equipment
+	if (data.has('equip')):
+		var equipment = data.equip;
+		for i in equipment:
+			pass
 	
 	# clamp value
 	stats['rof'] = clamp(stats['rof'], 0.0, 300.0);
@@ -94,12 +117,7 @@ static func check_weapon() -> void:
 		'wpn_class',
 		'alias',
 		'name',
-		'damage',
-		'rof',
-		'accuracy',
-		'clip',
-		'knockback',
-		'slowness'
+		'stats'
 	];
 	
 	for i in range(1, WEAPON_ALL):

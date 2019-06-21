@@ -112,7 +112,7 @@ func remove_item_stack(slot: int) -> void:
 		_item_updated();
 
 func resupply_ammo() -> void:
-	var weapon = PlayerWeapon.get_weapon(player.weapon);
+	var weapon = PlayerWeapon.get_weapon(player.weapon if player.weapon else -1);
 	if (!weapon):
 		return;
 	

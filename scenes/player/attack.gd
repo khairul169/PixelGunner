@@ -44,6 +44,7 @@ var slowness_prob = 0.6;
 var slowness = 0.5;
 var knock_prob = 0.4;
 var knockback = 10.0;
+var armor_pen = 0;
 
 func _ready() -> void:
 	# init module
@@ -58,12 +59,6 @@ func _input(event: InputEvent) -> void:
 	
 	if (Input.is_key_pressed(KEY_R)):
 		reload();
-	
-	if (Input.is_key_pressed(KEY_1)):
-		set_weapon(PlayerWeapon.WEAPON_PISTOL);
-	
-	if (Input.is_key_pressed(KEY_2)):
-		set_weapon(PlayerWeapon.WEAPON_RIFLE);
 
 func init() -> void:
 	# targeting
@@ -84,6 +79,7 @@ func reset_weapon() -> void:
 	attack_type = AttackType.NEAR;
 	slowness = 0.0;
 	knockback = 0.0;
+	armor_pen = 0;
 	
 	# cancel reload
 	if (state == State.RELOADING):
@@ -92,31 +88,34 @@ func reset_weapon() -> void:
 	# update ui
 	_update_interface();
 	
+	# disable targeting
+	if (target):
+		target = null;
+		player.stop();
+	
 	# reset state
 	state = State.IDLE;
 	next_think = 0.1;
-	
-	if (target):
-		# disable targeting
-		player.stop();
-		target = null;
 
-func set_weapon(id: int) -> void:
+func set_weapon(weapon: Dictionary) -> void:
 	# reset weapon data
 	reset_weapon();
 	
-	var data = PlayerWeapon.get_weapon(id);
-	if (!data):
+	var wpn_id = weapon.id if weapon.has('id') else -1;
+	var data = PlayerWeapon.get_weapon(wpn_id);
+	if (not data):
 		return;
 	
-	# set weapon data
-	damage = data.damage;
-	delay = clamp(60.0 / data.rof, 0.2, 6.0);
-	accuracy = data.accuracy;
-	max_clip = data.clip;
+	# set weapon stats
+	var stats = weapon.stats;
+	damage = stats.damage;
+	delay = clamp(60.0 / stats.rof, 0.2, 6.0);
+	accuracy = stats.accuracy;
+	max_clip = stats.clip;
 	wpn_clip = max_clip;
-	knockback = data.knockback;
-	slowness = data.slowness;
+	knockback = stats.knockback;
+	slowness = stats.slowness;
+	armor_pen = stats.armorp;
 	
 	# attack type
 	match (data.wpn_class):
@@ -147,7 +146,7 @@ func set_weapon(id: int) -> void:
 			reload_time = 1.0;
 	
 	# switch weapon mesh
-	match (id):
+	match (wpn_id):
 		PlayerWeapon.WEAPON_PISTOL:
 			player.find_node('pistol').show();
 			player.find_node('rifle').hide();
@@ -157,7 +156,7 @@ func set_weapon(id: int) -> void:
 			player.find_node('rifle').show();
 	
 	# resupply ammunition
-	player.weapon = id;
+	player.weapon = wpn_id;
 	player.m_backpack.resupply_ammo();
 	
 	# update ui
@@ -376,7 +375,7 @@ func attack(object: Spatial) -> void:
 		return;
 	
 	var dmg = damage + (rand_range(-0.2, 0.2) * damage);
-	var damage_given = object.give_damage(dmg, player);
+	var damage_given = object.give_damage(dmg, player, armor_pen);
 	create_indicator(object, str(int(damage_given)), Color(1, 0.2, 0.2));
 	
 	if (randf() <= slowness_prob && object.has_method('set_slow')):

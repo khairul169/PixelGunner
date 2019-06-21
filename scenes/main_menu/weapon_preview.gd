@@ -20,8 +20,10 @@ func set_object(alias: String) -> void:
 		loaded_scenes[alias] = scene;
 	
 	if (scene):
+		for i in object.get_children():
+			i.queue_free();
+		
 		var instance = scene.instance();
-		object.get_child(0).queue_free();
 		object.add_child(instance);
 		obj_rotation.rotation_degrees.y = 0;
 

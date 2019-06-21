@@ -65,7 +65,7 @@ var weapon;
 var move_speed = 3.0;
 var health_max = 100.0;
 var health = 0.0;
-var armor = 5.0;
+var armor = 0.0;
 var agile = 10.0;
 
 func _ready() -> void:
@@ -87,7 +87,7 @@ func set_health(new_health: float) -> void:
 	health = clamp(new_health, 0.0, health_max);
 	emit_signal("health_changed", health);
 
-func give_damage(damage: float, source = null) -> void:
+func give_damage(damage: float, source = null, armor_pen = 0.0) -> void:
 	if (health <= 0.0):
 		return;
 	
@@ -97,7 +97,8 @@ func give_damage(damage: float, source = null) -> void:
 		return;
 	
 	# armor penetration
-	damage = max(1.0, damage - armor);
+	if (armor_pen < armor):
+		damage = max(1.0, damage - armor);
 	
 	# reduce health
 	set_health(health - damage);

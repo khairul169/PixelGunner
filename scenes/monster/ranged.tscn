@@ -18,9 +18,9 @@ radius = 6.0
 [node name="ranged" type="KinematicBody"]
 script = ExtResource( 1 )
 monster_id = 1
-health_max = 40.0
+health_max = 400.0
 move_speed = 2.0
-attack_damage = 4.0
+attack_damage = 120.0
 attack_delay = 1.8
 attack_range = 4.0
 accuracy = 10.0

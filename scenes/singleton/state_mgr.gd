@@ -8,9 +8,20 @@ class PlayerState extends Reference:
 var player := PlayerState.new();
 
 func _ready() -> void:
+	game_data.connect("data_updated", self, "_data_updated");
+	
 	PlayerWeapon.check_weapon();
-	player.weapon = PlayerWeapon.WEAPON_RIFLE;
+	player.weapon = null;
 	reset_game();
+
+func _data_updated() -> void:
+	var wpn_data = game_data.get_weapon_data(-1);
+	
+	player.weapon = {
+		'id': wpn_data.id,
+		'equip': wpn_data.equip if wpn_data.has('equip') else null,
+		'stats': PlayerWeapon.get_stats(wpn_data)
+	};
 
 func reset_game() -> void:
 	quest = QuestManager.new();

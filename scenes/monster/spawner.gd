@@ -32,12 +32,12 @@ func _ready() -> void:
 
 func set_monster_stats(npc) -> void:
 	# stats modifier
-	var modifier = rand_range(0.08, 0.15) * max(monster_level - 1, 0);
+	var m = clamp(monster_level / 100.0, 0.0, 1.0);
 	
 	# set monster stats
-	npc.health_max += npc.health_max * modifier;
-	npc.attack_damage += npc.attack_damage * modifier;
-	npc.attack_delay -= min(npc.attack_delay * modifier, 0.2);
-	npc.accuracy += npc.accuracy * modifier;
-	npc.armor += npc.armor * modifier;
-	npc.agile += npc.agile * modifier;
+	npc.health_max = lerp(npc.health_max * 0.1, npc.health_max * 0.9, m); 
+	npc.accuracy = lerp(npc.accuracy * 0.2, npc.accuracy * 0.8, m); 
+	npc.armor = lerp(npc.armor * 0.4, npc.armor * 0.6, m); 
+	npc.agile = lerp(npc.agile * 0.2, npc.agile * 0.8, m);
+	npc.attack_damage = lerp(npc.attack_damage * 0.1, npc.attack_damage * 0.9, m); 
+	npc.attack_delay = lerp(npc.attack_delay * 0.4, npc.attack_delay * 0.6, 1.0 - m);  
