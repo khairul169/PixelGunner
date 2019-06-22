@@ -1,5 +1,8 @@
 extends Control
-class_name Dialog
+class_name Conversation
+
+# signals
+signal dialog_completed();
 
 # refs
 onready var msg_name = $message/name;
@@ -18,20 +21,18 @@ var is_busy = false;
 var can_advance = false;
 
 func _ready() -> void:
-	var msg = [];
-	msg.append(create_message("Eclaire", "Hei hoho hihe ahay uhuy hoho hihe ahay uhuy hoho hihe ahay uhuy hoho hihe ahay lmao"));
-	msg.append(create_message("Robert", "what do you do?"));
-	msg.append(create_message("Eclaire", "Wahahahahaha!!!"));
-	msg.append(create_message("", "..."));
-	msg.append(create_message("Eclaire", "OwO"));
-	load_conversation(msg);
+	hide();
 
 func _input(event: InputEvent) -> void:
+	if (!is_visible_in_tree()):
+		return;
+	
 	if (event is InputEventMouseButton && event.pressed && !is_busy):
+		get_tree().set_input_as_handled();
 		next();
 
 func _dialog_completed() -> void:
-	pass
+	emit_signal("dialog_completed");
 
 func start_dialog() -> void:
 	if (conversation.empty()):
@@ -46,7 +47,10 @@ func start_dialog() -> void:
 		$message/name.text = msg[1];
 		$message/text.animate_text(msg[2]);
 
-func load_conversation(messages: Array) -> void:
+func show_conversation(messages: Array) -> void:
+	if (messages.empty()):
+		return;
+	
 	conversation = messages;
 	show();
 	start_dialog();
@@ -72,5 +76,5 @@ static func create_message(obj_name: String, msg: String) -> Array:
 static func create_options(options: Array) -> Array:
 	return [DLG_OPTIONS, options];
 
-static func create_quest(quest: QuestManager.Quest) -> Array:
+static func create_quest(quest) -> Array:
 	return [DLG_QUEST, quest.name];

@@ -15,13 +15,14 @@ func _process(delta: float) -> void:
 	
 	if (next_think > 0.0):
 		next_think -= delta;
-	else:
+	
+	if (next_think <= 0.0):
 		process_text();
 		next_think = delay;
 
 func animate_text(msg: String) -> void:
 	available_text = msg;
-	delay = 0.08;
+	delay = clamp(1.0 / msg.length(), 0.02, 0.1);
 	next_think = 0.0;
 	text_loaded = true;
 	text = "";

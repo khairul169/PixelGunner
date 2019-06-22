@@ -72,10 +72,6 @@ var agile = 10.0;
 func _ready() -> void:
 	add_to_group('damageable');
 	
-	# init floating bar
-	$player_bar.always_visible = true;
-	$player_bar.init("Eclaire", health_max);
-	
 	# spawn player
 	spawn(Vector3.ZERO + Vector3(0, 1, 0));
 
@@ -273,5 +269,5 @@ func set_animation(id: int, blend_time: float = 0.0) -> void:
 	animplayer.play(animation_name, blend_time);
 	animplayer.seek(0.0);
 
-func set_bar_status(text: String) -> void:
-	$player_bar.set_status(text);
+func give_item(item_id: int, amount: int = 1) -> void:
+	m_backpack.add_item(item_id, amount);

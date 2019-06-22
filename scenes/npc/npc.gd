@@ -8,8 +8,16 @@ export (String) var npc_name;
 # refs
 onready var anims: AnimationPlayer = $body.find_node('AnimationPlayer');
 
+# enums
+enum State {
+	IDLE = 0,
+	GIVING_SOMETHING
+};
+
 # vars
 var velocity := Vector3.ZERO;
+var interact_with;
+var state = State.GIVING_SOMETHING;
 
 func _ready() -> void:
 	# register npc
@@ -28,3 +36,27 @@ func _physics_process(delta: float) -> void:
 	velocity = Vector3.ZERO;
 	velocity.y = gv;
 	velocity = move_and_slide(velocity, Vector3.UP);
+
+func interact(caller: Node):
+	interact_with = caller;
+	
+	var msg = [];
+	if (state == State.GIVING_SOMETHING):
+		msg.append(Conversation.create_message(npc_name, "Hey friend!"));
+		msg.append(Conversation.create_message(npc_name, "Here is some cake for you."));
+		msg.append(Conversation.create_message(npc_name, "..."));
+		msg.append(Conversation.create_message(npc_name, "Take this! :p"));
+	else:
+		msg.append(Conversation.create_message(npc_name, "... hi!"));
+		msg.append(Conversation.create_message(npc_name, "What happened?"));
+	return msg;
+
+func _interact_ended():
+	if (!interact_with):
+		return;
+	
+	if (interact_with is Player && state == State.GIVING_SOMETHING):
+		interact_with.give_item(Items.ITEM_BOLT, 10);
+		state = State.IDLE;
+	
+	interact_with = null;

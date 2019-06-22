@@ -7,6 +7,7 @@ onready var QuestItem = load("res://scenes/ui/hud/quest_item.tscn");
 onready var controller = $controller;
 onready var button_attack = $action_button/attack;
 onready var button_reload = $action_button/reload;
+onready var conversation = $conversation;
 
 func _ready() -> void:
 	$menu_btn.connect("pressed", self, "_open_menu");

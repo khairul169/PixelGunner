@@ -10,7 +10,7 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Control",
-"class": "Dialog",
+"class": "Conversation",
 "language": "GDScript",
 "path": "res://scenes/ui/dialog.gd"
 }, {
@@ -40,7 +40,7 @@ _global_script_classes=[ {
 "path": "res://scenes/singleton/quest_mgr.gd"
 } ]
 _global_script_class_icons={
-"Dialog": "",
+"Conversation": "",
 "Entities": "",
 "Monster": "",
 "NPC": "",

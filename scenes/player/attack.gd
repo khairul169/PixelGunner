@@ -282,7 +282,7 @@ func start_attack() -> void:
 	if (next_think > 0.0 || player.health <= 0.0):
 		return;
 	
-	if (player.m_interact.can_interact):
+	if (player.m_interact.can_interact && nearest_enemy.empty()):
 		player.m_interact.go_interact();
 		return;
 	

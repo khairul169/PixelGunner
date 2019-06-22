@@ -1,12 +1,11 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scenes/player/player.gd" type="Script" id=1]
 [ext_resource path="res://models/player/player.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scenes/ui/hud/floating_bar.tscn" type="PackedScene" id=3]
-[ext_resource path="res://scenes/player/attack.gd" type="Script" id=4]
-[ext_resource path="res://scenes/player/backpack.gd" type="Script" id=5]
-[ext_resource path="res://fonts/OpenSans-Regular.ttf" type="DynamicFontData" id=6]
-[ext_resource path="res://scenes/player/interact.gd" type="Script" id=7]
+[ext_resource path="res://scenes/player/attack.gd" type="Script" id=3]
+[ext_resource path="res://scenes/player/backpack.gd" type="Script" id=4]
+[ext_resource path="res://fonts/OpenSans-Regular.ttf" type="DynamicFontData" id=5]
+[ext_resource path="res://scenes/player/interact.gd" type="Script" id=6]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.4
@@ -15,7 +14,7 @@ height = 0.6
 [sub_resource type="DynamicFont" id=2]
 size = 24
 use_filter = true
-font_data = ExtResource( 6 )
+font_data = ExtResource( 5 )
 
 [node name="player" type="KinematicBody"]
 script = ExtResource( 1 )
@@ -30,15 +29,12 @@ editor/display_folded = true
 [node name="player" parent="body" instance=ExtResource( 2 )]
 transform = Transform( -0.65, 0, -5.68248e-008, 0, 0.65, 0, 5.68248e-008, 0, -0.65, 0, 0, 0 )
 
-[node name="player_bar" parent="." instance=ExtResource( 3 )]
-healthbar_color = Color( 0.666667, 0.945098, 0.262745, 1 )
-
 [node name="attack" type="Node" parent="."]
-script = ExtResource( 4 )
+script = ExtResource( 3 )
 
 [node name="backpack" type="Node" parent="."]
 editor/display_folded = true
-script = ExtResource( 5 )
+script = ExtResource( 4 )
 
 [node name="Label" type="Label" parent="backpack"]
 margin_left = 519.005
@@ -49,4 +45,4 @@ custom_fonts/font = SubResource( 2 )
 text = "sad"
 
 [node name="interact" type="Node" parent="."]
-script = ExtResource( 7 )
+script = ExtResource( 6 )
