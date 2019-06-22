@@ -122,9 +122,12 @@ func _check_task(quest: Quest, task: Dictionary, type: int, args) -> void:
 			quest.set_task_data(task.id, data);
 		
 		TASK_INTERACT_NPC:
+			var npc_id = data.npc if data.has('npc') else -1;
 			var name = data.name if data.has('name') else null;
-			if (args == name):
-				quest.set_task_completed(task.id);
+			
+			if (args is NPC):
+				if (args.npc_type == npc_id && args.npc_name == name):
+					quest.set_task_completed(task.id);
 		
 		_:
 			quest.set_task_completed(task.id);

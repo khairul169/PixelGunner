@@ -10,6 +10,7 @@ onready var ui = get_tree().get_root().get_node("main/ui");
 
 onready var m_attack = $attack;
 onready var m_backpack = $backpack;
+onready var m_interact = $interact;
 
 # signals
 signal health_changed();

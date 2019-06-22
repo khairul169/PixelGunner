@@ -8,7 +8,7 @@ enum NPC {
 	ENHANCHER,
 	CRAFTER,
 	QUEST_GIVER
-}
+};
 
 enum Monster {
 	CROG = 0,

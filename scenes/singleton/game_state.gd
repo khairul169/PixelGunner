@@ -52,6 +52,10 @@ func reset_game() -> void:
 		'monster': Entities.Monster.CROG,
 		'count': 10
 	});
+	quest2.add_task(QuestManager.TASK_INTERACT_NPC, {
+		'npc': Entities.NPC.TRADER,
+		'name': 'Derick'
+	});
 	quest.add_quest(quest2);
 
 func _quest_completed(quest_obj) -> void:
