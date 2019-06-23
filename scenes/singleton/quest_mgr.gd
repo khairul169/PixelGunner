@@ -143,7 +143,7 @@ func _check_task(quest: Quest, task: Dictionary, type: int, args) -> void:
 			if (data.has('completed') || !args is NPC):
 				return;
 			
-			if (args.npc_type == data.npc && data.npc_name == data.name):
+			if (args.npc_type == data.npc && args.npc_name == data.name):
 				quest.set_task_completed(task.id);
 
 func get_task_name(task: Dictionary):
@@ -188,7 +188,7 @@ func _task_collect_object(task, data):
 	
 	var item_data = Items.get_item(data.item);
 	var progress = data['progress'] if data.has('progress') else 0;
-	return str("Collect", _bb_object(item_data.label), _bb_counter(progress, data.count));
+	return str("Acquire item", _bb_object(item_data.label), _bb_counter(progress, data.count));
 
 func _task_interact_npc(task, data):
 	if (data.has('npc') && data.has('name')):
