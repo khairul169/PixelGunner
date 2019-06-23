@@ -56,7 +56,7 @@ func _dialog_completed() -> void:
 	GameState.quest.task_achieved(QuestManager.TASK_INTERACT_NPC, interact_with);
 
 func go_interact() -> void:
-	if (!nearest_object):
+	if (!player.control_enabled || !nearest_object):
 		return;
 	
 	var npc = nearest_object;

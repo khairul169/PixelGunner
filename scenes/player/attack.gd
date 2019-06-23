@@ -279,7 +279,7 @@ func set_weapon(weapon: Dictionary) -> void:
 	call_deferred('_update_interface');
 
 func start_attack() -> void:
-	if (next_think > 0.0 || player.health <= 0.0):
+	if (next_think > 0.0 || !player.control_enabled || player.health <= 0.0):
 		return;
 	
 	if (player.m_interact.can_interact && nearest_enemy.empty()):
@@ -319,7 +319,7 @@ func start_attack() -> void:
 		target = null;
 
 func check_enemy(enemy: Spatial, res: Dictionary) -> bool:
-	if (!enemy.is_in_group('damageable')):
+	if (!enemy.is_in_group("damageable")):
 		return true;
 	
 	# health check
@@ -348,7 +348,7 @@ func check_enemy(enemy: Spatial, res: Dictionary) -> bool:
 	return false;
 
 func attack(object: Spatial) -> void:
-	if (player.health <= 0.0 || !object.is_in_group('damageable')):
+	if (player.health <= 0.0 || !object):
 		return;
 	
 	if (wpn_clip <= 0):
@@ -370,30 +370,34 @@ func attack(object: Spatial) -> void:
 	var agile = object.agile;
 	var miss_chance = agile / (agile + accuracy);
 	
+	# missed shoot
 	if (randf() < miss_chance):
-		# missed shoot
 		create_indicator(object, "Miss", Color(1, 1, 1));
 		return;
 	
+	# give damage to object
 	var dmg = damage + (rand_range(-0.2, 0.2) * damage);
 	var damage_given = object.give_damage(dmg, player, armor_pen);
+	
+	# damage indicator
 	create_indicator(object, str(int(damage_given)), Color(1, 0.2, 0.2));
 	
+	# give slowness
 	if (randf() <= slowness_prob && object.has_method('set_slow')):
-		# give slowness
 		object.set_slow(1.0, slowness);
 	
+	# knock back object
 	if (randf() <= knock_prob && object.has_method('set_impulse')):
-		# knock back object
 		var impulse = object.global_transform.origin - player.global_transform.origin;
 		impulse.y = 0.0;
 		impulse = impulse.normalized() * (knockback + (knockback * rand_range(-0.15, 0.15)));
 		object.set_impulse(impulse);
 
 func reload() -> void:
-	if (wpn_clip >= max_clip || state == State.RELOADING):
+	if (!player.control_enabled || wpn_clip >= max_clip || state == State.RELOADING):
 		return;
 	
+	# no ammunition available
 	if (player.m_backpack.get_item_amount(Items.ITEM_AMMUNITION) <= 0):
 		return;
 	
@@ -411,6 +415,7 @@ func _reload_finished() -> void:
 	if (state != State.RELOADING):
 		return;
 	
+	# no ammunition available
 	if (player.m_backpack.get_item_amount(Items.ITEM_AMMUNITION) <= 0):
 		return;
 	

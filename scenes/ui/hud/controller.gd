@@ -22,6 +22,9 @@ func _ready() -> void:
 	call_deferred('update_container');
 
 func _unhandled_input(event: InputEvent) -> void:
+	if (!is_visible_in_tree()):
+		return;
+	
 	if (event is InputEventMouseButton):
 		var pos = event.position;
 		if (event.pressed):

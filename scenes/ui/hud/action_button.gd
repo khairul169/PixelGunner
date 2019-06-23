@@ -12,6 +12,9 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE;
 
 func _unhandled_input(event: InputEvent) -> void:
+	if (!is_visible_in_tree()):
+		return;
+	
 	if (event is InputEventMouseButton):
 		var pos = event.position;
 		if (event.pressed):

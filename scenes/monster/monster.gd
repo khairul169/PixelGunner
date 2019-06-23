@@ -46,7 +46,8 @@ var next_idle = 0.0;
 var debuff_list = [];
 
 func _ready() -> void:
-	add_to_group('damageable');
+	# set group
+	add_to_group("damageable");
 	
 	$detection.connect("body_entered", self, "_obj_enter");
 	$detection.connect("body_exited", self, "_obj_exit");
@@ -81,11 +82,9 @@ func give_damage(damage: float, source = null, armor_pen = 0.0) -> float:
 	
 	# reduce health
 	set_health(health - damage);
+	_damaged(damage, source);
 	
-	if (has_method('_damaged')):
-		_damaged(damage, source);
-	
-	if (health <= 0.0 && has_method('_dying')):
+	if (health <= 0.0):
 		_dying(source);
 		emit_signal("dying");
 	
@@ -114,7 +113,7 @@ func _on_spawn() -> void:
 
 func _damaged(damage, source) -> void:
 	# chase attacker if target is not defined
-	if (target.empty() && source.is_in_group('damageable')):
+	if (target.empty() && source.is_in_group("damageable")):
 		target.append(source);
 
 func _dying(killer) -> void:

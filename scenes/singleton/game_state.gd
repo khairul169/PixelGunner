@@ -30,8 +30,8 @@ func reset_game() -> void:
 	quest = QuestManager.new();
 	quest.connect("quest_completed", self, "_quest_completed");
 
-func _quest_completed(quest_obj) -> void:
-	print('quest completed ', quest_obj.name);
+func _quest_completed(quest: QuestManager.Quest) -> void:
+	pass
 
 func goto_mainmenu() -> void:
 	# switch to main menu

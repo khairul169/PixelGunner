@@ -5,6 +5,7 @@ class_name Player
 
 # reference
 onready var camera = get_parent().get_node('camera');
+onready var body: Spatial = $body;
 onready var animplayer: AnimationPlayer = $body/player/AnimationPlayer;
 onready var ui = get_tree().get_root().get_node("main/ui");
 
@@ -54,10 +55,11 @@ var anims = [
 var velocity := Vector3.ZERO;
 var body_dir := Vector3.FORWARD;
 var navigate_to;
+var control_enabled := true;
 
 var next_think = 0.0;
 var is_moving = false;
-var animation = anims[PlayerAnims.IDLE];
+var animation;
 var anim_speed = 1.0;
 var next_idle = 0.0;
 var anim_offset = 0;
@@ -70,7 +72,8 @@ var armor = 0.0;
 var agile = 10.0;
 
 func _ready() -> void:
-	add_to_group('damageable');
+	# set group
+	add_to_group("damageable");
 	
 	# spawn player
 	spawn(Vector3.ZERO + Vector3(0, 1, 0));
@@ -88,8 +91,8 @@ func give_damage(damage: float, source = null, armor_pen = 0.0) -> void:
 	if (health <= 0.0):
 		return;
 	
+	# missed shoot
 	if (damage <= 0.0):
-		# missed shoot
 		m_attack.create_indicator(self, "Miss", Color(1, 1, 1));
 		return;
 	
@@ -99,11 +102,9 @@ func give_damage(damage: float, source = null, armor_pen = 0.0) -> void:
 	
 	# reduce health
 	set_health(health - damage);
+	_damaged(damage, source);
 	
-	if (has_method('_damaged')):
-		_damaged(damage, source);
-	
-	if (health <= 0.0 && has_method('_dying')):
+	if (health <= 0.0):
 		_dying();
 		emit_signal("dying");
 
@@ -126,7 +127,7 @@ func _on_spawn() -> void:
 	
 	next_think = 0.5;
 	is_moving = false;
-	animation = anims[PlayerAnims.IDLE];
+	animation = null;
 	anim_speed = 1.0;
 	next_idle = 0.0;
 	anim_offset = 0;
@@ -153,47 +154,51 @@ func _physics_process(delta: float) -> void:
 			spawn(Vector3(0, 1, 0));
 		return;
 	
-	var aim := Basis();
 	var dir := Vector3.ZERO;
 	var navigation_dir;
 	
-	# navigation
-	if (navigate_to is Vector3):
-		var pos = global_transform.origin;
-		var d = pos.distance_to(navigate_to);
+	if (next_think <= 0.0 && control_enabled):
+		# key movement
+		if (Input.is_key_pressed(KEY_W)):
+			dir -= camera.camera_dir.z;
+		if (Input.is_key_pressed(KEY_S)):
+			dir += camera.camera_dir.z;
+		if (Input.is_key_pressed(KEY_A)):
+			dir -= camera.camera_dir.x;
+		if (Input.is_key_pressed(KEY_D)):
+			dir += camera.camera_dir.x;
 		
-		if (d <= delta * move_speed):
-			navigate_to = null;
-		else:
-			navigation_dir = navigate_to - pos;
-			navigation_dir.y = 0.0;
-			navigation_dir = navigation_dir.normalized();
+		# touch movement
+		if (ui.controller):
+			var input_dir: Vector3 = ui.controller.dir;
+			if (input_dir.length() > 0.1):
+				dir = camera.camera_dir.xform(input_dir);
+		
+		# navigation
+		if (navigate_to && typeof(navigate_to) == TYPE_VECTOR3):
+			var pos = global_transform.origin;
+			var d = pos.distance_to(navigate_to);
+			
+			if (d > delta * move_speed):
+				navigation_dir = navigate_to - pos;
+				navigation_dir.y = 0.0;
+				navigation_dir = navigation_dir.normalized();
+			else:
+				navigate_to = null;
+		
+		# normalize dir
+		dir.y = 0.0;
+		dir = dir.normalized();
 	
-	# get aim basis from camera
-	aim = camera.camera_dir;
+	# player movement state
+	is_moving = (dir.length() > 0.1);
 	
-	if (Input.is_key_pressed(KEY_W)):
-		dir -= aim.z;
-	if (Input.is_key_pressed(KEY_S)):
-		dir += aim.z;
-	if (Input.is_key_pressed(KEY_A)):
-		dir -= aim.x;
-	if (Input.is_key_pressed(KEY_D)):
-		dir += aim.x;
+	# set body direction
+	if (is_moving):
+		body_dir = dir;
 	
-	if (ui.controller):
-		var input_dir: Vector3 = ui.controller.dir;
-		if (input_dir.length() > 0.1):
-			dir = aim.xform(input_dir);
-	
-	# normalize dir
-	dir.y = 0.0;
-	dir = dir.normalized();
-	
-	# player is moving
-	is_moving = (next_think <= 0.0 && dir.length() > 0.1);
-	
-	if (navigation_dir):
+	# set player moving to navigation point if available
+	if (navigation_dir && typeof(navigation_dir) == TYPE_VECTOR3):
 		if (is_moving):
 			navigation_dir = null;
 		else:
@@ -203,26 +208,11 @@ func _physics_process(delta: float) -> void:
 	var gv = velocity.y - (19.6 * delta);
 	
 	# set velocity
-	if (next_think > 0.0):
-		dir = Vector3();
-	
 	velocity = velocity.linear_interpolate(dir * move_speed, 10 * delta);
 	velocity.y = gv;
 	
 	# move player
 	velocity = move_and_slide(velocity, Vector3.UP, true);
-	
-	var hvel = Vector3(velocity.x, 0, velocity.z);
-	if (hvel.length() > 0.5):
-		animation = anims[anim_offset + PlayerAnims.RUN];
-		anim_speed = clamp(move_speed / 3.0, 0.1, 2.0);
-		next_idle = 0.0;
-	else:
-		animation = anims[anim_offset + PlayerAnims.IDLE];
-		anim_speed = 1.0;
-	
-	if (dir.length() > 0.1):
-		body_dir = dir;
 
 func _process(delta: float) -> void:
 	if (next_think > 0.0):
@@ -234,16 +224,25 @@ func _process(delta: float) -> void:
 	if (next_idle > 0.0):
 		next_idle -= delta;
 	
-	# body rotation
-	var body: Spatial = $body;
-	var q1 = Quat(body.transform.basis);
-	var q2 = Quat(body.transform.looking_at(body_dir, Vector3.UP).basis);
-	body.transform.basis = Basis(q1.slerp(q2, 10 * delta));
+	# animation
+	var hvel = Vector3(velocity.x, 0, velocity.z);
+	if (hvel.length() > 0.5):
+		animation = anims[anim_offset + PlayerAnims.RUN];
+		anim_speed = clamp(move_speed / 3.0, 0.1, 2.0);
+		next_idle = 0.0;
+	else:
+		animation = anims[anim_offset + PlayerAnims.IDLE];
+		anim_speed = 1.0;
 	
-	if (animplayer.current_animation != animation && next_idle <= 0.0):
+	if (next_idle <= 0.0 && animplayer.current_animation != animation):
 		animplayer.get_animation(animation).loop = true;
 		animplayer.play(animation, 0.1, anim_speed);
 		next_idle = 0.1;
+	
+	# body rotation
+	var q1 = Quat(body.transform.basis);
+	var q2 = Quat(body.transform.looking_at(body_dir, Vector3.UP).basis);
+	body.transform.basis = Basis(q1.slerp(q2, 10 * delta));
 
 func move_to(position: Vector3) -> void:
 	navigate_to = position;
