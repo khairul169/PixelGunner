@@ -11,7 +11,7 @@ radius = 5.0
 
 [node name="crog" type="KinematicBody"]
 script = ExtResource( 1 )
-health_max = 600.0
+health_max = 200.0
 move_speed = 1.5
 attack_damage = 80.0
 attack_delay = 2.2

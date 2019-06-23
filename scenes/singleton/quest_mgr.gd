@@ -4,7 +4,6 @@ class_name QuestManager
 signal quests_updated();
 signal quest_added(quest);
 signal quest_completed(quest);
-signal task_completed(quest, task_id);
 
 enum {
 	TASK_NONE = 0,
@@ -19,19 +18,20 @@ class Quest extends Reference:
 	
 	# vars
 	var quest_mgr: Reference;
+	var id;
 	var name: String;
 	var tasks = [];
 	
-	func _init(quest_name: String) -> void:
+	func _init(quest_id, quest_name: String) -> void:
+		id = quest_id;
 		name = quest_name;
 	
-	func add_task(task_type: int, data = null, completed = false) -> int:
+	func add_task(task_type: int, data = null) -> int:
 		var id = tasks.size();
 		tasks.append({
 			'id': id,
 			'type': task_type,
-			'data': data,
-			'completed': completed
+			'data': data
 		});
 		
 		if (quest_mgr):
@@ -44,33 +44,51 @@ class Quest extends Reference:
 		return null;
 	
 	func set_task_data(id: int, data) -> void:
-		if (id >= 0 && id < tasks.size()):
-			tasks[id].data = data;
+		if (id < 0 || id >= tasks.size()):
+			return;
+		
+		# set task data
+		tasks[id].data = data;
+		
 		if (quest_mgr):
 			quest_mgr.emit_signal("quests_updated");
 	
 	func set_task_completed(id: int, completed: bool = true) -> void:
-		if (id >= 0 && id < tasks.size()):
-			tasks[id].completed = completed;
+		if (id < 0 || id >= tasks.size()):
+			return;
+		
+		# set task as completed
+		if (completed):
+			tasks[id]['completed'] = true;
+		else:
+			tasks[id].erase('completed');
+		
 		if (quest_mgr):
-			quest_mgr.emit_signal("task_completed", self, id);
 			quest_mgr.emit_signal("quests_updated");
 		
 		var quest_completed = true;
 		for i in tasks:
-			if (!i.completed):
-				quest_completed = false;
-				break;
+			if (i.has('completed')):
+				continue;
+			
+			quest_completed = false;
+			break;
 		
 		if (quest_completed):
 			quest_mgr.remove_quest(self);
 			quest_mgr.emit_signal("quest_completed", self);
 			emit_signal("completed");
+	
+	func get_name() -> String:
+		return name;
+	
+	func get_id():
+		return id;
 
 var _active_quest = [];
 
-static func create_quest(name: String, keep_quest: bool = false) -> Quest:
-	return Quest.new(name);
+static func create_quest(id, name: String) -> Quest:
+	return Quest.new(id, name);
 
 func add_quest(quest: Quest) -> void:
 	if (!quest in _active_quest):
@@ -93,7 +111,7 @@ func task_achieved(type: int, args = null) -> void:
 	
 	for quest in _active_quest:
 		for task in quest.tasks:
-			if (task.type != type || (task.type != TASK_COLLECT_ITEM && task.completed)):
+			if (task.type != type):
 				continue;
 			_check_task(quest, task, type, args);
 
@@ -102,15 +120,15 @@ func _check_task(quest: Quest, task: Dictionary, type: int, args) -> void:
 	
 	match (type):
 		TASK_KILL_MONSTER:
-			if (data.monster != args):
+			if (data.monster != args || data.has('completed')):
 				return;
 			
-			var num = data['_num'] + 1 if data.has('_num') else 1;
+			var num = data['progress'] + 1 if data.has('progress') else 1;
 			if (num >= data.count):
 				quest.set_task_completed(task.id);
 			
 			# update data
-			data['_num'] = int(clamp(num, 0, data.count));
+			data['progress'] = int(clamp(num, 0, data.count));
 			quest.set_task_data(task.id, data);
 		
 		TASK_COLLECT_ITEM:
@@ -118,19 +136,15 @@ func _check_task(quest: Quest, task: Dictionary, type: int, args) -> void:
 			quest.set_task_completed(task.id, (num >= data.count));
 			
 			# update data
-			data['_num'] = int(clamp(num, 0, data.count));
+			data['progress'] = int(clamp(num, 0, data.count));
 			quest.set_task_data(task.id, data);
 		
 		TASK_INTERACT_NPC:
-			var npc_id = data.npc if data.has('npc') else -1;
-			var name = data.name if data.has('name') else null;
+			if (data.has('completed') || !args is NPC):
+				return;
 			
-			if (args is NPC):
-				if (args.npc_type == npc_id && args.npc_name == name):
-					quest.set_task_completed(task.id);
-		
-		_:
-			quest.set_task_completed(task.id);
+			if (args.npc_type == data.npc && data.npc_name == data.name):
+				quest.set_task_completed(task.id);
 
 func get_task_name(task: Dictionary):
 	if (!task.has('type')):
@@ -147,7 +161,7 @@ func get_task_name(task: Dictionary):
 		TASK_INTERACT_NPC:
 			name = _task_interact_npc(task, task.data);
 	
-	if (task.completed):
+	if (task.has('completed')):
 		name = _bb_completed(name);
 	return name;
 
@@ -165,16 +179,16 @@ func _task_kill_monster(task, data):
 		return null;
 	
 	var monster_data = Entities.get_monster_data(data.monster);
-	var task_counter = data['_num'] if data.has('_num') else 0;
-	return str("Find and kill", _bb_object(monster_data.name), _bb_counter(task_counter, data.count));
+	var progress = data['progress'] if data.has('progress') else 0;
+	return str("Find and kill", _bb_object(monster_data.name), _bb_counter(progress, data.count));
 
 func _task_collect_object(task, data):
 	if (!data.has('item') || !data.has('count')):
 		return null;
 	
 	var item_data = Items.get_item(data.item);
-	var task_counter = data['_num'] if data.has('_num') else 0;
-	return str("Collect", _bb_object(item_data.label), _bb_counter(task_counter, data.count));
+	var progress = data['progress'] if data.has('progress') else 0;
+	return str("Collect", _bb_object(item_data.label), _bb_counter(progress, data.count));
 
 func _task_interact_npc(task, data):
 	if (data.has('npc') && data.has('name')):

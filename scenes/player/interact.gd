@@ -66,7 +66,7 @@ func go_interact() -> void:
 	
 	player.stop(0.5);
 	player.set_looking_at(npc);
-	player.camera.fov = 40.0;
+	player.camera.fov = 50.0;
 	
 	interact_with = npc;
 	can_interact = false;
