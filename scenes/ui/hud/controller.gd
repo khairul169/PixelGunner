@@ -25,32 +25,38 @@ func _unhandled_input(event: InputEvent) -> void:
 	if (!is_visible_in_tree()):
 		return;
 	
-	if (event is InputEventMouseButton):
-		var pos = event.position;
-		if (event.pressed):
-			if (get_global_rect().has_point(pos)):
-				handle_input(pos, true);
-				get_tree().set_input_as_handled();
-		else:
-			handle_input(pos, false);
-	
-	if (event is InputEventMouseMotion):
-		motion_update(event.position);
-	
-	if (event is InputEventScreenTouch):
-		var pos = event.position;
-		if (event.pressed):
-			if (get_global_rect().has_point(pos) && touch_id < 0):
-				handle_input(pos, true);
-				touch_id = event.index;
-				get_tree().set_input_as_handled();
-		else:
-			if (touch_id == event.index):
-				handle_input(pos, false);
-				touch_id = -1;
-	
-	if (event is InputEventScreenDrag && event.index == touch_id):
-		motion_update(event.position);
+	if (OS.has_touchscreen_ui_hint()):
+		if (event is InputEventScreenTouch):
+			var pos = event.position;
+			if (event.pressed):
+				if (get_global_rect().has_point(pos) && !pressed):
+					pressed = true;
+					touch_id = event.index;
+					handle_input(pos);
+					get_tree().set_input_as_handled();
+			else:
+				if (touch_id == event.index && pressed):
+					pressed = false;
+					handle_input(pos);
+					touch_id = -1;
+		
+		if (event is InputEventScreenDrag && pressed && event.index == touch_id):
+			motion_update(event.position);
+	else:
+		if (event is InputEventMouseButton):
+			var pos = event.position;
+			if (event.pressed):
+				if (get_global_rect().has_point(pos)):
+					pressed = true;
+					handle_input(pos);
+					get_tree().set_input_as_handled();
+			else:
+				if (pressed):
+					pressed = false;
+					handle_input(pos);
+		
+		if (event is InputEventMouseMotion && pressed):
+			motion_update(event.position);
 
 func _draw() -> void:
 	if (!pressed || !base_button || !button):
@@ -76,10 +82,7 @@ func update_container() -> void:
 	rect_position = parent_size * Vector2(0.0, 0.5);
 	rect_size = parent_size * Vector2(0.4, 0.5);
 
-func handle_input(pos, is_pressed) -> void:
-	# set pressed value
-	pressed = is_pressed;
-	
+func handle_input(pos) -> void:
 	if (pressed):
 		start_pos = pos;
 		cur_pos = pos;
