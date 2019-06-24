@@ -1,7 +1,8 @@
 extends Node
 
 # defs
-const TARGETING_RADIUS = 8.0;
+const TARGETING_RADIUS = 15.0;
+const ATTACK_FOV = 90.0;
 
 # scenes
 onready var DamageIndicator = load('res://scenes/ui/hud/damage_indicator.tscn');
@@ -35,7 +36,7 @@ var wpn_clip = 0;
 
 var damage = 20.0;
 var delay = 0.4;
-var attack_range = 6.0;
+var attack_range = 0.0;
 var accuracy = 10.0;
 var max_clip = 0;
 var attack_type = AttackType.NEAR;
@@ -78,7 +79,7 @@ func reset() -> void:
 	wpn_clip = -1;
 	reload_time = 0.0;
 	attack_type = AttackType.NEAR;
-	slowness = 0.0;
+	slowness_prob = 0.0;
 	knockback = 0.0;
 	armor_pen = 0;
 	
@@ -250,15 +251,15 @@ func set_weapon(weapon: Dictionary) -> void:
 	# attack range & reload speed
 	match (data.wpn_class):
 		Weapon.CLASS_HG:
-			attack_range = 6.0;
+			attack_range = 7.0;
 			reload_time = 1.0;
 		
 		Weapon.CLASS_AR:
-			attack_range = 5.0;
+			attack_range = 8.0;
 			reload_time = 3.0;
 		
 		_:
-			attack_range = 4.0;
+			attack_range = 8.0;
 			reload_time = 1.0;
 	
 	# switch weapon mesh
@@ -282,7 +283,7 @@ func start_attack() -> void:
 	if (next_think > 0.0 || !player.control_enabled || player.health <= 0.0):
 		return;
 	
-	if (player.m_interact.can_interact && nearest_enemy.empty()):
+	if (player.m_interact.can_interact):
 		player.m_interact.go_interact();
 		return;
 	
@@ -326,11 +327,19 @@ func check_enemy(enemy: Spatial, res: Dictionary) -> bool:
 	if (enemy.health <= 0.0):
 		return true;
 	
+	# fov check
+	var enemy_pos = enemy.global_transform.origin;
+	var enemy_vec = (enemy.global_transform.origin - player.global_transform.origin).normalized();
+	var dot_view = enemy_vec.dot(-player.camera.camera_dir.z);
+	var view_angle = (1.0 - ((dot_view * 0.5) + 0.5)) * 360.0;
+	
+	if (view_angle > ATTACK_FOV):
+		return true;
+	
 	var last_distance = -1.0;
 	if (res.has('distance')):
 		last_distance = res.distance;
 	
-	var enemy_pos = enemy.global_transform.origin;
 	var distance = player.global_transform.origin.distance_to(enemy_pos);
 	
 	# distance check

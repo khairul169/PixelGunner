@@ -74,10 +74,14 @@ func _process(delta: float) -> void:
 [sub_resource type="GDScript" id=2]
 script/source = "extends Camera2D
 
-const OFFSET = Vector2(2, 3);
-
 func _ready() -> void:
-	rotation = -atan2(OFFSET.x, OFFSET.y);
+	pass
+
+func _process(delta: float) -> void:
+	var camera = get_tree().root.get_camera();
+	if (camera):
+		var dir = -camera.global_transform.basis.z;
+		rotation = atan2(dir.x, -dir.z);
 "
 
 [node name="map" type="Node2D"]

@@ -58,7 +58,14 @@ func _health_changed(new_health: float) -> void:
 		set_process(true);
 
 func _process(delta: float) -> void:
-	var pos = camera.unproject_position(parent.global_transform.origin + Vector3.UP);
+	var object_pos = parent.global_transform.origin + Vector3.UP;
+	if (camera.is_position_behind(object_pos)):
+		visible = false;
+		return;
+	else:
+		visible = true;
+	
+	var pos = camera.unproject_position(object_pos);
 	pos -= rect_size * Vector2(0.5, 1.0);
 	pos += offset;
 	
