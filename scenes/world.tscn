@@ -1,10 +1,11 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://textures/tile.png" type="Texture" id=1]
 [ext_resource path="res://scenes/monster/spawner.gd" type="Script" id=2]
 [ext_resource path="res://scenes/npc/quest_giver.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scenes/player/camera.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/player/player.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scenes/world/terrain.gd" type="Script" id=6]
 
 [sub_resource type="Environment" id=1]
 ambient_light_color = Color( 0.611765, 0.807843, 1, 1 )
@@ -153,3 +154,7 @@ npc_name = "Larry"
 
 [node name="player" parent="." instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.613, 0 )
+
+[node name="terrain" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -4 )
+script = ExtResource( 6 )
