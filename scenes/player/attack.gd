@@ -279,11 +279,18 @@ func set_weapon(weapon: Dictionary) -> void:
 	# update ui
 	call_deferred('_update_interface');
 
+func has_enemies_nearby(distance: int = 5.0) -> bool:
+	for i in nearest_enemy:
+		var d = player.global_transform.origin.distance_to(i.global_transform.origin);
+		if (i.health > 0.0 && d <= distance):
+			return true;
+	return false;
+
 func start_attack() -> void:
 	if (next_think > 0.0 || !player.control_enabled || player.health <= 0.0):
 		return;
 	
-	if (player.m_interact.can_interact):
+	if (player.m_interact.can_interact && !has_enemies_nearby()):
 		player.m_interact.go_interact();
 		return;
 	

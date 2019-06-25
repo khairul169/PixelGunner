@@ -7,12 +7,12 @@
 radius = 0.4
 
 [sub_resource type="SphereShape" id=2]
-radius = 5.0
+radius = 8.0
 
 [node name="crog" type="KinematicBody"]
 script = ExtResource( 1 )
 health_max = 200.0
-move_speed = 1.5
+move_speed = 1.6
 attack_damage = 80.0
 attack_delay = 2.2
 attack_range = 1.5
